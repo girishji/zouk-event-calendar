@@ -6,3 +6,11 @@ api_version: 1
 handlers:
 - url: /.*
   script: index.php
+
+# All URLs beginning with /stylesheets are treated as paths to static files in
+# the stylesheets/ directory.
+- url: /stylesheets
+  static_dir: stylesheets
+
+- url: /images
+  static_dir: images
