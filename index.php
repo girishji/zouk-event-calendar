@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 </head>
 
 <body>
-<div id="fb-root"></div>
+
 <script>
 //        $(document).ready(function() {
 //            $.ajaxSetup({ cache: true });
