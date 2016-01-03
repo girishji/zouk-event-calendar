@@ -11,6 +11,7 @@ handlers:
 # the stylesheets/ directory.
 - url: /stylesheets
   static_dir: stylesheets
+  mime_type: text/css
 
 - url: /images
   static_dir: images
