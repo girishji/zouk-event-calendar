@@ -14,6 +14,11 @@ git:
 
 https://help.github.com/articles/adding-an-existing-project-to-github-using-the-command-line/
 
-git add .;git commit -m "message";git push origin master
+git add .;git commit -m "message";git push origin master; appcfg.py -A zouk-event-calendar update app.yaml
 
+====
+fb:
+
+http://devtacular.com/articles/bkonrad/how-to-style-an-application-like-facebook
+http://webdesign.tutsplus.com/articles/design-and-code-an-integrated-facebook-app-html-css--webdesign-4378
 ====
