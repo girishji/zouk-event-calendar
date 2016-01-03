@@ -1,8 +1,5 @@
 // content.js
 
-// To debug FB only. Otherwise minified version of FB sdk is alreay loaded.
-js.src = "//connect.facebook.net/en_US/sdk/debug.js";
-
 // Load ajax only after document (all elements) finish loading
 $(document).ready(function() {
     $.ajaxSetup({ cache: true });
@@ -20,17 +17,31 @@ window.fbAsyncInit = function() {
         xfbml      : true,
         version    : 'v2.5'
     });
+
     // setAutoGrow works but slowly and consumes cycles
     FB.Canvas.setAutoGrow();
     // manually set size (also slow)
     // FB.Canvas.setSize({ width: 640, height: 4000 });
+
+    // Check if logged in
+    FB.getLoginStatus(function(response) {
+        if (response.status === 'connected') {
+            console.log('Logged in.');
+        }
+        else {
+            FB.login();
+        }
+    });
+
 };
 // load the facebook SDK async
 (function(d, s, id){
     var js, fjs = d.getElementsByTagName(s)[0];
     if (d.getElementById(id)) {return;}
     js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js";
+    //js.src = "//connect.facebook.net/en_US/sdk.js";
+    // To debug FB only. Otherwise use minified version of FB sdk above
+    js.src = "//connect.facebook.net/en_US/sdk/debug.js";
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 
