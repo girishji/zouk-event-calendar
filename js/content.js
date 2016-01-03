@@ -40,7 +40,7 @@ window.fbAsyncInit = function() {
     if (d.getElementById(id)) {return;}
     js = d.createElement(s); js.id = id;
     //js.src = "//connect.facebook.net/en_US/sdk.js";
-    // To debug FB only. Otherwise use minified version of FB sdk above
+    // XXX: For debug only. Otherwise use minified version of FB sdk above
     js.src = "//connect.facebook.net/en_US/sdk/debug.js";
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
