@@ -12,7 +12,8 @@ $(document).ready(function() {
 // directly after the opening <body> tag on each page you want to load it:
 window.fbAsyncInit = function() {
     FB.init({
-        appId      : "<?php echo getenv('FACEBOOK_APP_ID'); ?>", //set from server side
+        //appId      : <?php echo getenv('FACEBOOK_APP_ID'); ?>, //set from server side
+        appId      : 1263842110297634,
         cookie     : true,
         xfbml      : true,
         version    : 'v2.5'

@@ -21,8 +21,9 @@ handlers:
   script: index.php
 
 # facebook app id
-env_variables:
-  FACEBOOK_APP_ID: 1263842110297634
+# XXX just encode it directly in js file
+# env_variables:
+#  FACEBOOK_APP_ID: 1263842110297634
 
 # Everything is uploaded unless following is used
 #skip_files:
