@@ -131,7 +131,7 @@ function buildContent(accessToken) {
         }
         str += '</table>';
         console.log(str);
-        document.getElementById("z_content").innerHTML = str;
+        //document.getElementById("z_content").innerHTML = str;
     }
 
     function inLocalTZ(timeStr) {
@@ -141,7 +141,7 @@ function buildContent(accessToken) {
         var d = timeStr.split('T');
         var t = d[1].split('+');
         t = t[0].split('-');
-        console.log('tz ' + d[0] + 'T' + t[0]);
+        //console.log('tz ' + d[0] + 'T' + t[0]);
         return d[0] + 'T' + t[0];
     }
 
