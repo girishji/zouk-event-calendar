@@ -124,6 +124,7 @@ function buildContent(accessToken) {
                                for (var j = 0; j < data.length; j++) {
                                    var startTime = new Date(data[j].start_time);
                                    // Add events even if 3 days old
+                                   console.log('start ' + startTime + ', now ' + timeNow);
                                    if ((timeNow < startTime) 
                                        || ((timeNow.getTime() - startTime.getTime()) < (3 * 24 * 3600 * 1000))) {
                                        console.log('Adding ' + data[j].name);
