@@ -62,8 +62,8 @@ function buildContent(accessToken) {
         // type: 'event',
         // fields: 'name',
         batch: [
-            { method: 'GET', relative_url: '?q=zouk&type=event&fields=name&access_token=' + accessToken },
-            { method: 'GET', relative_url: '?q=zouklam&type=event&fields=name&access_token=' + accessToken }
+            { method: 'GET', relative_url: 'search?q=zouk&type=event&fields=name&access_token=' + accessToken },
+            { method: 'GET', relative_url: 'search?q=zouklam&type=event&fields=name&access_token=' + accessToken }
         ]
     }, 
            function(response) {
