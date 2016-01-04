@@ -58,13 +58,13 @@ var searches = [
     'f.i.e.l+official',
     'lambazouk',
     'zouk+lambada',
-    /// 'brazilian+zouk',
-    /// 'zouk+festival',
-    /// 'zouk+marathon',
-    /// 'zouk+family',
-    /// 'zouk+fest',
-    /// 'zouk+congress',
-    /// 'zouk+weekend',
+    'brazilian+zouk',
+    'zouk+festival',
+    'zouk+marathon',
+    'zouk+family',
+    'zouk+fest',
+    'zouk+congress',
+    'zouk+weekend',
     /// 'zouk+salsa',
     /// 'zouk+samba',
     /// 'zouk+beach',
@@ -179,7 +179,7 @@ function buildContent(accessToken) {
                         if (paging.hasOwnProperty('next') && paging.next) {
                             var next = paging.next.split('?'); // like .../search?q=...
                             next = 'search?' + next;
-                            console.log('next: ' + next);
+                            // console.log('next: ' + next);
                             nextPage.push(next);
                         }
                     }
