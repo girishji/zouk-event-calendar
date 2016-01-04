@@ -71,7 +71,7 @@ function buildContent(accessToken) {
                    //alert('success girish');
                    for (var i = 0; i < response.length; i++) {
                        if (response[i].hasOwnProperty('body')) {
-                           var body = response[i].body;
+                           var body = JSON.parse(response[i].body);
                            console.log('properties ' + Object.getOwnPropertyNames(body));                           
                            if (body.hasOwnProperty('data')) {
                                var data = body.data;
