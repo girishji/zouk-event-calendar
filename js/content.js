@@ -120,7 +120,7 @@ function buildContent(accessToken) {
                         + ':' + timeS[1] + ' ' + zEvents[i].name);
             str += `
                 <tr>
-                <td>${month} ${dateS[2]}, timeS[0]:timeS[1]</td>
+                <td>${month} ${dateS[2]}, ${timeS[0]}:${timeS[1]}</td>
                 <td>${zEvents[i].name}</td>
                 </tr>
                 `;
