@@ -161,7 +161,7 @@ function buildContent(accessToken) {
                 var date = dateS[2];
                 var year = dateS[0] - 2000;
                 var timeS = splitS[1].split(':');
-                console.log('Added ' + dateS[1] + ' ' + date + ', ' + timeS[0] 
+                console.log('Added ' + month + ' ' + date + ', ' + timeS[0] 
                             + ':' + timeS[1] + ' ' + zEvents[i].name);
             }
         }
