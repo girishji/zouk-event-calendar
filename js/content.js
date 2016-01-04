@@ -126,6 +126,7 @@ function buildContent(accessToken) {
                                    // Add events even if 3 days old
                                    if ((timeNow < startTime) 
                                        || ((timeNow.getTime() - startTime.getTime()) < (3 * 24 * 3600 * 1000))) {
+                                       console.log('Adding ' + data[j].name);
                                        zEvents.push(data[j]);
                                    }
                                    console.log('name: ' + data[j].name + ' id: ' + data[j].id);
