@@ -102,66 +102,66 @@ function buildContent(accessToken) {
                          + accessToken }
                      );
     }
-
-    FB.api('/', 'POST', { batch: batchCmd }, 
-           function(response) {
-               if (!response || response.error) {
-                   console.log('FB.api: Error occured');
-                   console.log(response);
-               } else {
-                   console.log('success girish ' + response.length);
-                   //alert('success girish');
-                   // print response in console log. You'll see that you get back an array of 
-                   // objects, and each is a JSON serialied string. To turn it into a javascript
-                   // objects, use parse().
-                   for (var i = 0; i < response.length; i++) {
-                       if (response[i].hasOwnProperty('body')) {
-                           var body = JSON.parse(response[i].body);
-                           console.log('properties ' + Object.getOwnPropertyNames(body));                           
-                           if (body.hasOwnProperty('data')) {
-                               var data = body.data;
-                               console.log('length: ' + data.length);
-                               for (var j = 0; j < data.length; j++) {
-                                   var startTime = new Date(data[j].start_time);
-                                   // Add events even if 3 days old
-                                   if ((timeNow < startTime) 
-                                       || ((timeNow.getTime() - startTime.getTime()) < (3 * 24 * 3600 * 1000))) {
-                                       zEvents.push(data[j]);
-                                   }
-                                   console.log('name: ' + data[j].name + ' id: ' + data[j].id);
-                               } 
-                           } 
-                           // next paging link
-                           if (body.hasOwnProperty('paging')) {
-                               var paging = body.paging;
-                               if (paging.hasOwnProperty('next')) {
-                                   var next = paging.next;
-                                   console.log('next: ' + next);
-                               }
-                           }
-                       } 
-                   }
-               }
-           });
-
-//    // sort
-//    var sortFn = function(at, bt) {
-//        var a = new Date(at.start_time);
-//        var b = new Date(bt.start_time);
-//        if (a.getTime() < b.getTime()) return -1;
-//        if (a.getTime() > b.getTime()) return 1;
-//        if (a.getTime() === b.getTime()) return 0;
-//    }
-//    zEvents.sort(sortFn); 
-    // print
-    var options = {
-        weekday: "narrow", year: "2-digit", month: "short",
-        day: "2-digit", hour: "2-digit"
+ 
+    var responseCallback = function(response) {
+        if (!response || response.error) {
+            console.log('FB.api: Error occured');
+            console.log(response);
+        } else {
+            //alert('success girish');
+            // print response in console log. You'll see that you get back an array of 
+            // objects, and each is a JSON serialied string. To turn it into a javascript
+            // objects, use parse().
+            for (var i = 0; i < response.length; i++) {
+                if (response[i].hasOwnProperty('body')) {
+                    var body = JSON.parse(response[i].body);
+                    console.log('properties ' + Object.getOwnPropertyNames(body));                           
+                    if (body.hasOwnProperty('data')) {
+                        var data = body.data;
+                        console.log('length: ' + data.length);
+                        for (var j = 0; j < data.length; j++) {
+                            var startTime = new Date(data[j].start_time);
+                            // Add events even if 3 days old
+                            if ((timeNow < startTime) 
+                                || ((timeNow.getTime() - startTime.getTime()) < (3 * 24 * 3600 * 1000))) {
+                                zEvents.push(data[j]);
+                            }
+                            console.log('name: ' + data[j].name + ' id: ' + data[j].id);
+                        } 
+                    } 
+                    // next paging link
+                    if (body.hasOwnProperty('paging')) {
+                        var paging = body.paging;
+                        if (paging.hasOwnProperty('next')) {
+                            var next = paging.next;
+                            console.log('next: ' + next);
+                        }
+                    }
+                } 
+            }
+            // post process
+            zEvents.sort(function(at, bt) {
+                var a = new Date(at.start_time);
+                var b = new Date(bt.start_time);
+                if (a.getTime() < b.getTime()) return -1;
+                if (a.getTime() > b.getTime()) return 1;
+                if (a.getTime() === b.getTime()) return 0;
+            });
+            // print
+            var options = {
+                weekday: "narrow", year: "2-digit", month: "short",
+                day: "2-digit", hour: "2-digit"
+            };
+            console.log('ze length ' + zEvents.length);
+            for (var i = 0; i < zEvents.length; i++) {
+                var date = new Date(zEvents[i].start_time);
+                console.log('Added ' + date.toLocaleTimeString("en-us", options) + ' : ' + zEvents.name);
+            }
+        }
     };
-    console.log('ze length ' + zEvents.length);
-    for (var i = 0; i < zEvents.length; i++) {
-        var date = new Date(zEvents[i].start_time);
-        console.log('Added ' + date.toLocaleTimeString("en-us", options) + ' : ' + zEvents.name);
-    }
+
+    FB.api('/', 'POST', { batch: batchCmd }, responseCallback);
+
+
 }
 
