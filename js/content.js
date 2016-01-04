@@ -1,10 +1,5 @@
 // content.js
 
-// Load ajax only after document (all elements) finish loading
-$(document).ready(function() {
-    $.ajaxSetup({ cache: true });
-});
-
 // The Facebook SDK for JavaScript doesn't have any standalone files 
 // that need to be downloaded or installed, instead you simply need to 
 // include a short piece of regular JavaScript in your HTML that will 
