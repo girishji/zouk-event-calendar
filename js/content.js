@@ -58,7 +58,7 @@ window.fbAsyncInit = function() {
 function buildContent(accessToken) {
     console.log('buildContent ' + accessToken);
 
-    FB.api('/search', {
+    FB.api('/search', 'GET', {
         batch: [
             { method: 'GET', relative_url: '?q=zouk&type=event', fields: 'name', access_token: accessToken },
             { method: 'GET', relative_url: '?q=zouk+carnival&type=event', fields: 'name', access_token: accessToken }
