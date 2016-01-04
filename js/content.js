@@ -12,7 +12,7 @@ $(document).ready(function() {
 // directly after the opening <body> tag on each page you want to load it:
 window.fbAsyncInit = function() {
     FB.init({
-        appId      : '1263842110297634', //test app
+        appId      : "<?php echo getenv('FACEBOOK_APP_ID') ?>", //set from server side
         cookie     : true,
         xfbml      : true,
         version    : 'v2.5'
@@ -26,10 +26,19 @@ window.fbAsyncInit = function() {
     // Check if logged in
     FB.getLoginStatus(function(response) {
         if (response.status === 'connected') {
-            console.log('Logged in.');
-        }
-        else {
-            FB.login();
+            // console.log('Logged in.');
+            buildContent(response.authResponse.accessToken);
+        } else {
+            FB.login(function(response) {
+                if (response.authResponse) {
+                    if (response.status === 'connected') {
+                        console.log('Welcome!  Fetching information.... ');
+                        buildContent(response.authResponse.accessToken);
+                    }
+                } else {
+                    console.log('User cancelled login or did not fully authorize.');
+                }
+            });
         }
     });
 
@@ -45,5 +54,9 @@ window.fbAsyncInit = function() {
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 
-// Check if user has approved this app, else prompt for login.
+// Search FB
+function buildContent(accessToken) {
+
+
+}
 
