@@ -58,24 +58,37 @@ window.fbAsyncInit = function() {
 function buildContent(accessToken) {
     console.log('buildContent ' + accessToken);
     FB.api('/', 'POST', {
-        // q: 'zouk',
-        // type: 'event',
-        // fields: 'name',
-        batch: [
-            { method: 'GET', relative_url: 'search?q=zouk&type=event&fields=name&access_token=' + accessToken },
-            { method: 'GET', relative_url: 'search?q=zouklam&type=event&fields=name&access_token=' + accessToken }
-        ]
-    }, 
+           batch: [
+              { method: 'GET', relative_url: 'search?q=zouk&type=event&fields=name&access_token=' + accessToken },
+              { method: 'GET', relative_url: 'search?q=zouklam&type=event&fields=name&access_token=' + accessToken }
+           ]}, 
            function(response) {
                if (!response || response.error) {
                    console.log('FB.api: Error occured');
                    console.log(response);
                } else {
-                   console.log('success girish');
-                   console.log(response);
-                   //alert('success girish');
-
+                   for (var i = 0; i < response.length; i++) {
+                       if (response[i].hasOwnProperty(body)) {
+                           var body = response[i].body;
+                           if (body.hasOwnProperty(data)) {
+                               var data = body.data;
+                               console.log('length: ' + data.length);
+                               for (var j = 0; j < data.length; j++) {
+                                   console.log('name: ' + data[j].name + ' id: ' + data[j].id);
+                               }
+                           }
+                           // next paging link
+                           if (body.hasOwnProperty(paging) && paging.hasOwnProperty(next)) {
+                               var next = body.paging.next;
+                               console.log('next: ' + next);
+                           }
+                           console.log('success girish');
+                           //alert('success girish');
+                       }
+                   }
                }
            });
+
+
 }
 
