@@ -144,6 +144,16 @@ function buildContent(accessToken) {
                }
            });
 
+    // sort
+    var sortFn = function(at, bt){
+        var a = new Date(at.start_time);
+        var b = new Date(bt.start_time);
+        if (a.getTime() < b.getTime()) return -1;
+        if (a.getTime() > b.getTime()) return 1;
+        if (a.getTime() === b.getTime()) return 0;
+    }
+    zEvents.sort(sortFn); 
+    // print
     var options = {
         weekday: "narrow", year: "2-digit", month: "short",
         day: "2-digit", hour: "2-digit"
