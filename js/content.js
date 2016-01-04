@@ -114,7 +114,7 @@ function buildContent(accessToken) {
                 var pic = zEvents[i].cover;
                 if (pic.hasOwnProperty('id') && pic.id) {
                     imgURL = 'https://graph.facebook.com/' + pic.id + '/picture?access_token='
-                        + access_token + '&type=square';
+                        + accessToken + '&type=square';
                 }
             }
             if (! imgUrl) {
@@ -131,7 +131,7 @@ function buildContent(accessToken) {
         }
         str += '</table>';
         console.log(str);
-        //document.getElementById("z_content").innerHTML = str;
+        document.getElementById("z_content").innerHTML = str;
     }
 
     function inLocalTZ(timeStr) {
