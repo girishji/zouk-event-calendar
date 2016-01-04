@@ -76,6 +76,7 @@ var searches = [
     /// 'fall+zouk',
     /// 'berg+zouk',
     /// 'brazouka',
+    /// 'zoukdevils',
     // 'zouk+fever',
     // 'brasileiro+zouk',
     // 'zouk+fusion',
@@ -167,7 +168,16 @@ function buildContent(accessToken) {
                                 // Add events even if 2 days old
                                 if ((timeNow < startTime) 
                                     || ((timeNow.getTime() - startTime.getTime()) < (2 * 24 * 3600 * 1000))) {
-                                    events.push(data[j]);
+                                    // Insert only if unique; Different search strings give same results
+                                    var found = false;
+                                    for (var ev = 0; ev < events.length; ev++) {
+                                        if (data[j].id == events[ev].id) { // use == not === so str get casted to number
+                                            found = true;
+                                        }
+                                    }
+                                    if (! found) {
+                                        events.push(data[j]);
+                                    }
                                 }
                                 // console.log('name: ' + data[j].name + ' id: ' + data[j].id);
                             }
