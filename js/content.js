@@ -70,6 +70,7 @@ function buildContent(accessToken) {
                    console.log('success girish ' + response.length);
                    //alert('success girish');
                    for (var i = 0; i < response.length; i++) {
+                       console.log(Object.getOwnPropertyNames(response[i]));
                        if (response[i].hasOwnProperty(body)) {
                            var body = response[i].body;
                            if (body.hasOwnProperty(data)) {
