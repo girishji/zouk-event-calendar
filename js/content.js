@@ -41,7 +41,6 @@ window.fbAsyncInit = function() {
             });
         }
     });
-
 };
 // load the facebook SDK async
 (function(d, s, id){
@@ -56,7 +55,7 @@ window.fbAsyncInit = function() {
 
 // Search FB
 function buildContent(accessToken) {
-
+    console.log('buildContent ' + accessToken);
 
 }
 
