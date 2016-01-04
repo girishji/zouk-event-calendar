@@ -1,9 +1,12 @@
-#
-git add .
-git commit -m "message"
-git push origin master
-appcfg.py -A zouk-event-calendar update app.yaml
-#
+## # GAE
+## git add .
+## git commit -m "message"
+## git push origin master
+## appcfg.py -A zouk-event-calendar update app.yaml
+# heroku
 git add .
 git commit -m "message"
 git push heroku master
+# github
+git push origin master
+

@@ -109,7 +109,6 @@ function buildContent(accessToken) {
             // var timeS = splitS[1].split(':');
             // Use template strings
             // also http://stackoverflow.com/questions/6629188/facebook-graph-api-how-do-you-retrieve-the-different-size-photos-from-an-album
-            var imgURL = null;
             if (zEvents[i].hasOwnProperty('cover') && zEvents[i].cover) {
                 var pic = zEvents[i].cover;
                 if (pic.hasOwnProperty('id') && pic.id) {
@@ -117,7 +116,7 @@ function buildContent(accessToken) {
                         + accessToken + '&type=square';
                 }
             }
-            if (imgUrl === null) {
+            if (imgUrl === undefined) {
                 imgURL = '/images/square.jpg'; // 50x50
             }
             str += `
