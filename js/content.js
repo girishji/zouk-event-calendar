@@ -117,7 +117,7 @@ function buildContent(accessToken) {
                         + accessToken + '&type=square';
                 }
             }
-            if (! imgUrl) {
+            if (imgUrl === null) {
                 imgURL = '/images/square.jpg'; // 50x50
             }
             str += `
