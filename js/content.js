@@ -95,16 +95,8 @@ function buildContent(accessToken) {
     console.log('buildContent ' + accessToken);
     var timeNow = new Date();
     var batchCmd = [];
-    for (var i = 0; i < zSearch.length; i++) {
-        batchCmd.push( { method: 'GET', 
-                         relative_url: 'search?q=' + zSearch[i] 
-                         + '&type=event&fields=id,name,start_time,place,attending_count&access_token='
-                         + accessToken }
-                     );
-    }
 
     function display(events) {
-        // Use template strings
         var str = '<table id="z_table" style="width:100%">';
         var monthNames = [
             "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
@@ -114,19 +106,42 @@ function buildContent(accessToken) {
             var splitS = zEvents[i].start_time.split('T'); // 2016-04-07T19:00:00-0300
             var dateS = splitS[0].split('-');
             var month = monthNames[parseInt(dateS[1]) - 1];
-            var year = dateS[0] - 2000;
-            var timeS = splitS[1].split(':');
-            console.log('Added ' + month + ' ' + dateS[2] + ', ' + timeS[0] 
-                        + ':' + timeS[1] + ' ' + zEvents[i].name);
+            // var timeS = splitS[1].split(':');
+            // Use template strings
+            // also http://stackoverflow.com/questions/6629188/facebook-graph-api-how-do-you-retrieve-the-different-size-photos-from-an-album
+            var imgURL;
+            if (zEvents[i].hasOwnProperty('cover') && zEvents[i].cover) {
+                var pic = zEvents[i].cover;
+                if (pic.hasOwnProperty('id') && pic.id) {
+                    imgURL = 'https://graph.facebook.com/' + pic.id + '/picture?access_token='
+                        + access_token + '&type=square';
+                } else {
+                    imgURL = '/images/square.jpg'; // 50x50
+                }
+            }
             str += `
                 <tr>
-                <td>${month} ${dateS[2]}, ${timeS[0]}:${timeS[1]}</td>
-                <td title="${zEvents[i].name}"><a href="https://www.facebook.com/events/${zEvents[i].id}">${zEvents[i].name}</a></td>
+                <td><img src="${imgURL}"/></td>
+                <td>${month} ${dateS[2]}</td>
+                <td><a title="${zEvents[i].name}" href="https://www.facebook.com/events/${zEvents[i].id}">
+                ${zEvents[i].name}</a></td>
                 </tr>
                 `;
         }
         str += '</table>';
+        console.log(str);
         document.getElementById("z_content").innerHTML = str;
+    }
+
+    function inLocalTZ(timeStr) {
+        // If actual time zone is used then after sorting newer events
+        // will appear older after adjusting for timezone
+        // 2016-04-07T19:00:00-0300 or 2016-04-07T19:00:00+0300
+        var d = timeStr.split('T');
+        var t = d[1].split('+');
+        t = t[0].split('-');
+        console.log('tz ' + d[0] + 'T' + t[0]);
+        return d[0] + 'T' + t[0];
     }
 
     var responseCallback = function(response) {
@@ -134,32 +149,33 @@ function buildContent(accessToken) {
             console.log('FB.api: Error occured');
             console.log(response);
         } else {
-            //alert('success girish');
             // print response in console log. You'll see that you get back an array of 
             // objects, and each is a JSON serialied string. To turn it into a javascript
             // objects, use parse().
             for (var i = 0; i < response.length; i++) {
-                if (response[i] && response[i].hasOwnProperty('body')) {
+                if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
                     var body = JSON.parse(response[i].body);
-                    console.log('properties ' + Object.getOwnPropertyNames(body));                           
-                    if (body.hasOwnProperty('data')) {
+                    // console.log('properties ' + Object.getOwnPropertyNames(body));                           
+                    if (body.hasOwnProperty('data') && body.data) {
                         var data = body.data;
-                        console.log('length: ' + data.length);
                         for (var j = 0; j < data.length; j++) {
-                            var startTime = new Date(data[j].start_time);
-                            // Add events even if 3 days old
-                            if ((timeNow < startTime) 
-                                || ((timeNow.getTime() - startTime.getTime()) < (3 * 24 * 3600 * 1000))) {
-                                zEvents.push(data[j]);
+                            if (data[j] && data[j].hasOwnProperty('start_time')) {
+                                var startTime = new Date(data[j].start_time);
+                                // Add events even if 2 days old
+                                if ((timeNow < startTime) 
+                                    || ((timeNow.getTime() - startTime.getTime()) < (2 * 24 * 3600 * 1000))) {
+                                    zEvents.push(data[j]);
+                                }
+                                // console.log('name: ' + data[j].name + ' id: ' + data[j].id);
                             }
-                            console.log('name: ' + data[j].name + ' id: ' + data[j].id);
-                        } 
+                        }
                     } 
                     // next paging link
-                    if (body.hasOwnProperty('paging')) {
+                    if (body.hasOwnProperty('paging') && body.paging) {
                         var paging = body.paging;
-                        if (paging.hasOwnProperty('next')) {
-                            var next = paging.next;
+                        if (paging.hasOwnProperty('next') && paging.next) {
+                            var next = paging.next.split('?'); // like .../search?q=...
+                            next = 'search?' + next;
                             console.log('next: ' + next);
                         }
                     }
@@ -167,8 +183,8 @@ function buildContent(accessToken) {
             }
             // post process
             zEvents.sort(function(at, bt) {
-                var a = new Date(at.start_time);
-                var b = new Date(bt.start_time);
+                var a = new Date(inLocalTZ(at.start_time));
+                var b = new Date(inLocalTZ(bt.start_time));
                 if (a.getTime() < b.getTime()) return -1;
                 if (a.getTime() > b.getTime()) return 1;
                 if (a.getTime() === b.getTime()) return 0;
@@ -177,6 +193,14 @@ function buildContent(accessToken) {
             display(zEvents);
         }
     };
+
+    for (var i = 0; i < zSearch.length; i++) {
+        batchCmd.push( { method: 'GET', 
+                         relative_url: 'search?q=' + zSearch[i] 
+                         + '&type=event&fields=id,name,start_time,place,attending_count&access_token='
+                         + accessToken }
+                     );
+    }
 
     FB.api('/', 'POST', { batch: batchCmd }, responseCallback);
 
