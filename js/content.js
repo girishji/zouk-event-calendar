@@ -93,6 +93,7 @@ var zSearch = [
 // Search FB
 function buildContent(accessToken) {
     console.log('buildContent ' + accessToken);
+    var timeNow = new Date();
     var batchCmd = [];
     for (var i = 0; i < zSearch.length; i++) {
         batchCmd.push( { method: 'GET', 
@@ -121,6 +122,12 @@ function buildContent(accessToken) {
                                var data = body.data;
                                console.log('length: ' + data.length);
                                for (var j = 0; j < data.length; j++) {
+                                   var startTime = new Date(data[j].start_time);
+                                   // Add events even if 3 days old
+                                   if ((timeNow < startTime) 
+                                       || ((timeNow.getTime() - startTime()) < (3 * 24 * 3600 * 1000))) {
+                                       zEvents.push(data[j]);
+                                   }
                                    console.log('name: ' + data[j].name + ' id: ' + data[j].id);
                                } 
                            } 
@@ -136,5 +143,14 @@ function buildContent(accessToken) {
                    }
                }
            });
+
+    var options = {
+        weekday: "narrow", year: "2-digit", month: "short",
+        day: "2-digit", hour: "2-digit"
+    };
+    for (var i = 0; i < zEvents.length; i++) {
+        var date = new Date(zEvents[i].start_time);
+        console.log('Added ' + date.toLocaleTimeString("en-us", options) + ' : ' + zEvents.name);
+    }
 }
 
