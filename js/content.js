@@ -57,21 +57,22 @@ window.fbAsyncInit = function() {
 // Search FB
 function buildContent(accessToken) {
     console.log('buildContent ' + accessToken);
-    FB.api('/search', 'get', {
+    FB.api('/', 'POST', {
         // q: 'zouk',
         // type: 'event',
         // fields: 'name',
-        access_token: accessToken,
         batch: [
-            { method: 'GET', relative_url: '?q=zouk&type=event&fields=name' },
-            { method: 'GET', relative_url: '?q=zouklam&type=event&fields=name' }
+            { method: 'GET', relative_url: '?q=zouk&type=event&fields=name&access_token=' + accessToken },
+            { method: 'GET', relative_url: '?q=zouklam&type=event&fields=name&access_token=' + accessToken }
         ]
     }, 
            function(response) {
                if (!response || response.error) {
                    console.log('FB.api: Error occured');
+                   console.log(response);
                } else {
                    console.log('success girish');
+                   console.log(response);
                    //alert('success girish');
 
                }
