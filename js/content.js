@@ -58,22 +58,21 @@ window.fbAsyncInit = function() {
 function buildContent(accessToken) {
     console.log('buildContent ' + accessToken);
     FB.api('/search', 'get', {
-        q: 'zouk',
-        type: 'event',
-        fields: 'name',
-        access_token: accessToken
-
-        // batch: [
-        //     { method: 'GET', relative_url: '?q=zouk&type=event&fields=name&access_token=' + accessToken },
-        //     { method: 'GET', relative_url: '?q=zouklam&type=event&fields=name&access_token=' + accessToken }
-        // ]
+        // q: 'zouk',
+        // type: 'event',
+        // fields: 'name',
+        access_token: accessToken,
+        batch: [
+            { method: 'GET', relative_url: '?q=zouk&type=event&fields=name' },
+            { method: 'GET', relative_url: '?q=zouklam&type=event&fields=name' }
+        ]
     }, 
            function(response) {
                if (!response || response.error) {
                    console.log('FB.api: Error occured');
                } else {
                    console.log('success girish');
-                   alert('success girish');
+                   //alert('success girish');
 
                }
            });
