@@ -102,7 +102,33 @@ function buildContent(accessToken) {
                          + accessToken }
                      );
     }
- 
+
+    function display(events) {
+        // Use template strings
+        var str = '<table id="z_table" style="width:100%">';
+        var monthNames = [
+            "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
+            "Aug", "Sep", "Oct", "Nov", "Dec"
+        ];
+        for (var i = 0; i < zEvents.length; i++) {
+            var splitS = zEvents[i].start_time.split('T'); // 2016-04-07T19:00:00-0300
+            var dateS = splitS[0].split('-');
+            var month = monthNames[parseInt(dateS[1]) - 1];
+            var year = dateS[0] - 2000;
+            var timeS = splitS[1].split(':');
+            console.log('Added ' + month + ' ' + dateS[2] + ', ' + timeS[0] 
+                        + ':' + timeS[1] + ' ' + zEvents[i].name);
+            str += `
+                <tr>
+                <td>${month} ${dateS[2]}, timeS[0]:timeS[1]</td>
+                <td>${zEvents[i].name}</td>
+                </tr>
+                `;
+        }
+        str += '</table>';
+        document.getElementById("z_content").innerHTML = str;
+    }
+
     var responseCallback = function(response) {
         if (!response || response.error) {
             console.log('FB.api: Error occured');
@@ -148,22 +174,7 @@ function buildContent(accessToken) {
                 if (a.getTime() === b.getTime()) return 0;
             });
             // print
-            var monthNames = [
-                "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
-                "Aug", "Sep", "Oct", "Nov", "Dec"
-            ];
-            for (var i = 0; i < zEvents.length; i++) {
-                var splitS = zEvents[i].start_time.split('T'); // 2016-04-07T19:00:00-0300
-                console.log(splitS);
-                var dateS = splitS[0].split('-');
-                console.log(dateS);
-                var month = monthNames[parseInt(dateS[1]) - 1];
-                var date = dateS[2];
-                var year = dateS[0] - 2000;
-                var timeS = splitS[1].split(':');
-                console.log('Added ' + month + ' ' + date + ', ' + timeS[0] 
-                            + ':' + timeS[1] + ' ' + zEvents[i].name);
-            }
+            display(zEvents);
         }
     };
 

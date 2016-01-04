@@ -23,7 +23,7 @@
 <div id="fb-root"></div>
 <script src="/js/content.js" type="text/javascript" ></script>
 
-<table id="z_content" style="width:100%">
+<div id="z_content">
 </div>
 
 <?php
