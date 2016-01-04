@@ -121,7 +121,7 @@ function buildContent(accessToken) {
             str += `
                 <tr>
                 <td>${month} ${dateS[2]}, ${timeS[0]}:${timeS[1]}</td>
-                <td><a href="https://www.facebook.com/events/${zEvents[i].id}">${zEvents[i].name}</a></td>
+                <td title="${zEvents[i].name}"><a href="https://www.facebook.com/events/${zEvents[i].id}">${zEvents[i].name}</a></td>
                 </tr>
                 `;
         }
