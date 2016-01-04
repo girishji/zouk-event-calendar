@@ -122,7 +122,7 @@ function buildContent(accessToken) {
             }
             str += `
                 <tr>
-                <td><img src="${imgURL}"/></td>
+                <td><img src="${imageUrl}"/></td>
                 <td>${month} ${dateS[2]}</td>
                 <td><a title="${zEvents[i].name}" href="https://www.facebook.com/events/${zEvents[i].id}">
                 ${zEvents[i].name}</a></td>
