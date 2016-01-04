@@ -113,7 +113,7 @@ function buildContent(accessToken) {
             // objects, and each is a JSON serialied string. To turn it into a javascript
             // objects, use parse().
             for (var i = 0; i < response.length; i++) {
-                if (response[i].hasOwnProperty('body')) {
+                if (response[i] && response[i].hasOwnProperty('body')) {
                     var body = JSON.parse(response[i].body);
                     console.log('properties ' + Object.getOwnPropertyNames(body));                           
                     if (body.hasOwnProperty('data')) {
@@ -148,14 +148,19 @@ function buildContent(accessToken) {
                 if (a.getTime() === b.getTime()) return 0;
             });
             // print
-            var options = {
-                weekday: "narrow", year: "2-digit", month: "short",
-                day: "2-digit", hour: "2-digit"
-            };
-            console.log('ze length ' + zEvents.length);
+            var monthNames = [
+                "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
+                "Aug", "Sep", "Oct", "Nov", "Dec"
+            ];
             for (var i = 0; i < zEvents.length; i++) {
-                var date = new Date(zEvents[i].start_time);
-                console.log('Added ' + date.toLocaleTimeString("en-us", options) + ' : ' + zEvents.name);
+                var splitS = zEvents[i].start_time.split('T'); // 2016-04-07T19:00:00-0300
+                var dateS = splitS[0].split('-');
+                var month = monthNames[dateS[1]];
+                var date = dateS[2];
+                var year = dateS[0] - 2000;
+                var timeS = splitS[1].split(':');
+                console.log('Added ' + month + ' ' + date + ', ' + year + ' ' + timeS[0] 
+                            + ':' + timeS[1] + ' ' + zEvents[i].name);
             }
         }
     };
