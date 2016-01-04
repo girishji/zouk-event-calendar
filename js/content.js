@@ -155,11 +155,12 @@ function buildContent(accessToken) {
             for (var i = 0; i < zEvents.length; i++) {
                 var splitS = zEvents[i].start_time.split('T'); // 2016-04-07T19:00:00-0300
                 var dateS = splitS[0].split('-');
-                var month = monthNames[dateS[1]];
+                var monthIdx = dateS[1];
+                var month = monthNames[monthIdx];
                 var date = dateS[2];
                 var year = dateS[0] - 2000;
                 var timeS = splitS[1].split(':');
-                console.log('Added ' + month + ' ' + date + ', ' + year + ' ' + timeS[0] 
+                console.log('Added ' + month + ' ' + date + ', ' + timeS[0] 
                             + ':' + timeS[1] + ' ' + zEvents[i].name);
             }
         }
