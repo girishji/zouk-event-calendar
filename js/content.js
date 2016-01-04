@@ -67,6 +67,8 @@ function buildContent(accessToken) {
                    console.log('FB.api: Error occured');
                    console.log(response);
                } else {
+                   console.log('success girish ' + response.length);
+                   //alert('success girish');
                    for (var i = 0; i < response.length; i++) {
                        if (response[i].hasOwnProperty(body)) {
                            var body = response[i].body;
@@ -75,20 +77,20 @@ function buildContent(accessToken) {
                                console.log('length: ' + data.length);
                                for (var j = 0; j < data.length; j++) {
                                    console.log('name: ' + data[j].name + ' id: ' + data[j].id);
-                               }
+                               } 
+                           } else {
+                               console.log('no data in body');
                            }
                            // next paging link
                            if (body.hasOwnProperty(paging) && paging.hasOwnProperty(next)) {
                                var next = body.paging.next;
                                console.log('next: ' + next);
                            }
-                           console.log('success girish');
-                           //alert('success girish');
+                       } else {
+                           console.log('no body in response i');
                        }
                    }
                }
            });
-
-
 }
 
