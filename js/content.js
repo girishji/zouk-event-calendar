@@ -124,10 +124,8 @@ function buildContent(accessToken) {
                                for (var j = 0; j < data.length; j++) {
                                    var startTime = new Date(data[j].start_time);
                                    // Add events even if 3 days old
-                                   console.log('start ' + startTime + ', now ' + timeNow);
                                    if ((timeNow < startTime) 
                                        || ((timeNow.getTime() - startTime.getTime()) < (3 * 24 * 3600 * 1000))) {
-                                       console.log('Adding ' + data[j].name);
                                        zEvents.push(data[j]);
                                    }
                                    console.log('name: ' + data[j].name + ' id: ' + data[j].id);
@@ -146,20 +144,21 @@ function buildContent(accessToken) {
                }
            });
 
-    // sort
-    var sortFn = function(at, bt) {
-        var a = new Date(at.start_time);
-        var b = new Date(bt.start_time);
-        if (a.getTime() < b.getTime()) return -1;
-        if (a.getTime() > b.getTime()) return 1;
-        if (a.getTime() === b.getTime()) return 0;
-    }
-    zEvents.sort(sortFn); 
+//    // sort
+//    var sortFn = function(at, bt) {
+//        var a = new Date(at.start_time);
+//        var b = new Date(bt.start_time);
+//        if (a.getTime() < b.getTime()) return -1;
+//        if (a.getTime() > b.getTime()) return 1;
+//        if (a.getTime() === b.getTime()) return 0;
+//    }
+//    zEvents.sort(sortFn); 
     // print
     var options = {
         weekday: "narrow", year: "2-digit", month: "short",
         day: "2-digit", hour: "2-digit"
     };
+    console.log('ze length ' + zEvents.length);
     for (var i = 0; i < zEvents.length; i++) {
         var date = new Date(zEvents[i].start_time);
         console.log('Added ' + date.toLocaleTimeString("en-us", options) + ' : ' + zEvents.name);
