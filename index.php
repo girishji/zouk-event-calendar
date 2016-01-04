@@ -23,8 +23,9 @@
 <div id="fb-root"></div>
 <script src="/js/content.js" type="text/javascript" ></script>
 
-<div id="zec_content">
+<table id="z_content" style="width:100%">
 </div>
+
 <?php
 //  
 //      // You still need to login the user from inside your app and ask for permissions (not desirable to log them out).

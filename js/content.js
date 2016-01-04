@@ -49,14 +49,60 @@ window.fbAsyncInit = function() {
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 
+// Global
+var zEvents = [];
+var zSearch = [
+    'zouk',
+    'zouk+carnival',
+    /// 'zouk+time',
+    /// 'zouk+night',
+    /// 'f.i.e.l+official',
+    /// 'lambazouk',
+    /// 'zouk+lambada',
+    /// 'brazilian+zouk',
+    /// 'zouk+festival',
+    /// 'zouk+marathon',
+    /// 'zouk+family',
+    /// 'zouk+fest',
+    /// 'zouk+congress',
+    /// 'zouk+weekend',
+    /// 'zouk+salsa',
+    /// 'zouk+samba',
+    /// 'zouk+beach',
+    /// 'zouk+holiday',
+    /// 'bachaturo',
+    /// 'zouk+kizomba',
+    /// 'zouk+dance',
+    /// 'zouk+sea',
+    /// 'zoukdevils',
+    /// 'fall+zouk',
+    /// 'berg+zouk',
+    /// 'brazouka',
+    // 'zouk+fever',
+    // 'brasileiro+zouk',
+    // 'zouk+fusion',
+    // 'zouk+flow',
+    // 'zouk+day',
+    // 'zouk+jam',
+    // 'zouk+danse',
+    // 'international+zouk',
+    // 'zouk+bachata',
+    'carioca+zouk'
+];
+
 // Search FB
 function buildContent(accessToken) {
     console.log('buildContent ' + accessToken);
-    FB.api('/', 'POST', {
-           batch: [
-              { method: 'GET', relative_url: 'search?q=zouk&type=event&fields=name&access_token=' + accessToken },
-              { method: 'GET', relative_url: 'search?q=zouklam&type=event&fields=name&access_token=' + accessToken }
-           ]}, 
+    var batchCmd = [];
+    for (var i = 0; i < zSearch.length; i++) {
+        batchCmd.push( { method: 'GET', 
+                         relative_url: 'search?q=' + zSearch[i] 
+                         + '&type=event&fields=id,name,start_time,place,attending_count&access_token='
+                         + accessToken }
+                     );
+    }
+
+    FB.api('/', 'POST', { batch: batchCmd }, 
            function(response) {
                if (!response || response.error) {
                    console.log('FB.api: Error occured');
