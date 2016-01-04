@@ -115,9 +115,10 @@ function buildContent(accessToken) {
                 if (pic.hasOwnProperty('id') && pic.id) {
                     imgURL = 'https://graph.facebook.com/' + pic.id + '/picture?access_token='
                         + access_token + '&type=square';
-                } else {
-                    imgURL = '/images/square.jpg'; // 50x50
                 }
+            }
+            if (! imgUrl) {
+                imgURL = '/images/square.jpg'; // 50x50
             }
             str += `
                 <tr>
@@ -197,7 +198,7 @@ function buildContent(accessToken) {
     for (var i = 0; i < zSearch.length; i++) {
         batchCmd.push( { method: 'GET', 
                          relative_url: 'search?q=' + zSearch[i] 
-                         + '&type=event&fields=id,name,start_time,place,attending_count&access_token='
+                         + '&type=event&fields=id,name,start_time,place,attending_count,cover&access_token='
                          + accessToken }
                      );
     }
