@@ -131,7 +131,7 @@ function buildContent(accessToken) {
                 `;
         }
         str += '</table>';
-        console.log(str);
+        // console.log(str);
         document.getElementById("z_content").innerHTML = str;
     }
 
