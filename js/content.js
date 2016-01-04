@@ -13,7 +13,7 @@ $(document).ready(function() {
 window.fbAsyncInit = function() {
     FB.init({
         //appId      : <?php echo getenv('FACEBOOK_APP_ID'); ?>, //set from server side
-        appId      : 1263842110297634,
+        appId      : 1263842110297634, // from FB app settings page
         cookie     : true,
         xfbml      : true,
         version    : 'v2.5'
@@ -33,7 +33,7 @@ window.fbAsyncInit = function() {
             FB.login(function(response) {
                 if (response.authResponse) {
                     if (response.status === 'connected') {
-                        console.log('Welcome!  Fetching information.... ');
+                        // console.log('Welcome!  Fetching information.... ');
                         buildContent(response.authResponse.accessToken);
                     }
                 } else {
@@ -58,5 +58,20 @@ window.fbAsyncInit = function() {
 function buildContent(accessToken) {
     console.log('buildContent ' + accessToken);
 
+    FB.api('/search', {
+        batch: [
+            { method: 'GET', relative_url: '?q=zouk&type=event', fields: 'name', access_token: accessToken },
+            { method: 'GET', relative_url: '?q=zouk+carnival&type=event', fields: 'name', access_token: accessToken }
+        ]
+    }, 
+           function(response) {
+               if (!response || response.error) {
+                   console.log('FB.api: Error occured');
+               } else {
+                   console.log('success girish');
+                   alert('success girish');
+
+               }
+           });
 }
 
