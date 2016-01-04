@@ -121,6 +121,7 @@ function buildContent(accessToken) {
             }
             str += `
                 <tr>
+                <td>${i}</td>
                 <td><img src="${imageUrl}"/></td>
                 <td>${month} ${dateS[2]}</td>
                 <td><a title="${events[i].name}" href="https://www.facebook.com/events/${events[i].id}">
@@ -192,8 +193,10 @@ function buildContent(accessToken) {
                 if (a.getTime() > b.getTime()) return 1;
                 if (a.getTime() === b.getTime()) return 0;
             });
-            // print
-            display(events);
+            // Show
+            if (events.length > 0) {
+                display(events);
+            }
             // Recurse:
             // Clear out the batchCmd array, remember other places contain references
             batchCmd.length = 0;
