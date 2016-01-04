@@ -125,7 +125,7 @@ function buildContent(accessToken) {
                                    var startTime = new Date(data[j].start_time);
                                    // Add events even if 3 days old
                                    if ((timeNow < startTime) 
-                                       || ((timeNow.getTime() - startTime()) < (3 * 24 * 3600 * 1000))) {
+                                       || ((timeNow.getTime() - startTime.getTime()) < (3 * 24 * 3600 * 1000))) {
                                        zEvents.push(data[j]);
                                    }
                                    console.log('name: ' + data[j].name + ' id: ' + data[j].id);
@@ -145,7 +145,7 @@ function buildContent(accessToken) {
            });
 
     // sort
-    var sortFn = function(at, bt){
+    var sortFn = function(at, bt) {
         var a = new Date(at.start_time);
         var b = new Date(bt.start_time);
         if (a.getTime() < b.getTime()) return -1;
