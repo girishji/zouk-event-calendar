@@ -97,7 +97,7 @@ function buildContent(accessToken) {
     var batchCmd = [];
 
     function display(events) {
-        var str = '<table id="z_table" style="width:100%">';
+        var str = '<table id="z_table" border="1" style="width:100%">';
         var monthNames = [
             "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
             "Aug", "Sep", "Oct", "Nov", "Dec"
