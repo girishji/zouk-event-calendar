@@ -71,9 +71,9 @@ function buildContent(accessToken) {
                    //alert('success girish');
                    for (var i = 0; i < response.length; i++) {
                        console.log('properties ' + Object.getOwnPropertyNames(response[i]));
-                       if (response[i].hasOwnProperty(body)) {
+                       if (response[i].hasOwnProperty('body')) {
                            var body = response[i].body;
-                           if (body.hasOwnProperty(data)) {
+                           if (body.hasOwnProperty('data')) {
                                var data = body.data;
                                console.log('length: ' + data.length);
                                for (var j = 0; j < data.length; j++) {
@@ -83,7 +83,7 @@ function buildContent(accessToken) {
                                console.log('no data in body');
                            }
                            // next paging link
-                           if (body.hasOwnProperty(paging) && paging.hasOwnProperty(next)) {
+                           if (body.hasOwnProperty('paging') && paging.hasOwnProperty('next')) {
                                var next = body.paging.next;
                                console.log('next: ' + next);
                            }
