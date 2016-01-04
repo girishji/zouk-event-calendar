@@ -1,0 +1,6 @@
+{
+  "name": "Zouk Event Calendar",
+  "description": "Facebook event search for Zouk events worldwide",
+  "repository": "https://github.com/heroku/blooming-gorge-6343.git",
+  "addons": []
+}

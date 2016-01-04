@@ -13,6 +13,9 @@ https://cloud.google.com/appengine/articles/logging
 git:
 
 https://help.github.com/articles/adding-an-existing-project-to-github-using-the-command-line/
+git remote add origin remote repository URL
+# Sets the new remote
+git remote -v
 
 git add .;git commit -m "message";git push origin master; appcfg.py -A zouk-event-calendar update app.yaml
 
@@ -28,3 +31,35 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide
 to download without compressing:
 wget --header='Accept-Charset: iso-8859-2' --header='Accept-Language:hr' https://zouk-event-calendar.appspot.com/js/content.js
 ====
+
+heroku:
+create .gitignore and put vendor/ in it
+vendor dir is where you download dependencies in case to test locally
+sudo heroku local // run locally
+composer update
+
+to deply apps (after each change):
+git add .
+git commit -m "message"
+git push heroku master
+
+starting from scratch:
+// initialize git for your project, add the changes and perform a commit
+git init
+
+// create heroku app and push to heroku 
+heroku login
+heroku create // you get https address
+git push heroku master
+
+heroku logs
+heroku ps
+heroku open // opens website
+
+====
+Use chrome debugger. views->developer tools
+see console log tab (always keep open)
+While developer tools open, right click on reload button and choose hard 
+    reload for any .js file (open this through 'view frame souce' option)
+
+
