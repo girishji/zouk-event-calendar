@@ -84,7 +84,7 @@ function buildContent(accessToken) {
                                } 
                            } 
                            // next paging link
-                           if (body.hasOwnProperty('paging') {
+                           if (body.hasOwnProperty('paging')) {
                                var paging = body.paging;
                                if (paging.hasOwnProperty('next')) {
                                    var next = paging.next;
