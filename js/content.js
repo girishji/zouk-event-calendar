@@ -50,8 +50,7 @@ window.fbAsyncInit = function() {
 }(document, 'script', 'facebook-jssdk'));
 
 // Global
-var zEvents = [];
-var zSearch = [
+var searches = [
     'zouk',
     'zouk+carnival',
     /// 'zouk+time',
@@ -102,16 +101,16 @@ function buildContent(accessToken) {
             "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
             "Aug", "Sep", "Oct", "Nov", "Dec"
         ];
-        for (var i = 0; i < zEvents.length; i++) {
-            var splitS = zEvents[i].start_time.split('T'); // 2016-04-07T19:00:00-0300
+        for (var i = 0; i < events.length; i++) {
+            var splitS = events[i].start_time.split('T'); // 2016-04-07T19:00:00-0300
             var dateS = splitS[0].split('-');
             var month = monthNames[parseInt(dateS[1]) - 1];
             // var timeS = splitS[1].split(':');
             // Use template strings
             // also http://stackoverflow.com/questions/6629188/facebook-graph-api-how-do-you-retrieve-the-different-size-photos-from-an-album
             var imageUrl;
-            if (zEvents[i].hasOwnProperty('cover') && zEvents[i].cover) {
-                var pic = zEvents[i].cover;
+            if (events[i].hasOwnProperty('cover') && events[i].cover) {
+                var pic = events[i].cover;
                 if (pic.hasOwnProperty('id') && pic.id) {
                     imageUrl = 'https://graph.facebook.com/' + pic.id + '/picture?access_token='
                         + accessToken + '&type=thumbnail';
@@ -124,8 +123,8 @@ function buildContent(accessToken) {
                 <tr>
                 <td><img src="${imageUrl}"/></td>
                 <td>${month} ${dateS[2]}</td>
-                <td><a title="${zEvents[i].name}" href="https://www.facebook.com/events/${zEvents[i].id}">
-                ${zEvents[i].name}</a></td>
+                <td><a title="${events[i].name}" href="https://www.facebook.com/events/${events[i].id}">
+                ${events[i].name}</a></td>
                 </tr>
                 `;
         }
@@ -153,6 +152,8 @@ function buildContent(accessToken) {
             // print response in console log. You'll see that you get back an array of 
             // objects, and each is a JSON serialied string. To turn it into a javascript
             // objects, use parse().
+            var nextPage = [];
+            var events = [];
             for (var i = 0; i < response.length; i++) {
                 if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
                     var body = JSON.parse(response[i].body);
@@ -165,7 +166,7 @@ function buildContent(accessToken) {
                                 // Add events even if 2 days old
                                 if ((timeNow < startTime) 
                                     || ((timeNow.getTime() - startTime.getTime()) < (2 * 24 * 3600 * 1000))) {
-                                    zEvents.push(data[j]);
+                                    events.push(data[j]);
                                 }
                                 // console.log('name: ' + data[j].name + ' id: ' + data[j].id);
                             }
@@ -178,12 +179,13 @@ function buildContent(accessToken) {
                             var next = paging.next.split('?'); // like .../search?q=...
                             next = 'search?' + next;
                             console.log('next: ' + next);
+                            nextPage.push(next);
                         }
                     }
                 } 
             }
             // post process
-            zEvents.sort(function(at, bt) {
+            events.sort(function(at, bt) {
                 var a = new Date(inLocalTZ(at.start_time));
                 var b = new Date(inLocalTZ(bt.start_time));
                 if (a.getTime() < b.getTime()) return -1;
@@ -191,20 +193,31 @@ function buildContent(accessToken) {
                 if (a.getTime() === b.getTime()) return 0;
             });
             // print
-            display(zEvents);
+            display(events);
+            // Recurse:
+            // Clear out the batchCmd array, remember other places contain references
+            batchCmd.length = 0;
+            // create batch command
+            if (nextPage !== undefined) {
+                for (var i = 0; i < nextPage.length; i++) {
+                    batchCmd.push( { method: 'GET', relative_url: nextPage[i] } );
+                }
+                if (batchCmd.length > 0) {
+                    FB.api('/', 'POST', { batch: batchCmd }, responseCallback);
+                }
+            }
         }
     };
 
-    for (var i = 0; i < zSearch.length; i++) {
+    for (var i = 0; i < searches.length; i++) {
         batchCmd.push( { method: 'GET', 
-                         relative_url: 'search?q=' + zSearch[i] 
+                         relative_url: 'search?q=' + searches[i] 
                          + '&type=event&fields=id,name,start_time,place,attending_count,cover&access_token='
                          + accessToken }
                      );
     }
 
     FB.api('/', 'POST', { batch: batchCmd }, responseCallback);
-
-
+    // Response of FB.api is asynchronous, make it resursive from callback
 }
 
