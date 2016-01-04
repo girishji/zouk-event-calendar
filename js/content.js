@@ -57,11 +57,10 @@ window.fbAsyncInit = function() {
 // Search FB
 function buildContent(accessToken) {
     console.log('buildContent ' + accessToken);
-
-    FB.api('/search', 'GET', {
+    FB.api('/search', {
         batch: [
-            { method: 'GET', relative_url: '?q=zouk&type=event', fields: 'name', access_token: accessToken },
-            { method: 'GET', relative_url: '?q=zouk+carnival&type=event', fields: 'name', access_token: accessToken }
+            { method: 'GET', relative_url: '?q=zouk&type=event&fields=name&access_token=' + accessToken },
+            { method: 'GET', relative_url: '?q=zouklam&type=event&fields=name&access_token=' + accessToken }
         ]
     }, 
            function(response) {
