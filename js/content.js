@@ -114,7 +114,7 @@ function buildContent(accessToken) {
                 var pic = zEvents[i].cover;
                 if (pic.hasOwnProperty('id') && pic.id) {
                     imageUrl = 'https://graph.facebook.com/' + pic.id + '/picture?access_token='
-                        + accessToken + '&type=square';
+                        + accessToken + '&type=thumbnail';
                 }
             }
             if (imageUrl === undefined) {
