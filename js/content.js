@@ -89,13 +89,15 @@ var searches = [
     'carioca+zouk'
 ];
 
+// All events
+var events = [];
+
 // Search FB
 function buildContent(accessToken) {
-    console.log('buildContent ' + accessToken);
     var timeNow = new Date();
     var batchCmd = [];
 
-    function display(events) {
+    function display() {
         var str = '<table id="z_table" border="1" style="width:100%">';
         var monthNames = [
             "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
@@ -154,7 +156,6 @@ function buildContent(accessToken) {
             // objects, and each is a JSON serialied string. To turn it into a javascript
             // objects, use parse().
             var nextPage = [];
-            var events = [];
             for (var i = 0; i < response.length; i++) {
                 if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
                     var body = JSON.parse(response[i].body);
@@ -195,7 +196,7 @@ function buildContent(accessToken) {
             });
             // Show
             if (events.length > 0) {
-                display(events);
+                display();
             }
             // Recurse:
             // Clear out the batchCmd array, remember other places contain references
