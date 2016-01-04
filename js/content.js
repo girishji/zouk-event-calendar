@@ -69,6 +69,9 @@ function buildContent(accessToken) {
                } else {
                    console.log('success girish ' + response.length);
                    //alert('success girish');
+                   // print response in console log. You'll see that you get back an array of 
+                   // objects, and each is a JSON serialied string. To turn it into a javascript
+                   // objects, use parse().
                    for (var i = 0; i < response.length; i++) {
                        if (response[i].hasOwnProperty('body')) {
                            var body = JSON.parse(response[i].body);
@@ -79,17 +82,16 @@ function buildContent(accessToken) {
                                for (var j = 0; j < data.length; j++) {
                                    console.log('name: ' + data[j].name + ' id: ' + data[j].id);
                                } 
-                           } else {
-                               console.log('no data in body');
-                           }
+                           } 
                            // next paging link
-                           if (body.hasOwnProperty('paging') && paging.hasOwnProperty('next')) {
-                               var next = body.paging.next;
-                               console.log('next: ' + next);
+                           if (body.hasOwnProperty('paging') {
+                               var paging = body.paging;
+                               if (paging.hasOwnProperty('next')) {
+                                   var next = paging.next;
+                                   console.log('next: ' + next);
+                               }
                            }
-                       } else {
-                           console.log('no body in response i');
-                       }
+                       } 
                    }
                }
            });
