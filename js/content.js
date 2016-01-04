@@ -154,13 +154,14 @@ function buildContent(accessToken) {
             ];
             for (var i = 0; i < zEvents.length; i++) {
                 var splitS = zEvents[i].start_time.split('T'); // 2016-04-07T19:00:00-0300
+                console.log(splitS);
                 var dateS = splitS[0].split('-');
-                var monthIdx = dateS[1];
-                var month = monthNames[monthIdx];
+                console.log(dateS);
+                var month = monthNames[parseInt(dateS[1]) - 1];
                 var date = dateS[2];
                 var year = dateS[0] - 2000;
                 var timeS = splitS[1].split(':');
-                console.log('Added ' + month + ' ' + date + ', ' + timeS[0] 
+                console.log('Added ' + dateS[1] + ' ' + date + ', ' + timeS[0] 
                             + ':' + timeS[1] + ' ' + zEvents[i].name);
             }
         }
