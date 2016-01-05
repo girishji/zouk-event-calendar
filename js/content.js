@@ -119,20 +119,21 @@ function buildContent(accessToken) {
                         + accessToken + '&type=thumbnail';
                     str += `
                         <tr>
-                        <td style="width:75px; height:50px; background-color:#d8dfea; text-align:center; vertical-align:middle"><img src="${imageUrl}"/></td>
+                        <td style="width:75px; height:50px; background-color:#d8dfea; max-height: 100%; vertical-align:middle"><img src="${imageUrl}"/></td>
                         `;
                 }
             }
             if (imageUrl === undefined) {
                 str += `
                     <tr>
-                    <td style="width:75px; height:50px; background-color:#d8dfea; text-align:center; vertical-align:middle"></td>
+                    <td style="width:75px; height:50px; background-color:#d8dfea; vertical-align:middle"></td>
                     `;
             }
             str += `
                 <td>${month} ${dateS[2]}</td>
                 <td><a title="${events[i].name}" href="https://www.facebook.com/events/${events[i].id}">
                 ${events[i].name}</a></td>
+                <td>${i}</td>
                 </tr>
                 `;
         }
