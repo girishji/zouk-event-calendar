@@ -1,6 +1,6 @@
 // content.js
 
-// The Facebook SDK for JavaScript doesn't have any standalone files 
+// Facebook SDK for JavaScript doesn't have any standalone files 
 // that need to be downloaded or installed, instead you simply need to 
 // include a short piece of regular JavaScript in your HTML that will 
 // asynchronously load the SDK into your pages. You should insert it 
@@ -50,6 +50,7 @@ window.fbAsyncInit = function() {
 }(document, 'script', 'facebook-jssdk'));
 
 // Global
+// Batch request maximum is 50
 var searches = [
     'zouk',
     'zouk+carnival',
@@ -116,15 +117,19 @@ function buildContent(accessToken) {
                 if (pic.hasOwnProperty('id') && pic.id) {
                     imageUrl = 'https://graph.facebook.com/' + pic.id + '/picture?access_token='
                         + accessToken + '&type=thumbnail';
+                    str += `
+                        <tr>
+                        <td style="width:75px; height:50px; background-color:#3b5998; text-align:center; vertical-align:middle"><img src="${imageUrl}"/></td>
+                        `;
                 }
             }
             if (imageUrl === undefined) {
-                imageUrl = '/images/square.jpg'; // 50x50
+                str += `
+                    <tr>
+                    <td style="width:75px; height:50px; background-color:#3b5998; text-align:center; vertical-align:middle"></td>
+                    `;
             }
             str += `
-                <tr>
-                <td>${i}</td>
-                <td><img src="${imageUrl}"/></td>
                 <td>${month} ${dateS[2]}</td>
                 <td><a title="${events[i].name}" href="https://www.facebook.com/events/${events[i].id}">
                 ${events[i].name}</a></td>
@@ -137,8 +142,9 @@ function buildContent(accessToken) {
     }
 
     function inLocalTZ(timeStr) {
-        // If actual time zone is used then after sorting newer events
-        // will appear older after adjusting for timezone
+        // If actual time zone is used then after sorting, newer events
+        // will appear older after adjusting for timezones. So ignore
+        // timezones by removing timezone field.
         // 2016-04-07T19:00:00-0300 or 2016-04-07T19:00:00+0300
         var d = timeStr.split('T');
         var t = d[1].split('+');
