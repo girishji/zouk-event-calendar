@@ -155,7 +155,6 @@ function buildContent(accessToken) {
     }
 
     var responseCallback = function(response) {
-        console.log('in callback');
         if (!response || response.error) {
             console.log('FB.api: Error occured');
             console.log(response);
@@ -187,7 +186,7 @@ function buildContent(accessToken) {
                                         events.push(data[j]);
                                     }
                                 }
-                                // console.log('name: ' + data[j].name + ' id: ' + data[j].id);
+                                console.log('name: ' + data[j].name + ' id: ' + data[j].id);
                             }
                         }
                     } 
