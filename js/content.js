@@ -155,6 +155,7 @@ function buildContent(accessToken) {
     }
 
     var responseCallback = function(response) {
+        console.log('in callback');
         if (!response || response.error) {
             console.log('FB.api: Error occured');
             console.log(response);
