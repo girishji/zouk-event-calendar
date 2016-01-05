@@ -2,17 +2,22 @@
     header("Content-type: text/css; charset: UTF-8");
 ?>
 
-td.ztable {
-    border=1;
+table {
+    border: 1px;
+}
+
+td.zimg {
+    width: 75px;
+    height: 50px;
 }
 
 /* http://stackoverflow.com/questions/22074861/why-doesnt-image-fit-the-table-cell */
-td.ztable a {
+td.zimg a {
     display: block;
     width: 100%;
     height: 100%;
 }
-td.ztable img { 
+td.zimg img { 
     vertical-align: bottom; 
 }
 
