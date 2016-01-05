@@ -119,14 +119,14 @@ function buildContent(accessToken) {
                         + accessToken + '&type=thumbnail';
                     str += `
                         <tr>
-                        <td style="width:75px; height:50px; background-color:#3b5998; text-align:center; vertical-align:middle"><img src="${imageUrl}"/></td>
+                        <td style="width:75px; height:50px; background-color:#d8dfea; text-align:center; vertical-align:middle"><img src="${imageUrl}"/></td>
                         `;
                 }
             }
             if (imageUrl === undefined) {
                 str += `
                     <tr>
-                    <td style="width:75px; height:50px; background-color:#3b5998; text-align:center; vertical-align:middle"></td>
+                    <td style="width:75px; height:50px; background-color:#d8dfea; text-align:center; vertical-align:middle"></td>
                     `;
             }
             str += `
