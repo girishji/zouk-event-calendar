@@ -183,10 +183,11 @@ function buildContent(accessToken) {
                                         }
                                     }
                                     if (! found) {
+                                        console.log('adding event');
                                         events.push(data[j]);
                                     }
                                 }
-                                console.log('name: ' + data[j].name + ' id: ' + data[j].id);
+                                // console.log('name: ' + data[j].name + ' id: ' + data[j].id);
                             }
                         }
                     } 
