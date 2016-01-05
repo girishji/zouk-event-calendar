@@ -176,6 +176,8 @@ function buildContent(accessToken) {
                                 if ((timeNow < startTime) 
                                     || ((timeNow.getTime() - startTime.getTime()) < (2 * 24 * 3600 * 1000))) {
                                     // Insert only if unique; Different search strings give same results
+                                    console.log('adding event in time check');
+
                                     var found = false;
                                     for (var ev = 0; ev < events.length; ev++) {
                                         if (data[j].id == events[ev].id) { // use == not === so str get casted to number
@@ -183,7 +185,6 @@ function buildContent(accessToken) {
                                         }
                                     }
                                     if (! found) {
-                                        console.log('adding event');
                                         events.push(data[j]);
                                     }
                                 }
@@ -212,7 +213,6 @@ function buildContent(accessToken) {
                 if (a.getTime() === b.getTime()) return 0;
             });
             // Show
-            console.log('length of display ' + events.length);
             if (events.length > 0) {
                 console.log('inserting events');
                 display();
