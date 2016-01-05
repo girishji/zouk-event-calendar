@@ -173,12 +173,10 @@ function buildContent(accessToken) {
                             if (data[j] && data[j].hasOwnProperty('start_time')) {
                                 var startTime = new Date(data[j].start_time);
                                 // Add events even if 2 days old
-                                console.log(startTime + ' == ' + timeNow);
+                                console.log(data[j].start_time + ' == ' + startTime + ' == ' + timeNow);
                                 if ((timeNow < startTime) 
                                     || ((timeNow.getTime() - startTime.getTime()) < (2 * 24 * 3600 * 1000))) {
                                     // Insert only if unique; Different search strings give same results
-                                    console.log('adding event in time check');
-
                                     var found = false;
                                     for (var ev = 0; ev < events.length; ev++) {
                                         if (data[j].id == events[ev].id) { // use == not === so str get casted to number
