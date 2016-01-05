@@ -119,14 +119,14 @@ function buildContent(accessToken) {
                         + accessToken + '&type=thumbnail';
                     str += `
                         <tr>
-                        <td style="width:75px; height:50px; background: url(${imageUrl}) no-repeat"><img src="${imageUrl}"/></td>
+                        <td><img src="${imageUrl}"/></td>
                         `;
                 }
             }
             if (imageUrl === undefined) {
                 str += `
                     <tr>
-                    <td style="width:75px; height:50px; background-color:#d8dfea; vertical-align:middle"></td>
+                    <td></td>
                     `;
             }
             str += `
