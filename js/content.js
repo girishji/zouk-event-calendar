@@ -212,6 +212,7 @@ function buildContent(accessToken) {
                 if (a.getTime() === b.getTime()) return 0;
             });
             // Show
+            console.log('length of display ' + events.length);
             if (events.length > 0) {
                 console.log('inserting events');
                 display();
