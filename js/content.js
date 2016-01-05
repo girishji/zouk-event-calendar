@@ -100,7 +100,7 @@ function buildContent(accessToken) {
     var batchCmd = [];
 
     function display() {
-        var str = '<table id="z_table" border="1" style="width:100%">';
+        var str = '<table>';
         var monthNames = [
             "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
             "Aug", "Sep", "Oct", "Nov", "Dec"
@@ -120,14 +120,15 @@ function buildContent(accessToken) {
                         + accessToken + '&type=thumbnail';
                     str += `
                         <tr>
-                        <td><img src="${imageUrl}"/></td>
+                        <td class='zimg'><a href="https://www.facebook.com/events/${events[i].id}">
+                            <img src="${imageUrl}"/></a></td>
                         `;
                 }
             }
             if (imageUrl === undefined) {
                 str += `
                     <tr>
-                    <td></td>
+                    <td class='zimg'></td>
                     `;
             }
             str += `
