@@ -119,7 +119,7 @@ function buildContent(accessToken) {
                         + accessToken + '&type=thumbnail';
                     str += `
                         <tr>
-                        <td style="width:75px; height:50px; background: url(${imageUrl}) no-repeat;  background-size: 100%"><img src="${imageUrl}"/></td>
+                        <td style="width:75px; height:50px; background: url(${imageUrl}) no-repeat"><img src="${imageUrl}"/></td>
                         `;
                 }
             }
