@@ -212,6 +212,7 @@ function buildContent(accessToken) {
             });
             // Show
             if (events.length > 0) {
+                console.log('inserting events');
                 display();
             }
             // Recurse:
