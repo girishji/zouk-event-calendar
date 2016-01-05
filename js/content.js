@@ -174,8 +174,8 @@ function buildContent(accessToken) {
                                 var startTime = Date.parse(data[j].start_time);
                                 // Add events even if 2 days old
                                 console.log(data[j].start_time + ' == ' + startTime + ' == ' + timeNow);
-                                if ((timeNow < startTime) 
-                                    || ((timeNow.getTime() - startTime.getTime()) < (2 * 24 * 3600 * 1000))) {
+                                if ((timeNow.getTime() < startTime) 
+                                    || ((timeNow.getTime() - startTime) < (2 * 24 * 3600 * 1000))) {
                                     // Insert only if unique; Different search strings give same results
                                     var found = false;
                                     for (var ev = 0; ev < events.length; ev++) {
