@@ -171,7 +171,7 @@ function buildContent(accessToken) {
                         var data = body.data;
                         for (var j = 0; j < data.length; j++) {
                             if (data[j] && data[j].hasOwnProperty('start_time')) {
-                                var startTime = new Date(data[j].start_time);
+                                var startTime = Date.parse(data[j].start_time);
                                 // Add events even if 2 days old
                                 console.log(data[j].start_time + ' == ' + startTime + ' == ' + timeNow);
                                 if ((timeNow < startTime) 
