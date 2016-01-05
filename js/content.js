@@ -154,6 +154,12 @@ function buildContent(accessToken) {
         return d[0] + 'T' + t[0];
     }
 
+    function parseTime(str) { // milliseconds since 1970 00:00:00
+        // http://stackoverflow.com/questions/6427204/date-parsing-in-javascript-is-different-between-safari-and-chrome
+        var a = str.split(/[^0-9]/);
+        return new Date(a[0], a[1] - 1, a[2], a[3], a[4], a[5]);
+    }
+
     var responseCallback = function(response) {
         if (!response || response.error) {
             console.log('FB.api: Error occured');
@@ -171,11 +177,14 @@ function buildContent(accessToken) {
                         var data = body.data;
                         for (var j = 0; j < data.length; j++) {
                             if (data[j] && data[j].hasOwnProperty('start_time')) {
-                                var startTime = Date.parse(data[j].start_time);
+                                // Parsing does not work in Safari. Recommended that you parse manually (see article below)
+                                // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse
+                                // var startTime = Date.parse(data[j].start_time);
                                 // Add events even if 2 days old
+                                var startTime = parseTime(data[j].start_time);
                                 console.log(data[j].start_time + ' == ' + startTime + ' == ' + timeNow);
-                                if ((timeNow.getTime() < startTime) 
-                                    || ((timeNow.getTime() - startTime) < (2 * 24 * 3600 * 1000))) {
+                                if ((timeNow < startTime) 
+                                    || ((timeNow.getTime() - startTime.getTime()) < (2 * 24 * 3600 * 1000))) {
                                     // Insert only if unique; Different search strings give same results
                                     var found = false;
                                     for (var ev = 0; ev < events.length; ev++) {
@@ -205,11 +214,9 @@ function buildContent(accessToken) {
             }
             // post process
             events.sort(function(at, bt) {
-                var a = new Date(inLocalTZ(at.start_time));
-                var b = new Date(inLocalTZ(bt.start_time));
-                if (a.getTime() < b.getTime()) return -1;
-                if (a.getTime() > b.getTime()) return 1;
-                if (a.getTime() === b.getTime()) return 0;
+                var a = parseTime(at.start_time);
+                var b = parseTime(bt.start_time);
+                return (a > b) ? 1 : -1;
             });
             // Show
             if (events.length > 0) {
