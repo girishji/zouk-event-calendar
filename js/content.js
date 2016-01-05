@@ -75,6 +75,7 @@ var searches = [
     'zouk+dance',
     'zouk+sea',
     'fall+zouk',
+    'зук',
     'berg+zouk',
     'brazouka',
     'zoukdevils',
