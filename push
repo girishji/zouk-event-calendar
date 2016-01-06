@@ -2,12 +2,12 @@ git add .
 git commit -m "message"
 
 # GAE
-git push google master
+#git push google master
 #appcfg.py -A zouk-event-calendar update app.yaml
 
 # heroku
-git push heroku master
+#git push heroku master
 
-## # github
-## git push origin master
+# github
+git push origin master
 

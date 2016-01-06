@@ -74,6 +74,7 @@ https://zouk-event-calendar.appspot.com/
 ====
 Google Cloud Repository git
 https://cloud.google.com/tools/cloud-repositories/docs/cloud-repositories-quickstart
+https://console.cloud.google.com/projectselector/code/develop/browse?_ga=1.20203194.302366072.1452070321
 
 $ gcloud auth login
 $ git config credential.helper gcloud.sh
