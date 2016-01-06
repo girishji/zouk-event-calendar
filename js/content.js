@@ -240,7 +240,7 @@ function buildContent(accessToken) {
                     FB.api('/', 'POST', { batch: batchCmd }, responseCallback);
             } else {
                 // We are done, show results
-                //$('.progress-bar').css('width', '100%').attr('aria-valuenow', 100);
+                $('.progress-bar').css('width', '100%').attr('aria-valuenow', 100);
                 $('#progressBar').hide();
                 if (events.length > 0) {
                     display();
