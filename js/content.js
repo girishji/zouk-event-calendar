@@ -144,6 +144,8 @@ function buildContent(accessToken) {
                 `;
         }
         str += '</table>';
+
+        $('#progressBar').hide();
         // console.log(str);
         //document.getElementById("z_content").innerHTML = str;
     }
@@ -241,7 +243,6 @@ function buildContent(accessToken) {
             } else {
                 // We are done, show results
                 $('.progress-bar').css('width', '100%').attr('aria-valuenow', 100);
-                $('#progressBar').hide();
                 if (events.length > 0) {
                     display();
                 }
