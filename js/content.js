@@ -244,7 +244,7 @@ function buildContent(accessToken) {
                 // We are done, show results
                 $('.progress-bar').css('width', '100%').attr('aria-valuenow', 100);
                 if (events.length > 0) {
-                    setTimeout(function(){display()}, 200); // wait for some millisec so progress bar shows completion
+                    setTimeout(function() { display(); }, 800); // wait for some millisec so progress bar shows completion
                 }
             }
         }
