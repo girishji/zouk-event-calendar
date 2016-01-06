@@ -171,7 +171,6 @@ function buildContent(accessToken) {
             console.log('FB.api: Error occured');
             console.log(response);
         } else {
-            console.log('FB.api: callback');
             // print response in console log. You'll see that you get back an array of 
             // objects, and each is a JSON serialied string. To turn it into a javascript
             // objects, use parse().
@@ -224,7 +223,6 @@ function buildContent(accessToken) {
                 return (a > b) ? 1 : -1;
             });
             // Update progress bar
-            console.log('updating: ' + progress);
             var progress = (progress < 90) ? progress + 10 : progress;
             $('.progress-bar').css('width', progress + '%').attr('aria-valuenow', progress);
 
@@ -241,11 +239,9 @@ function buildContent(accessToken) {
                     FB.api('/', 'POST', { batch: batchCmd }, responseCallback);
             } else {
                 // We are done, show results
-                console.log('done!');
                 $('.progress-bar').css('width', '100%').attr('aria-valuenow', 100);
                 $('#progressBar').hide();
                 if (events.length > 0) {
-                    //console.log('inserting events');
                     display();
                 }
             }
