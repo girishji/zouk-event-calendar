@@ -72,4 +72,20 @@ https://blooming-gorge-6343.herokuapp.com/
 https://zouk-event-calendar.appspot.com/
 
 ====
+Google Cloud Repository git
+https://cloud.google.com/tools/cloud-repositories/docs/cloud-repositories-quickstart
 
+$ gcloud auth login
+$ git config credential.helper gcloud.sh
+$ git remote add google https://source.developers.google.com/p/<project-id>/
+
+$ git push google master
+
+====
+Marketing
+When you search for Zouk on the internet, what do you get? Mostly incomplete
+and outdated lists. When you are planning to travel, or when you are 
+already in a place and looking for Zouk events you want a list of
+current Zouk events happening around the area. Real time.
+
+====

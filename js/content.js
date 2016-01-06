@@ -86,6 +86,7 @@ var searches = [
     'zouk+day',
     'zouk+jam',
     'zouk+danse',
+    'oman+zouk',
     'international+zouk',
     'zouk+bachata',
     'carioca+zouk'
