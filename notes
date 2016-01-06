@@ -82,6 +82,13 @@ $ git remote add google https://source.developers.google.com/p/<project-id>/
 
 $ git push google master
 
+GAE:
+On GAE (app engine) a project is not the same as a VM 'instance'. For free account
+you create projects and deploy (you could use their git or deploy with github).
+They spin up instances and charge you. If you want dedicated instance then you pay.
+Free account, after daily quota charges more for per hour instance use than
+paid instance.
+
 ====
 Marketing
 When you search for Zouk on the internet, what do you get? Mostly incomplete
