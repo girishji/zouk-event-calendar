@@ -224,6 +224,7 @@ function buildContent(accessToken) {
             });
             // Update progress bar
             progress = (progress < 90) ? progress + 10 : progress;
+            console.log('prog ' + progress);
             $('.progress-bar').css('width:', progress + '%;').attr('aria-valuenow', progress);
 
             // Recurse:
