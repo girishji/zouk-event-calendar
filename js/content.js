@@ -171,6 +171,7 @@ function buildContent(accessToken) {
             console.log('FB.api: Error occured');
             console.log(response);
         } else {
+            console.log('FB.api: callback');
             // print response in console log. You'll see that you get back an array of 
             // objects, and each is a JSON serialied string. To turn it into a javascript
             // objects, use parse().
