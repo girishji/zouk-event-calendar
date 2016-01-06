@@ -62,4 +62,14 @@ see console log tab (always keep open)
 While developer tools open, right click on reload button and choose hard 
     reload for any .js file (open this through 'view frame souce' option)
 
+====
+Safari debugger
+I added a button next to nav bar to open dev tools
+Use cmd-alt-E to remove caches, cmd-R to reload
+
+====
+https://blooming-gorge-6343.herokuapp.com/
+https://zouk-event-calendar.appspot.com/
+
+====
 
