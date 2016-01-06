@@ -95,6 +95,9 @@ var searches = [
 // All events
 var events = [];
 
+// Progress bar
+var progress = 0;
+
 // Search FB
 function buildContent(accessToken) {
     var timeNow = new Date();
@@ -201,7 +204,7 @@ function buildContent(accessToken) {
                                 // console.log('name: ' + data[j].name + ' id: ' + data[j].id);
                             }
                         }
-                    } 
+                    }
                     // next paging link
                     if (body.hasOwnProperty('paging') && body.paging) {
                         var paging = body.paging;
@@ -220,12 +223,10 @@ function buildContent(accessToken) {
                 var b = parseTime(bt.start_time);
                 return (a > b) ? 1 : -1;
             });
-            // Show
-            $('#progressBar').hide();
-            if (events.length > 0) {
-                console.log('inserting events');
-                display();
-            }
+            // Update progress bar
+            var progress = (progress < 90) ? progress + 10 : progress;
+            $('.progress-bar').css('width', progress + '%').attr('aria-valuenow', progress);
+
             // Recurse:
             // Clear out the batchCmd array, remember other places contain references
             batchCmd.length = 0;
@@ -234,8 +235,16 @@ function buildContent(accessToken) {
                 for (var i = 0; i < nextPage.length; i++) {
                     batchCmd.push( { method: 'GET', relative_url: nextPage[i] } );
                 }
-                if (batchCmd.length > 0) {
+            }
+            if (batchCmd.length > 0) {
                     FB.api('/', 'POST', { batch: batchCmd }, responseCallback);
+            } else {
+                // We are done, show results
+                $('.progress-bar').css('width', '100%').attr('aria-valuenow', 100);
+                $('#progressBar').hide();
+                if (events.length > 0) {
+                    //console.log('inserting events');
+                    display();
                 }
             }
         }
@@ -249,6 +258,7 @@ function buildContent(accessToken) {
                      );
     }
 
+    progress = 0;
     FB.api('/', 'POST', { batch: batchCmd }, responseCallback);
     // Response of FB.api is asynchronous, make it resursive from callback
 }
