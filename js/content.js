@@ -223,9 +223,9 @@ function buildContent(accessToken) {
                 return (a > b) ? 1 : -1;
             });
             // Update progress bar
+            console.log('prog ' + progress);
             var progress = (progress < 90) ? progress + 10 : progress;
-            $('.progress-bar').css('width:', progress + '%;');
-            $('.progress-bar').attr('aria-valuenow', progress);
+            $('.progress-bar').css('width:', progress + '%;').attr('aria-valuenow', progress);
 
             // Recurse:
             // Clear out the batchCmd array, remember other places contain references
