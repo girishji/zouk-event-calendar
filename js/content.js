@@ -221,6 +221,7 @@ function buildContent(accessToken) {
                 return (a > b) ? 1 : -1;
             });
             // Show
+            $('#progressBar').hide();
             if (events.length > 0) {
                 console.log('inserting events');
                 display();
