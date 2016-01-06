@@ -145,7 +145,7 @@ function buildContent(accessToken) {
         }
         str += '</table>';
         // console.log(str);
-        document.getElementById("z_content").innerHTML = str;
+        //document.getElementById("z_content").innerHTML = str;
     }
 
     function inLocalTZ(timeStr) {
@@ -224,7 +224,8 @@ function buildContent(accessToken) {
             });
             // Update progress bar
             var progress = (progress < 90) ? progress + 10 : progress;
-            $('.progress-bar').css('width', progress + '%').attr('aria-valuenow', progress);
+            $('.progress-bar').css('width:', progress + '%;');
+            $('.progress-bar').attr('aria-valuenow', progress);
 
             // Recurse:
             // Clear out the batchCmd array, remember other places contain references
@@ -257,7 +258,6 @@ function buildContent(accessToken) {
     }
 
     progress = 0;
-    console.log('here in ap');
     FB.api('/', 'POST', { batch: batchCmd }, responseCallback);
     // Response of FB.api is asynchronous, make it resursive from callback
 }
