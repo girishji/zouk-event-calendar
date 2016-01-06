@@ -211,7 +211,6 @@ function buildContent(accessToken) {
                         if (paging.hasOwnProperty('next') && paging.next) {
                             var next = paging.next.split('?'); // like .../search?q=...
                             next = 'search?' + next;
-                            // console.log('next: ' + next);
                             nextPage.push(next);
                         }
                     }
@@ -224,6 +223,7 @@ function buildContent(accessToken) {
                 return (a > b) ? 1 : -1;
             });
             // Update progress bar
+            console.log('updating: ' + progress);
             var progress = (progress < 90) ? progress + 10 : progress;
             $('.progress-bar').css('width', progress + '%').attr('aria-valuenow', progress);
 
