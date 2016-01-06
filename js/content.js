@@ -260,6 +260,7 @@ function buildContent(accessToken) {
     }
 
     progress = 0;
+    console.log('here in ap');
     FB.api('/', 'POST', { batch: batchCmd }, responseCallback);
     // Response of FB.api is asynchronous, make it resursive from callback
 }
