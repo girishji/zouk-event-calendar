@@ -110,7 +110,7 @@ function buildContent(accessToken) {
         ];
         var str = `
            <div class="col-md-6, z-content">
-              <table class="table, z-content" style="display: none;">
+              <table class="table, z-content">
                 <thead>
                   <tr>
                     <th>Date</th>
@@ -154,7 +154,7 @@ function buildContent(accessToken) {
         $('#progressBar').hide();
         //$('#tableBody').replaceWith(str);
         $('#z-table').replaceWith(str);
-        $('.z-content').css('display', 'inline');
+        //$('.z-content').css('display', 'inline');
         // console.log(str);
         //document.getElementById("z_content").innerHTML = str;
     }
