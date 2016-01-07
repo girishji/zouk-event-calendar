@@ -139,7 +139,7 @@ function buildContent(accessToken) {
                 <a href="https://www.facebook.com/events/${events[i].id}">
                 <td>  
                 <div id="img_wrapper">
-                <div id="img_inner" style='background-image: url("${imageUrl}");' >
+                  <div id="img_inner" style='background-image: url("${imageUrl}");' >
                   </div>
                 </div>
                 </a>
