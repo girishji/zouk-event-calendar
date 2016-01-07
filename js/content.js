@@ -135,13 +135,55 @@ function buildContent(accessToken) {
                         + accessToken + '&type=thumbnail';
                 }
             }
+            var placeStr = '';
+            var placeName = null;
+            if (events[i].hasOwnProperty('place') && events[i].place) {
+                var place = events[i].place;
+                if (place.hasOwnProperty('name') && place.name) {
+                    placeStr += place.name;
+                    placeName = place.name;
+                }
+                if (place.hasOwnProperty('location') && place.location) {
+                    var location = place.location;
+                    if (location.hasOwnProperty('street') && location.street) {
+                        placeStr += ', ' + location.street;
+                    }
+                    if ((location.hasOwnProperty('city') && location.city) && 
+                        (location.hasOwnProperty('country') && location.country)) {
+                        placeStr += ', ' + location.city + ', ' + location.country;
+                        if (! placeName) {
+                            placeName = location.city + ', ' + location.country;
+                        }
+                    }
+                }
+            }
+            if (! placeName) {
+                placeName = 'tbd';
+            }
+
             str += `<tr><td>${month} ${dateS[2]}</td>
                 <td> 
-                  <a href="https://www.facebook.com/events/${events[i].id}">
-                  <div id="img_inner" style='background-image: url("${imageUrl}"); width: 75px; height: 50px; background-size: 75px 50px;' >
-                  </div>
-                  </a>
-                  <a title="${events[i].name}" href="https://www.facebook.com/events/${events[i].id}">${events[i].name}</a>
+                  <table>
+                    <tr>
+                      <td>
+                        <a href="https://www.facebook.com/events/${events[i].id}">
+                        <div id="img_inner" style='background-image: url("${imageUrl}"); width: 75px; height: 50px; background-size: 75px 50px;' >
+                        </div>
+                        </a>
+                      </td>
+                      <td>
+                        <table>
+                          <tr><td>
+                            <a title="${events[i].name}" href="https://www.facebook.com/events/${events[i].id}">
+                              <div style='white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>${events[i].name}</div>
+                            </a>
+                          </td></tr>
+                          <tr><td>
+                            <div title="${placeStr}" style='white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>${placeName}</div>
+                          </td></tr>
+                      </td>
+                    </tr>
+                  </table>
                 </td>
                 <td>${events[i].attending_count}</a></td>
                 </tr>`;
