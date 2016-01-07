@@ -104,11 +104,23 @@ function buildContent(accessToken) {
     var batchCmd = [];
 
     function display() {
-        var str = '';
         var monthNames = [
             "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
             "Aug", "Sep", "Oct", "Nov", "Dec"
         ];
+        var str = `
+           <div class="col-md-6, z-content">
+              <table class="table, z-content" style="display: none;">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Event</th>
+                    <th>Location</th>
+                    <th>Attending</th>
+                  </tr>
+                </thead>
+                <tbody id ="tableBody">
+            `;
         for (var i = 0; i < events.length; i++) {
             var splitS = events[i].start_time.split('T'); // 2016-04-07T19:00:00-0300
             var dateS = splitS[0].split('-');
@@ -134,8 +146,14 @@ function buildContent(accessToken) {
                 </tr>`;
         }
 
+        str += `
+                </tbody>
+              </table>
+            </div>
+            `;
         $('#progressBar').hide();
-        $('#tableBody').replaceWith(str);
+        //$('#tableBody').replaceWith(str);
+        $('#z-table').replaceWith(str);
         $('.z-content').css('display', 'inline');
         // console.log(str);
         //document.getElementById("z_content").innerHTML = str;
