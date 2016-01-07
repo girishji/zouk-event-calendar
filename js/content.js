@@ -164,13 +164,15 @@ function buildContent(accessToken) {
             str += `<tr><td>${month} ${dateS[2]}</td>
                 <td> 
                   <a href="https://www.facebook.com/events/${events[i].id}">
-                    <div id="img_inner" style='background-image: url("${imageUrl}"); width: 75px; height: 50px; background-size: 75px 50px;' >
+                    <div id="img_inner" style='background-image: url("${imageUrl}"); width: 75px; height: 50px; background-size: 75px 50px; float:left;' >
                     </div>
                   </a>
-                  <a title="${events[i].name}" href="https://www.facebook.com/events/${events[i].id}">
-                    <div style='width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>${events[i].name}</div>
-                  </a>
-                  <div title="${placeStr}" style='width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>${placeName}</div>
+                  <div style='float: left'>
+                    <a title="${events[i].name}" href="https://www.facebook.com/events/${events[i].id}">
+                      <div style='width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>${events[i].name}</div>
+                    </a>
+                    <div title="${placeStr}" style='width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>${placeName}</div>
+                  </div>
                 </td>
                 <td>${events[i].attending_count}</a></td>
                 </tr>`;
