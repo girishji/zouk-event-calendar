@@ -76,8 +76,10 @@
                 to get real time information about local Zouk events. You can sort results by location, popularity and time (default). 
                 This app also provides analytics for event organizers.</p>
               <p>Facebook search is quirky. Results of the search depend on your social graph. However effort has been made to extract
-                all possible information from Facebook. Sometimes you will see bogus events, often related to Caribbean Zouk. Please
-                report them.</p>
+                all possible information from Facebook graph. Sometimes you will see bogus events, often related to Caribbean Zouk. 
+                Many of these events are already removed by analyzing the attendance pattern of popular Zouk events, but a few slip 
+                through.</p> 
+              <p>If you discover Zouk events that are not listed here, or if you find bugs, please report them. </p>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -101,6 +103,22 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- checkbox search buttons -->
+      <div class="form-group">
+            <label for="recipient-name" class="control-label">Recipient:</label>
+            <div class="btn-group" data-toggle="buttons">
+              <label class="btn btn-primary active">
+                <input type="radio" name="options" id="search-time" autocomplete="off" checked> Starting Time
+              </label>
+              <label class="btn btn-primary">
+                <input type="radio" name="options" id="search-location" autocomplete="off"> Location
+              </label>
+              <label class="btn btn-primary">
+                <input type="radio" name="options" id="search-popularity" autocomplete="off"> Popularity
+              </label>
+            </div>
       </div>
 
       <div id="z-table">
