@@ -136,8 +136,8 @@ function buildContent(accessToken) {
                 }
             }
             str += `<tr><td>${month} ${dateS[2]}</td>
-                <a href="https://www.facebook.com/events/${events[i].id}">
                 <td>  
+                <a href="https://www.facebook.com/events/${events[i].id}">
                 <div id="img_wrapper">
                   <div id="img_inner" style='background-image: url("${imageUrl}");' >
                   </div>

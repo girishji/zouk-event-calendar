@@ -5,6 +5,7 @@
 #img_wrapper {
     width:75px;
     height:50px;
+    border:2px black solid;
     margin:auto;
     position: relative;
 }
