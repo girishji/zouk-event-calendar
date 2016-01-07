@@ -127,8 +127,7 @@ function buildContent(accessToken) {
             // Use template strings
             // also http://stackoverflow.com/questions/6629188/facebook-graph-api-how-do-you-retrieve-the-different-size-photos-from-an-album
 
-            str += `<tr><td>${month} ${dateS[2]}</td>`;
-            var imageUrl = null;
+            var imageUrl = '/images/blank.jpg';
             if (events[i].hasOwnProperty('cover') && events[i].cover) {
                 var pic = events[i].cover;
                 if (pic.hasOwnProperty('id') && pic.id) {
@@ -136,11 +135,10 @@ function buildContent(accessToken) {
                         + accessToken + '&type=thumbnail';
                 }
             }
-            str += imageUrl ? `<td class='z-img'><a href="https://www.facebook.com/events/${events[i].id}">
-                <img src="${imageUrl}"/></a>` : `<td class='z-img'>`;
-            str += `<a title="${events[i].name}" href="https://www.facebook.com/events/${events[i].id}">
-                ${events[i].name}</a></td>`;
-            str += `<td>${events[i].attending_count}</a></td>
+            str += `<tr><td>${month} ${dateS[2]}</td>
+                <td class='z-img'><a href="https://www.facebook.com/events/${events[i].id}"><img src="${imageUrl}"/></a>
+                <a title="${events[i].name}" href="https://www.facebook.com/events/${events[i].id}">${events[i].name}</a></td>
+                <td>${events[i].attending_count}</a></td>
                 </tr>`;
         }
 
