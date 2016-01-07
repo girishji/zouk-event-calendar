@@ -109,7 +109,6 @@ function buildContent(accessToken) {
             "Aug", "Sep", "Oct", "Nov", "Dec"
         ];
         var str = `
-           <div class="col-md-6">
               <table class="table">
                 <thead>
                   <tr>
@@ -148,7 +147,6 @@ function buildContent(accessToken) {
         str += `
                 </tbody>
               </table>
-            </div>
             `;
         $('#progressBar').hide();
         //$('#tableBody').replaceWith(str);
