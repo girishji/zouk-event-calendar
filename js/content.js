@@ -104,7 +104,7 @@ function buildContent(accessToken) {
     var batchCmd = [];
 
     function display() {
-        var str = '<table>';
+        var str = '';
         var monthNames = [
             "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
             "Aug", "Sep", "Oct", "Nov", "Dec"
@@ -116,32 +116,22 @@ function buildContent(accessToken) {
             // var timeS = splitS[1].split(':');
             // Use template strings
             // also http://stackoverflow.com/questions/6629188/facebook-graph-api-how-do-you-retrieve-the-different-size-photos-from-an-album
-            var imageUrl;
+
+            str += `<tr><td>${month} ${dateS[2]}</td>`;
+            var imageUrl = null;
             if (events[i].hasOwnProperty('cover') && events[i].cover) {
                 var pic = events[i].cover;
                 if (pic.hasOwnProperty('id') && pic.id) {
                     imageUrl = 'https://graph.facebook.com/' + pic.id + '/picture?access_token='
                         + accessToken + '&type=thumbnail';
-                    str += `
-                        <tr>
-                        <td class='zimg'><a href="https://www.facebook.com/events/${events[i].id}">
-                            <img src="${imageUrl}"/></a></td>
-                        `;
                 }
             }
-            if (imageUrl === undefined) {
-                str += `
-                    <tr>
-                    <td class='zimg'></td>
-                    `;
-            }
-            str += `
-                <td>${month} ${dateS[2]}</td>
-                <td><a title="${events[i].name}" href="https://www.facebook.com/events/${events[i].id}">
-                ${events[i].name}</a></td>
-                <td>${i}</td>
-                </tr>
-                `;
+            str += imageUrl ? `<td class='zimg'><a href="https://www.facebook.com/events/${events[i].id}">
+                <img src="${imageUrl}"/></a>` : `<td class='zimg'>`;
+            str += `<a title="${events[i].name}" href="https://www.facebook.com/events/${events[i].id}">
+                ${events[i].name}</a></td>`;
+            str += `<td>${events[i].attending_count}</a></td>
+                </tr>`;
         }
         str += '</table>';
 
