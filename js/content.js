@@ -141,9 +141,7 @@ function buildContent(accessToken) {
                   <div id="img_inner" style='background-image: url("${imageUrl}"); width: 75px; height: 50px; background-size: 75px 50px;' >
                   </div>
                   </a>
-                </td>
-                <td>
-                <a title="${events[i].name}" href="https://www.facebook.com/events/${events[i].id}">${events[i].name}</a>
+                  <a title="${events[i].name}" href="https://www.facebook.com/events/${events[i].id}">${events[i].name}</a>
                 </td>
                 <td>${events[i].attending_count}</a></td>
                 </tr>`;
@@ -249,7 +247,6 @@ function buildContent(accessToken) {
             });
             // Update progress bar
             progress = (progress < 90) ? progress + 10 : progress;
-            $('.progress-bar').attr('aria-valuenow', progress);
             $('.progress-bar').css('width', progress + '%').attr('aria-valuenow', progress);
 
             // Recurse:
