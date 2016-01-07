@@ -181,6 +181,7 @@ function buildContent(accessToken) {
                           <tr><td>
                             <div title="${placeStr}" style='white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>${placeName}</div>
                           </td></tr>
+                        </table>
                       </td>
                     </tr>
                   </table>
