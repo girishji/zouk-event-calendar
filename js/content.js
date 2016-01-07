@@ -133,9 +133,9 @@ function buildContent(accessToken) {
             str += `<td>${events[i].attending_count}</a></td>
                 </tr>`;
         }
-        str += '</table>';
 
         $('#progressBar').hide();
+        $('#tableBody').replace(str);
         // console.log(str);
         //document.getElementById("z_content").innerHTML = str;
     }
