@@ -233,7 +233,8 @@ function buildContent(accessToken) {
                     // Check for bogus events happening in clubs named Zouk
                     if (event.hasOwnProperty('place')) {
                         var placeStr = JSON.stringify(event.place);
-                        if (placeStr.search(/zouk/i) === -1) { // case insensitive
+                        if ((placeStr.search(/zouk/i) === -1) 
+                            && (placeStr.search(/Palacio discothèque/i) === -1)) { // case insensitive
                             return true;
                         }
                     }
