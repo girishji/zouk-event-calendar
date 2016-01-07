@@ -136,6 +136,7 @@ function buildContent(accessToken) {
 
         $('#progressBar').hide();
         $('#tableBody').replaceWith(str);
+        $('table.table').css('display', 'inline');
         // console.log(str);
         //document.getElementById("z_content").innerHTML = str;
     }
