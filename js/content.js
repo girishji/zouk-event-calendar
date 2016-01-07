@@ -137,12 +137,10 @@ function buildContent(accessToken) {
             }
             str += `<tr><td>${month} ${dateS[2]}</td>
                 <td> 
-                <a href="https://www.facebook.com/events/${events[i].id}">
-                <div id="img_wrapper">
+                  <a href="https://www.facebook.com/events/${events[i].id}">
                   <div id="img_inner" style='background-image: url("${imageUrl}"); width: 75px; height: 50px; background-size: 75px 50px;' >
                   </div>
-                </div>
-                </a>
+                  </a>
                 </td>
                 <td>
                 <a title="${events[i].name}" href="https://www.facebook.com/events/${events[i].id}">${events[i].name}</a>
@@ -181,6 +179,36 @@ function buildContent(accessToken) {
         return new Date(a[0], a[1] - 1, a[2], a[3], a[4], a[5]);
     }
 
+    function isValid(event) {
+        if (event && event.hasOwnProperty('start_time')) {
+            // Parsing does not work in Safari. Recommended that you parse manually (see article below)
+            // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse
+            // Add events even if a day old
+            var startTime = parseTime(event.start_time);
+            if ((timeNow < startTime) 
+                || ((timeNow.getTime() - startTime.getTime()) < (24 * 3600 * 1000))) {
+                // Insert only if unique; Different search strings give same results
+                var found = false;
+                for (var ev = 0; ev < events.length; ev++) {
+                    if (event.id == events[ev].id) { // use == not === so str get casted to number
+                        found = true;
+                    }
+                }
+                if (! found) {
+                    // Check for bogus events happening in clubs named Zouk
+                    if (event.hasOwnProperty('place')) {
+                        var placeStr = JSON.stringify(event.place);
+                        if (placeStr.search(/zouk/i) === -1) { // case insensitive
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+
     var responseCallback = function(response) {
         if (!response || response.error) {
             console.log('FB.api: Error occured');
@@ -197,26 +225,8 @@ function buildContent(accessToken) {
                     if (body.hasOwnProperty('data') && body.data) {
                         var data = body.data;
                         for (var j = 0; j < data.length; j++) {
-                            if (data[j] && data[j].hasOwnProperty('start_time')) {
-                                // Parsing does not work in Safari. Recommended that you parse manually (see article below)
-                                // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse
-                                // var startTime = Date.parse(data[j].start_time);
-                                // Add events even if 2 days old
-                                var startTime = parseTime(data[j].start_time);
-                                if ((timeNow < startTime) 
-                                    || ((timeNow.getTime() - startTime.getTime()) < (2 * 24 * 3600 * 1000))) {
-                                    // Insert only if unique; Different search strings give same results
-                                    var found = false;
-                                    for (var ev = 0; ev < events.length; ev++) {
-                                        if (data[j].id == events[ev].id) { // use == not === so str get casted to number
-                                            found = true;
-                                        }
-                                    }
-                                    if (! found) {
-                                        events.push(data[j]);
-                                    }
-                                }
-                                // console.log('name: ' + data[j].name + ' id: ' + data[j].id);
+                            if (isValid(data[j])) {
+                                events.push(data[j]);
                             }
                         }
                     }
