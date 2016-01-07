@@ -109,8 +109,8 @@ function buildContent(accessToken) {
             "Aug", "Sep", "Oct", "Nov", "Dec"
         ];
         var str = `
-           <div class="col-md-6, z-content">
-              <table class="table, z-content">
+           <div class="col-md-6">
+              <table class="table">
                 <thead>
                   <tr>
                     <th>Date</th>
@@ -119,7 +119,7 @@ function buildContent(accessToken) {
                     <th>Attending</th>
                   </tr>
                 </thead>
-                <tbody id ="tableBody">
+                <tbody>
             `;
         for (var i = 0; i < events.length; i++) {
             var splitS = events[i].start_time.split('T'); // 2016-04-07T19:00:00-0300
