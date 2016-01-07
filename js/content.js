@@ -173,13 +173,13 @@ function buildContent(accessToken) {
                        </td>
                 <td style="padding-left: 20px">
                          <a title="${events[i].name}" href="https://www.facebook.com/events/${events[i].id}">
-                           <span style='width: 400px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>
+                           <div style='width: 400px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>
                              <h5 style='margin-top: 7px; margin-bottom: 6px;'>${events[i].name}</h5>
-                           </span>
+                           </div>
                          </a>
-                         <span title="${placeStr}" style='width: 400px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>
+                         <div title="${placeStr}" style='width: 400px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>
                            <h5 class='small' style='margin-top: 3px; margin-bottom: 1px'>${placeName}<h5>
-                         </span>
+                         </div>
                         </td>
                       </tr>
                    </table>
