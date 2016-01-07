@@ -166,19 +166,19 @@ function buildContent(accessToken) {
                   <table>
                     <tr>
                       <td>
-                   <a href="https://www.facebook.com/events/${events[i].id}">
-                      <div id="img_inner" style='background-image: url("${imageUrl}"); width: 75px; height: 50px; background-size: 75px 50px;' >
-                      </div>
-                    </a>
+                        <a href="https://www.facebook.com/events/${events[i].id}">
+                          <div id="img_inner" style='background-image: url("${imageUrl}"); width: 75px; height: 50px; background-size: 75px 50px;' >
+                          </div>
+                        </a>
                        </td>
                        <td>
                          <a title="${events[i].name}" href="https://www.facebook.com/events/${events[i].id}">
                            <span style='width: 400px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>
-                             <h5 style='margin-top: 6px; margin-bottom: 8px;'>${events[i].name}</h5>
+                             <h5 style='margin-top: 1px; margin-bottom: 11px;'>${events[i].name}</h5>
                            </span>
                          </a>
                          <span title="${placeStr}" style='width: 400px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>
-                           <h5 class='small' style='margin-top: 3px; margin-bottom: 3px'>${placeName}<h5>
+                           <h5 class='small' style='margin-top: 3px; margin-bottom: 1px'>${placeName}<h5>
                          </span>
                         </td>
                       </tr>
