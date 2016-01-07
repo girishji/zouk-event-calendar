@@ -2,19 +2,17 @@
     header("Content-type: text/css; charset: UTF-8");
 ?>
 
+/*
 #img_wrapper {
     width:75px;
     height:50px;
     margin:auto;
     position: relative;
 }
+*/
 
 #img_inner {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-repeat: no-repeat;
-    background-size: cover; /* contain, fill, cover, ... */
+  width: 75px;
+  height: 50px;
+  background-size: 75px 50px;
 }
