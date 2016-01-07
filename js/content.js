@@ -162,7 +162,7 @@ function buildContent(accessToken) {
                 placeName = 'tbd';
             }
 
-            str += `<tr><td><span style='width: 50px;'>'<h4>${month} ${dateS[2]}</h4></span></td>
+            str += `<tr><td><span style='width: 50px;'><h4>${month} ${dateS[2]}</h4><span></td>
                 <td> 
                    <a href="https://www.facebook.com/events/${events[i].id}">
                       <div id="img_inner" style='background-image: url("${imageUrl}"); width: 75px; height: 50px; background-size: 75px 50px;' >
@@ -174,13 +174,13 @@ function buildContent(accessToken) {
                       <div style='width: 400px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis'><h5>${events[i].name}</h5></div>
                    </a>
                    <div title="${placeStr}" style='width: 400px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>
-                      <h5 class='small'>${placeName}<h5>
+
                    </div>
                 </td>
                 <td>${events[i].attending_count}</a></td>
                 </tr>`;
         }
-
+//                      <h5 class='small'>${placeName}<h5>
         str += `
                 </tbody>
               </table>
