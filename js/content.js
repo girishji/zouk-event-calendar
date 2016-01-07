@@ -163,28 +163,14 @@ function buildContent(accessToken) {
 
             str += `<tr><td>${month} ${dateS[2]}</td>
                 <td> 
-                  <table>
-                    <tr>
-                      <td>
-                        <a href="https://www.facebook.com/events/${events[i].id}">
-                        <div id="img_inner" style='background-image: url("${imageUrl}"); width: 75px; height: 50px; background-size: 75px 50px;' >
-                        </div>
-                        </a>
-                      </td>
-                      <td>
-                        <table>
-                          <tr><td>
-                            <a title="${events[i].name}" href="https://www.facebook.com/events/${events[i].id}">
-                              <div style='white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>${events[i].name}</div>
-                            </a>
-                          </td></tr>
-                          <tr><td>
-                            <div title="${placeStr}" style='white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>${placeName}</div>
-                          </td></tr>
-                        </table>
-                      </td>
-                    </tr>
-                  </table>
+                  <a href="https://www.facebook.com/events/${events[i].id}">
+                    <div id="img_inner" style='background-image: url("${imageUrl}"); width: 75px; height: 50px; background-size: 75px 50px;' >
+                    </div>
+                  </a>
+                  <a title="${events[i].name}" href="https://www.facebook.com/events/${events[i].id}">
+                    <div style='white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>${events[i].name}</div>
+                  </a>
+                  <div title="${placeStr}" style='white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>${placeName}</div>
                 </td>
                 <td>${events[i].attending_count}</a></td>
                 </tr>`;
