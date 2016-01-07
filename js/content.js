@@ -136,8 +136,15 @@ function buildContent(accessToken) {
                 }
             }
             str += `<tr><td>${month} ${dateS[2]}</td>
-                <td class='z-img'><a href="https://www.facebook.com/events/${events[i].id}"><img src="${imageUrl}"/></a>
-                <a title="${events[i].name}" href="https://www.facebook.com/events/${events[i].id}">${events[i].name}</a></td>
+                <a href="https://www.facebook.com/events/${events[i].id}">
+                <td>  
+                <div id="img_wrapper">
+                <div id="img_inner" style='background-image: url("${imageUrl}");' >
+                  </div>
+                </div>
+                </a>
+                <a title="${events[i].name}" href="https://www.facebook.com/events/${events[i].id}">${events[i].name}</a>
+                </td>
                 <td>${events[i].attending_count}</a></td>
                 </tr>`;
         }
