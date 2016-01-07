@@ -161,9 +161,9 @@ function buildContent(accessToken) {
                 placeName = 'tbd';
             }
 
-            str += `<tr><td><span style='width: 50px;'><h5>${month} ${dateS[2]}</h5><span></td>
+            str += `<tr><td><span style='width: 50px;'><h5>${month} ${dateS[2]}</h5></span></td>
                 <td> 
-                  <table style="padding-left: 14px;">
+                  <table style="margin-left: 20px;">
                     <tr>
                       <td>
                         <a href="https://www.facebook.com/events/${events[i].id}">
