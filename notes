@@ -57,12 +57,13 @@ heroku ps
 heroku open // opens website
 
 ====
+Use Facebook api graph tool to debug query strings.
+
 Use chrome debugger. views->developer tools
 see console log tab (always keep open)
 While developer tools open, right click on reload button and choose hard 
     reload for any .js file (open this through 'view frame souce' option)
 
-====
 Safari debugger
 I added a button next to nav bar to open dev tools
 Use cmd-alt-E to remove caches, cmd-R to reload
