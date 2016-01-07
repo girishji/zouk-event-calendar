@@ -46,8 +46,8 @@
             <!-- 
                  <li role="presentation"                      class="active"><a href="#">Home</a></li>
             -->
-            <li role="presentation"><a href="#" data-toggle="modal" data-target="#myModal">About</a></li>
-            <li role="presentation"><a href="#" data-toggle="modal" data-target="#myModal">Contact</a></li>
+            <li role="presentation"><a href="#" data-toggle="modal" data-target="#aboutModal">About</a></li>
+            <li role="presentation"><a href="#" data-toggle="modal" data-target="#contactModal">Contact</a></li>
           </ul>
         </nav>
         <!-- XXX change link below -->
@@ -64,25 +64,45 @@
       </div>
 
       <!-- modal -->
-      <!-- Button trigger modal -->
-      <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-        Launch demo modal
-      </button>
-
-      <!-- Modal -->
-      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="about zouk">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+              <h4 class="modal-title" id="myModalLabel">About</h4>
             </div>
             <div class="modal-body">
-              ...
+              la la la
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="contact author">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="myModalLabel">Message to @biggieg_zouk</h4>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="form-group">
+                  <label for="recipient-name" class="control-label">Subject:</label>
+                  <text class="form-control" id="message-subject"></text>
+                </div>
+                <div class="form-group">
+                  <label for="message-text" class="control-label">Message:</label>
+                  <textarea class="form-control" id="message-text"></textarea>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Send</button>
             </div>
           </div>
         </div>
