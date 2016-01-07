@@ -50,6 +50,13 @@ window.fbAsyncInit = function() {
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 
+// bootstrap:
+// For performance reasons, the Tooltip and Popover data-apis are opt-in, meaning you must initialize them yourself.
+// One way to initialize all tooltips on a page would be to select them by their data-toggle attribute:
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip();
+})
+
 // Global
 // Batch request maximum is 50
 var searches = [
@@ -176,10 +183,10 @@ function buildContent(accessToken) {
                         </a>
                        </td>
                 <td style="padding-left: 20px">
-                         <a title="${events[i].name}" href="https://www.facebook.com/events/${events[i].id}">
-                           <h5 style='width: ${textWidth}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 7px; margin-bottom: 6px;'>${events[i].name}</h5>
+                         <a href="https://www.facebook.com/events/${events[i].id}">
+                         <h5 title="${events[i].name}" data-toggle="tooltip" data-container="body" style='width: ${textWidth}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 7px; margin-bottom: 6px;'>${events[i].name}</h5>
                          </a>
-                         <h5 class='small' title="${placeStr}" style='margin-top: 3px; margin-bottom: 1px; width: ${textWidth}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>${placeStr}<h5>
+                         <h5 class='small' title="${placeStr}" data-toggle="tooltip" data-container="body" style='margin-top: 3px; margin-bottom: 1px; width: ${textWidth}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>${placeStr}<h5>
                         </td>
                       </tr>
                    </table>
