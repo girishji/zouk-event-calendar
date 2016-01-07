@@ -114,7 +114,6 @@ function buildContent(accessToken) {
                   <tr>
                     <th>Date</th>
                     <th>Event</th>
-                    <th>foo</th>
                     <th>Attending</th>
                   </tr>
                 </thead>
@@ -164,20 +163,26 @@ function buildContent(accessToken) {
 
             str += `<tr><td><span style='width: 50px;'><h5>${month} ${dateS[2]}</h5><span></td>
                 <td> 
+                  <table>
+                    <tr>
+                      <td>
                    <a href="https://www.facebook.com/events/${events[i].id}">
                       <div id="img_inner" style='background-image: url("${imageUrl}"); width: 75px; height: 50px; background-size: 75px 50px;' >
                       </div>
                     </a>
-                 </td>
-                 <td>
-                   <a title="${events[i].name}" href="https://www.facebook.com/events/${events[i].id}">
-                     <span style='width: 400px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>
-                       <h5 style='margin-top: 6px; margin-bottom: 8px;'>${events[i].name}</h5>
-                     </span>
-                   </a>
-                   <span title="${placeStr}" style='width: 400px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>
-                     <h5 class='small' style='margin-top: 6px; margin-bottom: 3px'>${placeName}<h5>
-                   </span>
+                       </td>
+                       <td>
+                         <a title="${events[i].name}" href="https://www.facebook.com/events/${events[i].id}">
+                           <span style='width: 400px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>
+                             <h5 style='margin-top: 6px; margin-bottom: 8px;'>${events[i].name}</h5>
+                           </span>
+                         </a>
+                         <span title="${placeStr}" style='width: 400px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>
+                           <h5 class='small' style='margin-top: 3px; margin-bottom: 3px'>${placeName}<h5>
+                         </span>
+                        </td>
+                      </tr>
+                   </table>
                 </td>
                 <td>${events[i].attending_count}</a></td>
                 </tr>`;
