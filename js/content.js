@@ -167,7 +167,7 @@ function buildContent(accessToken) {
                     <tr>
                       <td>
                         <a href="https://www.facebook.com/events/${events[i].id}">
-                          <div id="img_inner" style='background-image: url("${imageUrl}"); width: 75px; height: 50px; background-size: 75px 42px;' >
+                          <div id="img_inner" style='background-image: url("${imageUrl}"); width: 75px; height: 42px; background-size: 75px 42px;' >
                           </div>
                         </a>
                        </td>
