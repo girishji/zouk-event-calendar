@@ -172,7 +172,7 @@ function buildContent(accessToken) {
                       <div style='width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis'><h5>${events[i].name}</h5></div>
                     </a>
                     <div title="${placeStr}" style='width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>
-                      <h5 class='small>'${placeName}<h5>
+                      <h5 class='small'>${placeName}<h5>
                     </div>
                   </div>
                 </td>
