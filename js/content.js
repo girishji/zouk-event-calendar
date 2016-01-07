@@ -163,7 +163,7 @@ function buildContent(accessToken) {
 
             str += `<tr><td><h5>${month} ${dateS[2]}</h5></td>
                 <td> 
-                  <table style="border-left: 20px;">
+                  <table>
                     <tr>
                       <td>
                         <a href="https://www.facebook.com/events/${events[i].id}">
@@ -171,10 +171,10 @@ function buildContent(accessToken) {
                           </div>
                         </a>
                        </td>
-                       <td>
+                <td style="padding-left: 20px">
                          <a title="${events[i].name}" href="https://www.facebook.com/events/${events[i].id}">
                            <span style='width: 400px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>
-                             <h5 style='margin-top: 3px; margin-bottom: 9px;'>${events[i].name}</h5>
+                             <h5 style='margin-top: 7px; margin-bottom: 6px;'>${events[i].name}</h5>
                            </span>
                          </a>
                          <span title="${placeStr}" style='width: 400px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>
