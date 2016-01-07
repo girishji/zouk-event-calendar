@@ -163,7 +163,7 @@ function buildContent(accessToken) {
 
             str += `<tr><td><span style='width: 50px;'><h5>${month} ${dateS[2]}</h5><span></td>
                 <td> 
-                  <table>
+                  <table style="padding-left: 14px;">
                     <tr>
                       <td>
                         <a href="https://www.facebook.com/events/${events[i].id}">
