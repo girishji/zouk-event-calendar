@@ -126,8 +126,8 @@ function buildContent(accessToken) {
                         + accessToken + '&type=thumbnail';
                 }
             }
-            str += imageUrl ? `<td class='zimg'><a href="https://www.facebook.com/events/${events[i].id}">
-                <img src="${imageUrl}"/></a>` : `<td class='zimg'>`;
+            str += imageUrl ? `<td class='z-img'><a href="https://www.facebook.com/events/${events[i].id}">
+                <img src="${imageUrl}"/></a>` : `<td class='z-img'>`;
             str += `<a title="${events[i].name}" href="https://www.facebook.com/events/${events[i].id}">
                 ${events[i].name}</a></td>`;
             str += `<td>${events[i].attending_count}</a></td>
@@ -136,7 +136,7 @@ function buildContent(accessToken) {
 
         $('#progressBar').hide();
         $('#tableBody').replaceWith(str);
-        $('table.table').css('display', 'inline');
+        $('.z-content').css('display', 'inline');
         // console.log(str);
         //document.getElementById("z_content").innerHTML = str;
     }
