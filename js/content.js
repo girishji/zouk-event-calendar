@@ -162,7 +162,7 @@ function buildContent(accessToken) {
                 placeName = 'tbd';
             }
 
-            str += `<tr><td><span style='width: 50px;'><h4>${month} ${dateS[2]}</h4><span></td>
+            str += `<tr><td><span style='width: 50px;'><h5>${month} ${dateS[2]}</h5><span></td>
                 <td> 
                    <a href="https://www.facebook.com/events/${events[i].id}">
                       <div id="img_inner" style='background-image: url("${imageUrl}"); width: 75px; height: 50px; background-size: 75px 50px;' >
