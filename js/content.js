@@ -62,42 +62,42 @@ $(function () {
 var searches = [
     'zouk',
     'zouk+carnival',
-    'zouk+time',
-    'zouk+night',
-    'f.i.e.l+official',
-    'lambazouk',
-    'zouk+lambada',
-    'brazilian+zouk',
-    'zouk+festival',
-    'zouk+marathon',
-    'zouk+family',
-    'zouk+fest',
-    'zouk+congress',
-    'zouk+weekend',
-    'zouk+salsa',
-    'zouk+samba',
-    'zouk+beach',
-    'zouk+holiday',
-    'bachaturo',
-    'zouk+kizomba',
-    'zouk+dance',
-    'zouk+sea',
-    'fall+zouk',
-    'зук',
-    'berg+zouk',
-    'brazouka',
-    'zoukdevils',
-    'zouk+fever',
-    'brasileiro+zouk',
-    'zouk+fusion',
-    'zouk+flow',
-    'zouk+day',
-    'zouk+jam',
-    'zouk+danse',
-    'oman+zouk',
-    'international+zouk',
-    'zouk+bachata',
-    'carioca+zouk'
+    'zouk+time'
+//     'zouk+night',
+//     'f.i.e.l+official',
+//     'lambazouk',
+//     'zouk+lambada',
+//     'brazilian+zouk',
+//     'zouk+festival',
+//     'zouk+marathon',
+//     'zouk+family',
+//     'zouk+fest',
+//     'zouk+congress',
+//     'zouk+weekend',
+//     'zouk+salsa',
+//     'zouk+samba',
+//     'zouk+beach',
+//     'zouk+holiday',
+//     'bachaturo',
+//     'zouk+kizomba',
+//     'zouk+dance',
+//     'zouk+sea',
+//     'fall+zouk',
+//     'зук',
+//     'berg+zouk',
+//     'brazouka',
+//     'zoukdevils',
+//     'zouk+fever',
+//     'brasileiro+zouk',
+//     'zouk+fusion',
+//     'zouk+flow',
+//     'zouk+day',
+//     'zouk+jam',
+//     'zouk+danse',
+//     'oman+zouk',
+//     'international+zouk',
+//     'zouk+bachata',
+//     'carioca+zouk'
 ];
 
 // All events
@@ -227,9 +227,6 @@ function buildContent(accessToken) {
     }
 
     function isValid(event) {
-        if (event.id == '564888877000443') {
-            console.log('got ' + event.name);
-        }
         if (event && event.hasOwnProperty('start_time')) {
             // Parsing does not work in Safari. Recommended that you parse manually (see article below)
             // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse
@@ -241,6 +238,10 @@ function buildContent(accessToken) {
                 var found = false;
                 for (var ev = 0; ev < events.length; ev++) {
                     if (event.id == events[ev].id) { // use == not === so str get casted to number
+                        if (event.id == '564888877000443') {
+                            console.log('found ' + event.name);
+                        }
+
                         found = true;
                     }
                 }
@@ -250,12 +251,18 @@ function buildContent(accessToken) {
                         var placeStr = JSON.stringify(event.place);
                         if ((placeStr.search(/zouk/i) === -1) 
                             && (placeStr.search(/Palacio discothèque/i) === -1)) { // case insensitive
+                        if (event.id == '564888877000443') {
+                            console.log('inserting ' + event.name);
+                        }
                             return true;
                         }
                     }
                 }
             }
         }
+                        if (event.id == '564888877000443') {
+                            console.log('discard ' + event.name);
+                        }
         return false;
     }
 
