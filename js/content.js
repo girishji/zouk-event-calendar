@@ -226,6 +226,9 @@ function buildContent(accessToken) {
     }
 
     function isValid(event) {
+        if (event.id == '564888877000443') {
+            console.log('got ' + event.name);
+        }
         if (event && event.hasOwnProperty('start_time')) {
             // Parsing does not work in Safari. Recommended that you parse manually (see article below)
             // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse
