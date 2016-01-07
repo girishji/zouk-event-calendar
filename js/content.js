@@ -15,7 +15,7 @@ window.fbAsyncInit = function() {
     });
 
     // setAutoGrow works but slowly and consumes cycles
-    FB.Canvas.setAutoGrow();
+    //FB.Canvas.setAutoGrow();
     // manually set size (also slow)
     // FB.Canvas.setSize({ width: 640, height: 4000 });
 
