@@ -135,7 +135,7 @@ function buildContent(accessToken) {
         }
 
         $('#progressBar').hide();
-        $('#tableBody').replace(str);
+        $('#tableBody').replaceWith(str);
         // console.log(str);
         //document.getElementById("z_content").innerHTML = str;
     }
