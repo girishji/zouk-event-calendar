@@ -115,7 +115,6 @@ function buildContent(accessToken) {
                   <tr>
                     <th>Date</th>
                     <th>Event</th>
-                    <th>Location</th>
                     <th>Attending</th>
                   </tr>
                 </thead>
