@@ -161,21 +161,24 @@ function buildContent(accessToken) {
                 placeName = 'tbd';
             }
 
+            var imgWidth = '75px';
+            var imgHeight = '42px';
+            var textWidth = '400px';
             str += `<tr><td><h5>${month} ${dateS[2]}</h5></td>
                 <td> 
                   <table>
                     <tr>
                       <td>
                         <a href="https://www.facebook.com/events/${events[i].id}">
-                          <div id="img_inner" style='background-image: url("${imageUrl}"); width: 75px; height: 42px; background-size: 75px 42px;' >
+                <div id="img_inner" style='background-image: url("${imageUrl}"); width: ${imgWidth}; height: ${imgHeight}; background-size: ${imgWidth} ${imgHeight};' >
                           </div>
                         </a>
                        </td>
                 <td style="padding-left: 20px">
                          <a title="${events[i].name}" href="https://www.facebook.com/events/${events[i].id}">
-                           <h5 style='width: 400px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 7px; margin-bottom: 6px;'>${events[i].name}</h5>
+                           <h5 style='width: ${textWidth}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 7px; margin-bottom: 6px;'>${events[i].name}</h5>
                          </a>
-                           <h5 class='small' title="${placeStr}" style='margin-top: 3px; margin-bottom: 1px; width: 400px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>${placeName}<h5>
+                         <h5 class='small' title="${placeStr}" style='margin-top: 3px; margin-bottom: 1px; width: ${textWidth}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>${placeStr}<h5>
                         </td>
                       </tr>
                    </table>
