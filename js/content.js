@@ -174,7 +174,7 @@ function buildContent(accessToken) {
                        <td>
                          <a title="${events[i].name}" href="https://www.facebook.com/events/${events[i].id}">
                            <span style='width: 400px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>
-                             <h5 style='margin-top: 1px; margin-bottom: 11px;'>${events[i].name}</h5>
+                             <h5 style='margin-top: 1px; margin-bottom: 6px;'>${events[i].name}</h5>
                            </span>
                          </a>
                          <span title="${placeStr}" style='width: 400px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>
