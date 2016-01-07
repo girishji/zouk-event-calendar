@@ -60,9 +60,9 @@ $(function () {
 // Global
 // Batch request maximum is 50
 var searches = [
-    'zouk'
-//     'zouk+carnival',
-//     'zouk+time',
+    'zouk',
+    'zouk+carnival',
+    'zouk+time'
 //     'zouk+night',
 //     'f.i.e.l+official',
 //     'lambazouk',
