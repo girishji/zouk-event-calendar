@@ -114,6 +114,7 @@ function buildContent(accessToken) {
                   <tr>
                     <th>Date</th>
                     <th>Event</th>
+                    <th>foo</th>
                     <th>Attending</th>
                   </tr>
                 </thead>
@@ -163,24 +164,18 @@ function buildContent(accessToken) {
 
             str += `<tr><td>${month} ${dateS[2]}</td>
                 <td> 
-                  <table>
-                    <tr>
-                      <td>
-                        <a href="https://www.facebook.com/events/${events[i].id}">
-                          <div id="img_inner" style='background-image: url("${imageUrl}"); width: 75px; height: 50px; background-size: 75px 50px;' >
-                          </div>
-                        </a>
-                      </td>
-                      <td>
-                        <a title="${events[i].name}" href="https://www.facebook.com/events/${events[i].id}">
-                          <div style='width: 400px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis'><h5>${events[i].name}</h5></div>
-                        </a>
-                        <div title="${placeStr}" style='width: 400px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>
-                          <h5 class='small'>${placeName}<h5>
-                        </div>
-                      </td>
-                    </tr>
-                  </table>
+                   <a href="https://www.facebook.com/events/${events[i].id}">
+                      <div id="img_inner" style='background-image: url("${imageUrl}"); width: 75px; height: 50px; background-size: 75px 50px;' >
+                      </div>
+                    </a>
+                 </td>
+                 <td>
+                   <a title="${events[i].name}" href="https://www.facebook.com/events/${events[i].id}">
+                      <div style='width: 400px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis'><h5>${events[i].name}</h5></div>
+                   </a>
+                   <div title="${placeStr}" style='width: 400px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>
+                      <h5 class='small'>${placeName}<h5>
+                   </div>
                 </td>
                 <td>${events[i].attending_count}</a></td>
                 </tr>`;
