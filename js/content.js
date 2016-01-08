@@ -337,7 +337,11 @@ function showEventsByTimeInner(accessToken) {
         var data = sessionStorage.getItem('zoukevents');
         if (data !== undefined && data) {
             var events = JSON.parse(data);
-            display(events, accessToken);
+            if (events.length > 0) {
+                display(events, accessToken);
+            } else {
+                console.log('No events in showEventsByTimeInner');
+            }
         }
     } else {
         buildContent(accessToken);
@@ -360,7 +364,11 @@ function showEventsByAttendingInner(accessToken) {
                 var b = bt.attending_count;
                 return (a < b) ? 1 : -1; // descending
             });
-            display(events, accessToken);
+            if (events.length > 0) {
+                display(events, accessToken);
+            } else {
+                console.log('No events in showEventsByAttendingInner');
+            }
         }
     } else {
         alert('Your browser does not support this operation');
@@ -368,3 +376,6 @@ function showEventsByAttendingInner(accessToken) {
 }
 
 /************************************************************/
+function getAttendees() {
+
+}
