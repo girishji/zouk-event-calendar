@@ -29,7 +29,7 @@ window.fbAsyncInit = function() {
             FB.login(function(response) {
                 if (response.authResponse) {
                     if (response.status === 'connected') {
-                        // console.log('Welcome!  Fetching information.... ');
+                        console.log('Welcome!  Fetching information.... ');
                         buildContent(response.authResponse.accessToken);
                     }
                 } else {
@@ -213,7 +213,7 @@ function buildContent(accessToken) {
     var batchCmd = [];
     var events = []; // All events
 
-
+    ////////////////////////////////////////////////////////////
     function isValid(event) {
         if (event && event.hasOwnProperty('start_time')) {
             // Parsing does not work in Safari. Recommended that you parse manually (see article below)
@@ -237,7 +237,7 @@ function buildContent(accessToken) {
         return false;
     }
 
-
+    /////////////////////////////////////////////////
     var responseCallback = function(response) {
         if (!response || response.error) {
             console.log('FB.api: Error occured');
@@ -327,13 +327,12 @@ function buildContent(accessToken) {
 /************************************************************/
 function showEventsByTime() {
     // Read from cookie
-//    var c = Cookies.get('zouk-facebook-events');
-//    if (c === undefined) {
-//        console.log('error: cookie undefined');
-//    } else {
-//        var events = JSON.parse(c);
-//        display(events);
-//    }
+    var events = Cookies.getJSON('zouk-facebook-events');
+    if (events === undefined) {
+        console.log('error: cookie undefined');
+    } else {
+        display(events);
+    }
 }
 
 /************************************************************/
