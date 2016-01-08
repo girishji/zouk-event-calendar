@@ -96,12 +96,6 @@
         </div>
       </div>
 
-      <!-- Nav  -->
-      <ul class="nav nav-tabs" id="contentNav" style="display: none;">
-        <li role="presentation" class="active"><a href="#" onclick="showEvents();">Events</a></li>
-        <li role="presentation"><a href="#" onclick="showMap();">Map</a></li>
-      </ul>
-
       <!-- progress bar -->
       <div id="progressBar">
         <div class="progress-bar-header">
@@ -112,7 +106,29 @@
         </div>
       </div>
 
-     
+      <!-- Nav  -->
+      <ul class="nav nav-tabs" id="contentNav" style="display: none;">
+        <li role="presentation" class="active"><a href="#" onclick="showEvents();">Events</a></li>
+        <li role="presentation"><a href="#" onclick="showMap();">Map</a></li>
+      </ul>
+
+      <!-- search bar -->
+      <table border="1px" width="100%">
+        <tr>
+          <td>
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Enter address...">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button">Filter</button>
+              </span>
+            </div><!-- /input-group -->
+          </td>
+          <td>
+            <h4 style="text-align: right">Total </h4>
+          </td>
+        </tr>
+      </table>
+
       <div id="mainContent">
 
       </div>
