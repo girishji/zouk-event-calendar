@@ -118,7 +118,7 @@ function buildContent(accessToken) {
             "Aug", "Sep", "Oct", "Nov", "Dec"
         ];
         var str = `
-            <table class="table">
+            <table class="table table-condensed">
             <tbody>
             `;
         for (var i = 0; i < events.length; i++) {
