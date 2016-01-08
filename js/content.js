@@ -297,10 +297,10 @@ function buildContent(accessToken) {
                 if (events.length > 0) {
                     setTimeout(function() { display(events, accessToken); }, 800); // wait for some millisec so progress bar shows completion
                     // store events in a cookie https://github.com/js-cookie/js-cookie
-                    //Cookies.set('zouk-facebook-events', JSON.stringify(events));
-                    $.cookie('zoukevents', JSON.stringify(events));
-                    //var c = Cookies.get('zouk-facebook-events');
-                    var c = $.cookie('zoukevents');
+                    Cookies.set('zouk-facebook-events', events);
+                    //$.cookie('zoukevents', JSON.stringify(events));
+                    var c = Cookies.get('zouk-facebook-events');
+                    //var c = $.cookie('zoukevents');
                     if (c === undefined) {
                         console.log('error: cookie undefined');
                     } else {
