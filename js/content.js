@@ -250,9 +250,9 @@ function buildContent(accessToken) {
                                         var description = event.description;
                                         console.log('before: ' + event.description);
                                         // remove http:... or https...
-                                        description.replace(/(?:https?|ftp):\/\/[\n\S]+/g, '');
+                                        var desc = description.replace(/(?:https?|ftp):\/\/[\n\S]+/g, '');
                                         console.log('after: ' + event.description);
-                                        if (description.search(/zouk/i) === -1) { // not found
+                                        if (desc.search(/zouk/i) === -1) { // not found
                                             console.log('discarding ' + event.name);
                                             return false;
                                         }
