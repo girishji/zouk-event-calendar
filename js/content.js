@@ -194,9 +194,9 @@ function display(events, accessToken) {
         `;
     $('#progressBar').hide();
     $('#contentNav').show();
-    $('#evTableContent').remove();
+    $('#evTableContent').empty();
     $('#evTableContent').replaceWith(str);
-    $('#totalEvents').remove();
+    $('#totalEvents').empty();
     $('#totalEvents').replaceWith('<span class="badge">' + events.length + '</span>' + ' events');
     $('#mainContent').show();
     // console.log(str);
