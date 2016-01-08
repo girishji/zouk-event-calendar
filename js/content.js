@@ -104,7 +104,7 @@ var searches = [
 var progress = 0;
 
 /************************************************************/
-function display(var events) {
+function display(events) {
     console.log('total: ' + events.length);
     var monthNames = [
         "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
