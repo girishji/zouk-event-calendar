@@ -181,7 +181,7 @@ function buildContent(accessToken) {
 
             var imgWidth = '75px';
             var imgHeight = '42px';
-            var textWidth = '340px';
+            var textWidth = '400px';
             str += `<tr><td><h5>${month} ${dateS[2]}</h5></td>
                 <td> 
                   <table>
@@ -205,7 +205,6 @@ function buildContent(accessToken) {
                 </tr>`;
         }
 
-//                        <td style="padding-left: 20px">
         str += `
                 </tbody>
               </table>
