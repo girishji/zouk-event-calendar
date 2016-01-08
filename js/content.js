@@ -119,6 +119,7 @@ function buildContent(accessToken) {
         ];
         var str = `
               <table class="table">
+            <!--
                 <thead>
                   <tr>
                     <th>Date</th>
@@ -126,6 +127,7 @@ function buildContent(accessToken) {
                     <th>Attending</th>
                   </tr>
                 </thead>
+            -->
                 <tbody>
             `;
         for (var i = 0; i < events.length; i++) {
@@ -183,7 +185,7 @@ function buildContent(accessToken) {
                           </div>
                         </a>
                        </td>
-                <td style="padding-left: 20px">
+                         <td style="padding-left: 20px">
                          <a href="https://www.facebook.com/events/${events[i].id}">
                          <h5 title="${events[i].name}" data-toggle="tooltip" data-container="body" style='width: ${textWidth}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 7px; margin-bottom: 6px;'>${events[i].name}</h5>
                          </a>
