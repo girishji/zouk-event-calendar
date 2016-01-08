@@ -121,18 +121,9 @@ function buildContent(accessToken) {
             <table class="table">
             <thead>
             <tr>
-            <th><a href="#" onclick="sortByTime();"><table><tr><td>Date</td><td><span class="caret"></td></tr></table></a></button>
-            </th>
-            <th>
-            <div class="input-group">
-            <input type="text" class="form-control" placeholder="Enter address...">
-            <span class="input-group-btn">
-            <button class="btn btn-default" type="button">Go!</button>
-            </span>
-            </div><!-- /input-group -->
-            </th>
-            <th><a href="#" onclick="showByPopularity();">Attending<span class="caret"></a></button>
-            </th>
+            <th><a href="#" onclick="sortByTime();">Date<span class="caret"></a></th>
+            <th>Event</th>
+            <th><a href="#" onclick="showByPopularity();">Attending<span class="caret"></a></th>
             </tr>
             </thead>
             <tbody>
