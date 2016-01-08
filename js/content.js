@@ -181,8 +181,8 @@ function buildContent(accessToken) {
 
             var imgWidth = '75px';
             var imgHeight = '42px';
-            var textWidth = '400px';
-            str += `<tr><td><h5 style="display: block;">${month} ${dateS[2]}</h5></td>
+            var textWidth = '340px';
+            str += `<tr><td><h5>${month} ${dateS[2]}</h5></td>
                 <td> 
                   <table>
                     <tr>
@@ -192,7 +192,7 @@ function buildContent(accessToken) {
                           </div>
                         </a>
                        </td>
-                         <td style="padding-left: 20px">
+                       <td style="padding-left: 20px">
                          <a href="https://www.facebook.com/events/${events[i].id}">
                          <h5 title="${events[i].name}" data-toggle="tooltip" data-container="body" style='width: ${textWidth}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 7px; margin-bottom: 6px;'>${events[i].name}</h5>
                          </a>
@@ -205,6 +205,7 @@ function buildContent(accessToken) {
                 </tr>`;
         }
 
+//                        <td style="padding-left: 20px">
         str += `
                 </tbody>
               </table>
