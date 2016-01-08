@@ -83,7 +83,7 @@
 //					attributes.domain  && '; domain=' + attributes.domain,
 //					attributes.secure ? '; secure' : ''
 //				].join(''));
-//			}
+			}
 
 			// Read
 
