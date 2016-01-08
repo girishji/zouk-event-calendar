@@ -2,12 +2,6 @@
     header("Content-type: text/css; charset: UTF-8");
 ?>
 
-@media screen and (min-width: 768px) {
-   .header {
-        margin-bottom: 20px;
-    }
-}
-
 .sort-group-header td {
     padding-bottom: 6px;
 }
