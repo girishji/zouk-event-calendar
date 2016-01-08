@@ -296,8 +296,8 @@ function buildContent(accessToken) {
                 $('.progress-bar').css('width', '100%').attr('aria-valuenow', 100);
                 if (events.length > 0) {
                     setTimeout(function() { display(events); }, 800); // wait for some millisec so progress bar shows completion
-                    // store events in a cookie
-                    $.cookie("facebook-events", JSON.stringify(events));
+                    // store events in a cookie https://github.com/js-cookie/js-cookie
+                    Cookies.set('zouk-facebook-events', JSON.stringify(events));
                 }
             }
         }
@@ -319,20 +319,24 @@ function buildContent(accessToken) {
 /************************************************************/
 function sortByTime() {
     // Read from cookie
-    var events = JSON.parse($.cookie("facebook-events"));
-    display(events);
+    var c = Cookies.get('zouk-facebook-events');
+    if (c === undefined) {
+    } else {
+        var events = JSON.parse(c);
+        display(events);
+    }
 }
 
 /************************************************************/
 function sortByAttending() {
     // Read from cookie
-    var events = JSON.parse($.cookie("facebook-events"));
-    events.sort(function(at, bt) {
-        var a = at.attending_count;
-        var b = bt.attending_count;
-        return (a < b) ? 1 : -1; // descending
-    });
-    display(events);
+    //var events = JSON.parse($.cookie("facebook-events"));
+    //events.sort(function(at, bt) {
+    //    var a = at.attending_count;
+    //    var b = bt.attending_count;
+    //    return (a < b) ? 1 : -1; // descending
+    //});
+    //display(events);
 }
 
 /************************************************************/
