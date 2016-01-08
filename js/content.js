@@ -121,7 +121,7 @@ function buildContent(accessToken) {
             <table class="table">
             <thead>
             <tr>
-            <th><a href="#" onclick="sortByTime();">Date<span class="caret"></a></button>
+            <th><a href="#" onclick="sortByTime();"><table><tr><td>Date</td><td><span class="caret"></td></tr></table></a></button>
             </th>
             <th>
             <div class="input-group">
