@@ -110,7 +110,7 @@
 
       <!-- Nav  -->
       <ul class="nav nav-tabs" id="contentNav" style="display: none;">
-        <li role="presentation" class="active"><a href="#" onclick="showEvents();">Events</a></li>
+        <li role="presentation" class="active"><a href="#" onclick="showEventsByTime();">Events</a></li>
         <li role="presentation"><a href="#" onclick="showMap();">Map</a></li>
       </ul>
       
@@ -120,7 +120,7 @@
         <table style="width: 100%;">
           <tr style="font-weight: bold;">
             <td style="padding: 8px;">
-              <a href="#" onclick="sortByTime();">
+              <a href="#" onclick="showEventsByTime();">
                 <table><tr><td>Date</td><td><span class="caret"></td></tr></table>
               </a>
             </td>
@@ -133,7 +133,7 @@
               </div><!-- /input-group -->
             </td>
             <td style="padding: 8px;">
-              <a href="#" onclick="sortByAttending();">
+              <a href="#" onclick="showEventsByAttending();">
                 <table><tr><td>Attending</td><td><span class="caret"></td></tr></table>
               </a>
             </td>

@@ -317,10 +317,11 @@ function buildContent(accessToken) {
 }
 
 /************************************************************/
-function sortByTime() {
+function showEventsByTime() {
     // Read from cookie
     var c = Cookies.get('zouk-facebook-events');
     if (c === undefined) {
+        console.log('error: cookie undefined');
     } else {
         var events = JSON.parse(c);
         display(events);
@@ -328,7 +329,7 @@ function sortByTime() {
 }
 
 /************************************************************/
-function sortByAttending() {
+function showEventsByAttending() {
     // Read from cookie
     //var events = JSON.parse($.cookie("facebook-events"));
     //events.sort(function(at, bt) {
