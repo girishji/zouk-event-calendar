@@ -319,6 +319,7 @@ function buildContent(accessToken) {
 /************************************************************/
 function showEventsByTime() {
     // Read from cookie
+    console.log('showEventsByTime');
     var c = Cookies.get('zouk-facebook-events');
     if (c === undefined) {
         console.log('error: cookie undefined');
