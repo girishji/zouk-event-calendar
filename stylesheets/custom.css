@@ -2,6 +2,10 @@
     header("Content-type: text/css; charset: UTF-8");
 ?>
 
+.header {
+    margin-bottom: 2px;
+}
+
 .sort-group-header td {
     padding-bottom: 6px;
 }
