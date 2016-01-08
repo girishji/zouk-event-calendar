@@ -121,9 +121,9 @@ function buildContent(accessToken) {
             <table class="table">
             <thead>
             <tr>
-            <th><button type="button" class="btn btn-default">Date</button></th>
+            <th><a href="#">Date<span class="caret"></a></button></th>
             <th>Event</th>
-            <th><button type="button" class="btn btn-default">Attending</button></th>
+            <th><a href="#">Attending<span class="caret"></a></button></th>
             </tr>
             </thead>
             <tbody>
