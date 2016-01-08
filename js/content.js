@@ -20,24 +20,8 @@ window.fbAsyncInit = function() {
     // manually set size (also slow)
     // FB.Canvas.setSize({ width: 640, height: 4000 });
 
-    // Check if logged in
-    FB.getLoginStatus(function(response) {
-        if (response.status === 'connected') {
-            // console.log('Logged in.');
-            buildContent(response.authResponse.accessToken);
-        } else {
-            FB.login(function(response) {
-                if (response.authResponse) {
-                    if (response.status === 'connected') {
-                        console.log('Welcome!  Fetching information.... ');
-                        buildContent(response.authResponse.accessToken);
-                    }
-                } else {
-                    console.log('User cancelled login or did not fully authorize.');
-                }
-            });
-        }
-    });
+    // Check if logged in, and search for events
+    loginAndDo(buildContent);
 };
 // load the facebook SDK async
 (function(d, s, id){
@@ -102,6 +86,28 @@ var searches = [
 
 // Progress bar
 var progress = 0;
+
+/************************************************************/
+function loginAndDo(doFunct) {
+    // Get access token and use it to do something (async).
+    FB.getLoginStatus(function(response) {
+        if (response.status === 'connected') {
+            // console.log('Logged in.');
+            doFunct(response.authResponse.accessToken);
+        } else {
+            FB.login(function(response) {
+                if (response.authResponse) {
+                    if (response.status === 'connected') {
+                        //console.log('Welcome!  Fetching information.... ');
+                        doFunct(response.authResponse.accessToken);
+                    }
+                } else {
+                    console.log('User cancelled login or did not fully authorize.');
+                }
+            });
+        }
+    });
+}
 
 /************************************************************/
 function display(events, accessToken) {
@@ -296,16 +302,12 @@ function buildContent(accessToken) {
                 $('.progress-bar').css('width', '100%').attr('aria-valuenow', 100);
                 if (events.length > 0) {
                     setTimeout(function() { display(events, accessToken); }, 800); // wait for some millisec so progress bar shows completion
-                    // store events in a cookie https://github.com/js-cookie/js-cookie
-                    Cookies.set('zouk-facebook-events', events, { path: '/zouk' } );
-                    //$.cookie('zoukevents', JSON.stringify(events));
-                    var c = Cookies.get('zouk-facebook-events');
-                    //var c = $.cookie('zoukevents');
-                    if (c === undefined) {
-                        console.log('error: cookie undefined');
-                    } else {
-                        console.log(c);
-                    }
+                    // XXX cookies have 4k limit - so can't be used to store events. It siliently fails. Use
+                    // localStorage / sessionStorage - has 5MB limit
+                    if(typeof(Storage) !== "undefined") {
+                        // Save data to sessionStorage
+                        sessionStorage.setItem('zoukevents', JSON.stringify(events));
+                    } 
                 }
             }
         }
@@ -326,25 +328,43 @@ function buildContent(accessToken) {
 
 /************************************************************/
 function showEventsByTime() {
-    // Read from cookie
-    var events = Cookies.getJSON('zouk-facebook-events');
-    if (events === undefined) {
-        console.log('error: cookie undefined');
+    loginAndDo(showEventsByTimeInner);
+}
+
+/************************************************************/
+function showEventsByTimeInner(accessToken) {
+    if (typeof(Storage) !== "undefined") {
+        var data = sessionStorage.getItem('zoukevents');
+        if (data !== undefined && data) {
+            var events = JSON.parse(data);
+            display(events, accessToken);
+        }
     } else {
-        display(events);
+        buildContent(accessToken);
     }
 }
 
 /************************************************************/
 function showEventsByAttending() {
-    // Read from cookie
-    //var events = JSON.parse($.cookie("facebook-events"));
-    //events.sort(function(at, bt) {
-    //    var a = at.attending_count;
-    //    var b = bt.attending_count;
-    //    return (a < b) ? 1 : -1; // descending
-    //});
-    //display(events);
+    loginAndDo(showEventsByAttendingInner);
+}
+
+/************************************************************/
+function showEventsByAttendingInner(accessToken) {
+    if (typeof(Storage) !== "undefined") {
+        var data = sessionStorage.getItem('zoukevents');
+        if (data !== undefined && data) {
+            var events = JSON.parse(data);
+            events.sort(function(at, bt) {
+                var a = at.attending_count;
+                var b = bt.attending_count;
+                return (a < b) ? 1 : -1; // descending
+            });
+            display(events, accessToken);
+        }
+    } else {
+        alert('Your browser does not support this operation');
+    }
 }
 
 /************************************************************/
