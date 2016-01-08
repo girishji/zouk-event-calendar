@@ -367,7 +367,8 @@ function showEventsByAttendingInner(accessToken) {
                 return (a < b) ? 1 : -1; // descending
             });
             if (events.length > 0) {
-                display(events, accessToken);
+                $('#evTableContent').empty();
+                //display(events, accessToken);
             } else {
                 console.log('No events in showEventsByAttendingInner');
             }
