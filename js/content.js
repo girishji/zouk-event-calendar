@@ -100,125 +100,119 @@ var searches = [
     'carioca+zouk'
 ];
 
-// All events
-var events = [];
-
 // Progress bar
 var progress = 0;
 
+/************************************************************/
+function display(var events) {
+    console.log('total: ' + events.length);
+    var monthNames = [
+        "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
+        "Aug", "Sep", "Oct", "Nov", "Dec"
+    ];
+    var str = `
+        <table class="table table-condensed">
+        <tbody>
+        `;
+    for (var i = 0; i < events.length; i++) {
+        var splitS = events[i].start_time.split('T'); // 2016-04-07T19:00:00-0300
+        var dateS = splitS[0].split('-');
+        var month = monthNames[parseInt(dateS[1]) - 1];
+        // var timeS = splitS[1].split(':');
+        // Use template strings
+        // also http://stackoverflow.com/questions/6629188/facebook-graph-api-how-do-you-retrieve-the-different-size-photos-from-an-album
+
+        var imageUrl = '/images/blank.jpg';
+        if (events[i].hasOwnProperty('cover') && events[i].cover) {
+            var pic = events[i].cover;
+            if (pic.hasOwnProperty('id') && pic.id) {
+                imageUrl = 'https://graph.facebook.com/' + pic.id + '/picture?access_token='
+                    + accessToken + '&type=thumbnail';
+            }
+        }
+        var placeStr = '';
+        var placeName = null;
+        if (events[i].hasOwnProperty('place') && events[i].place) {
+            var place = events[i].place;
+            if (place.hasOwnProperty('name') && place.name) {
+                placeStr += place.name;
+                placeName = place.name;
+            }
+            if (place.hasOwnProperty('location') && place.location) {
+                var location = place.location;
+                if (location.hasOwnProperty('street') && location.street) {
+                    placeStr += ', ' + location.street;
+                }
+                if ((location.hasOwnProperty('city') && location.city) && 
+                    (location.hasOwnProperty('country') && location.country)) {
+                    placeStr += ', ' + location.city + ', ' + location.country;
+                    if (! placeName) {
+                        placeName = location.city + ', ' + location.country;
+                    }
+                }
+            }
+        }
+        if (! placeName) {
+            placeName = 'tbd';
+        }
+
+        var imgWidth = '75px';
+        var imgHeight = '42px';
+        var textWidth = '400px';
+        str += `<tr><td><h5>${month} ${dateS[2]}</h5></td>
+            <td> 
+            <table>
+            <tr>
+            <td>
+            <a href="https://www.facebook.com/events/${events[i].id}">
+            <div id="img_inner" style='background-image: url("${imageUrl}"); width: ${imgWidth}; height: ${imgHeight}; background-size: ${imgWidth} ${imgHeight};' >
+            </div>
+            </a>
+            </td>
+            <td style="padding-left: 20px">
+            <a href="https://www.facebook.com/events/${events[i].id}">
+            <h5 title="${events[i].name}" data-toggle="tooltip" data-container="body" style='width: ${textWidth}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 7px; margin-bottom: 6px;'>${events[i].name}</h5>
+            </a>
+            <h5 class='small' title="${placeStr}" data-toggle="tooltip" data-container="body" style='margin-top: 3px; margin-bottom: 1px; width: ${textWidth}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>${placeStr}<h5>
+            </td>
+            </tr>
+            </table>
+            </td>
+            <td>${events[i].attending_count}</a></td>
+            </tr>`;
+    }
+
+    str += `
+    </tbody>
+        </table>
+        `;
+    $('#progressBar').hide();
+    $('#contentNav').show();
+    $('#evTableContent').replaceWith(str);
+    $('#totalEvents').replaceWith('<span class="badge">' + events.length + '</span>' + ' events');
+    $('#mainContent').show();
+    // console.log(str);
+    //document.getElementById("z_content").innerHTML = str;
+}
+
+/************************************************************/
+function parseTime(str) { // milliseconds since 1970 00:00:00
+    // http://stackoverflow.com/questions/6427204/date-parsing-in-javascript-is-different-between-safari-and-chrome
+    // If actual time zone is used then after sorting, newer events
+    // will appear older after adjusting for timezones. So ignore
+    // timezones by removing timezone field.
+    // 2016-04-07T19:00:00-0300 or 2016-04-07T19:00:00+0300
+    var a = str.split(/[^0-9]/);
+    return new Date(a[0], a[1] - 1, a[2], a[3], a[4], a[5]);
+}
+
+/************************************************************/
 // Search FB
 function buildContent(accessToken) {
     var timeNow = new Date();
     var batchCmd = [];
+    var events = []; // All events
 
-    function display() {
-        console.log('total: ' + events.length);
-        var monthNames = [
-            "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
-            "Aug", "Sep", "Oct", "Nov", "Dec"
-        ];
-        var str = `
-            <table class="table table-condensed">
-            <tbody>
-            `;
-        for (var i = 0; i < events.length; i++) {
-            var splitS = events[i].start_time.split('T'); // 2016-04-07T19:00:00-0300
-            var dateS = splitS[0].split('-');
-            var month = monthNames[parseInt(dateS[1]) - 1];
-            // var timeS = splitS[1].split(':');
-            // Use template strings
-            // also http://stackoverflow.com/questions/6629188/facebook-graph-api-how-do-you-retrieve-the-different-size-photos-from-an-album
-
-            var imageUrl = '/images/blank.jpg';
-            if (events[i].hasOwnProperty('cover') && events[i].cover) {
-                var pic = events[i].cover;
-                if (pic.hasOwnProperty('id') && pic.id) {
-                    imageUrl = 'https://graph.facebook.com/' + pic.id + '/picture?access_token='
-                        + accessToken + '&type=thumbnail';
-                }
-            }
-            var placeStr = '';
-            var placeName = null;
-            if (events[i].hasOwnProperty('place') && events[i].place) {
-                var place = events[i].place;
-                if (place.hasOwnProperty('name') && place.name) {
-                    placeStr += place.name;
-                    placeName = place.name;
-                }
-                if (place.hasOwnProperty('location') && place.location) {
-                    var location = place.location;
-                    if (location.hasOwnProperty('street') && location.street) {
-                        placeStr += ', ' + location.street;
-                    }
-                    if ((location.hasOwnProperty('city') && location.city) && 
-                        (location.hasOwnProperty('country') && location.country)) {
-                        placeStr += ', ' + location.city + ', ' + location.country;
-                        if (! placeName) {
-                            placeName = location.city + ', ' + location.country;
-                        }
-                    }
-                }
-            }
-            if (! placeName) {
-                placeName = 'tbd';
-            }
-
-            var imgWidth = '75px';
-            var imgHeight = '42px';
-            var textWidth = '400px';
-            str += `<tr><td><h5>${month} ${dateS[2]}</h5></td>
-                <td> 
-                  <table>
-                    <tr>
-                      <td>
-                        <a href="https://www.facebook.com/events/${events[i].id}">
-                <div id="img_inner" style='background-image: url("${imageUrl}"); width: ${imgWidth}; height: ${imgHeight}; background-size: ${imgWidth} ${imgHeight};' >
-                          </div>
-                        </a>
-                       </td>
-                       <td style="padding-left: 20px">
-                         <a href="https://www.facebook.com/events/${events[i].id}">
-                         <h5 title="${events[i].name}" data-toggle="tooltip" data-container="body" style='width: ${textWidth}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 7px; margin-bottom: 6px;'>${events[i].name}</h5>
-                         </a>
-                         <h5 class='small' title="${placeStr}" data-toggle="tooltip" data-container="body" style='margin-top: 3px; margin-bottom: 1px; width: ${textWidth}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>${placeStr}<h5>
-                        </td>
-                      </tr>
-                   </table>
-                </td>
-                <td>${events[i].attending_count}</a></td>
-                </tr>`;
-        }
-
-        str += `
-                </tbody>
-              </table>
-            `;
-        $('#progressBar').hide();
-        $('#contentNav').show();
-        $('#evTableContent').replaceWith(str);
-        $('#totalEvents').replaceWith('<span class="badge">' + events.length + '</span>' + ' events');
-        $('#mainContent').show();
-        // console.log(str);
-        //document.getElementById("z_content").innerHTML = str;
-    }
-
-    function inLocalTZ(timeStr) {
-        // If actual time zone is used then after sorting, newer events
-        // will appear older after adjusting for timezones. So ignore
-        // timezones by removing timezone field.
-        // 2016-04-07T19:00:00-0300 or 2016-04-07T19:00:00+0300
-        var d = timeStr.split('T');
-        var t = d[1].split('+');
-        t = t[0].split('-');
-        //console.log('tz ' + d[0] + 'T' + t[0]);
-        return d[0] + 'T' + t[0];
-    }
-
-    function parseTime(str) { // milliseconds since 1970 00:00:00
-        // http://stackoverflow.com/questions/6427204/date-parsing-in-javascript-is-different-between-safari-and-chrome
-        var a = str.split(/[^0-9]/);
-        return new Date(a[0], a[1] - 1, a[2], a[3], a[4], a[5]);
-    }
 
     function isValid(event) {
         if (event && event.hasOwnProperty('start_time')) {
@@ -301,7 +295,9 @@ function buildContent(accessToken) {
                 // We are done, show results
                 $('.progress-bar').css('width', '100%').attr('aria-valuenow', 100);
                 if (events.length > 0) {
-                    setTimeout(function() { display(); }, 800); // wait for some millisec so progress bar shows completion
+                    setTimeout(function() { display(events); }, 800); // wait for some millisec so progress bar shows completion
+                    // store events in a cookie
+                    $.cookie("facebook-events", JSON.stringify(events));
                 }
             }
         }
@@ -320,3 +316,23 @@ function buildContent(accessToken) {
     // Response of FB.api is asynchronous, make it resursive from callback
 }
 
+/************************************************************/
+function sortByTime() {
+    // Read from cookie
+    var events = JSON.parse($.cookie("facebook-events"));
+    display(events);
+}
+
+/************************************************************/
+function sortByAttending() {
+    // Read from cookie
+    var events = JSON.parse($.cookie("facebook-events"));
+    events.sort(function(at, bt) {
+        var a = at.attending_count;
+        var b = bt.attending_count;
+        return (a < b) ? 1 : -1; // descending
+    });
+    display(events);
+}
+
+/************************************************************/
