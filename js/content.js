@@ -196,7 +196,7 @@ function buildContent(accessToken) {
         $('#progressBar').hide();
         $('#contentNav').show();
         $('#evTableContent').replaceWith(str);
-        $('#totalEvents').replaceWith(events.length + ' events');
+        $('#totalEvents').replaceWith('<span class="badge">' + events.length + '</span>' + ' events');
         $('#mainContent').show();
         // console.log(str);
         //document.getElementById("z_content").innerHTML = str;
