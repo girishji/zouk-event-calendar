@@ -104,7 +104,7 @@ var searches = [
 var progress = 0;
 
 /************************************************************/
-function display(events) {
+function display(events, accessToken) {
     console.log('total: ' + events.length);
     var monthNames = [
         "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
@@ -295,7 +295,7 @@ function buildContent(accessToken) {
                 // We are done, show results
                 $('.progress-bar').css('width', '100%').attr('aria-valuenow', 100);
                 if (events.length > 0) {
-                    setTimeout(function() { display(events); }, 800); // wait for some millisec so progress bar shows completion
+                    setTimeout(function() { display(events, accessToken); }, 800); // wait for some millisec so progress bar shows completion
                     // store events in a cookie https://github.com/js-cookie/js-cookie
                     Cookies.set('zouk-facebook-events', JSON.stringify(events));
                 }
