@@ -242,12 +242,16 @@ function buildContent(accessToken) {
                     if (event.hasOwnProperty('place') && event.place) {
                         placeStr = JSON.stringify(event.place);
                         if (placeStr.search(/zouk/i) !== -1) { // found
+                            console.log('place has zouk ' + event.name);
                             if (event.hasOwnProperty('name') && event.name) {
                                 if (event.name.search(/zouk/i) === -1) { // not found
+                                    console.log('place name has no zouk ' + event.name);
                                     if (event.hasOwnProperty('description') && event.description) {
                                         var description = event.description;
+                                        console.log('before: ' + event.description);
                                         // remove http:... or https...
                                         description.replace(/(?:https?|ftp):\/\/[\n\S]+/g, '');
+                                        console.log('after: ' + event.description);
                                         if (description.search(/zouk/i) === -1) { // not found
                                             console.log('discarding ' + event.name);
                                             return false;
