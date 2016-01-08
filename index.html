@@ -28,11 +28,11 @@
     <link href="https://maxcdn.bootstrapcdn.com/js/ie10-viewport-bug-workaround.js" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <!-- <link href="/stylesheets/theme.css" rel="stylesheet"> -->
     <link href="/stylesheets/jumbotron-narrow.css" rel="stylesheet">
-    <link href="/stylesheets/main.css" rel="stylesheet">
+    <link href="/stylesheets/custom.css" rel="stylesheet">
 
-     <script src="/js/content.js" type="text/javascript" ></script>
+    <!-- my content -->
+    <script src="/js/content.js" type="text/javascript" ></script>
   </head>
 
   <body>
@@ -52,15 +52,6 @@
         </nav>
         <!-- XXX change link below -->
         <a href="https://zouksanfrancisco.com"><h3 class="text-muted">Zouk Event Calendar</h3></a>
-      </div>
-
-      <div id="progressBar">
-        <div class="progress-bar-header">
-          <h4 class="text-muted">Searching Facebook ...</h4>
-        </div>
-        <div class="progress">
-          <div class="progress-bar" role="progressbar" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100" style="width:5%;"></div>
-        </div>
       </div>
 
       <!-- modal -->
@@ -105,6 +96,27 @@
         </div>
       </div>
 
+      <!-- Nav  -->
+      <ul class="nav nav-tabs" id="contentNav" style="display: none;">
+        <li role="presentation" class="active"><a href="#" onclick="showEvents();">Events</a></li>
+        <li role="presentation"><a href="#" onclick="showMap();">Map</a></li>
+      </ul>
+
+      <!-- progress bar -->
+      <div id="progressBar">
+        <div class="progress-bar-header">
+          <h4 class="text-muted">Searching Facebook ...</h4>
+        </div>
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100" style="width:5%;"></div>
+        </div>
+      </div>
+
+     
+      <div id="mainContent">
+
+      </div>
+
       <table style="margin-bottom: 10px; width: 100%;">
         <tr>
           <td><h4 id="totalEvents" class="text-muted" style="text-align: left; padding-left: 10px;">Total: </h4></td>
@@ -144,6 +156,7 @@
 
 .btn-primary {
     color: #fff;
+background-image: -webkit-linear-gradient(top,#337ab7 0,#265a88 100%);
     background-color: #002200;
     border-color: #ff0000;
 }
@@ -155,8 +168,6 @@
 
 </style>
 
-      <div id="z-table">
-      </div>
 
       <footer class="footer">
         <p>&copy; 2015 @biggieg_zouk</p>

@@ -118,17 +118,15 @@ function buildContent(accessToken) {
             "Aug", "Sep", "Oct", "Nov", "Dec"
         ];
         var str = `
-              <table class="table">
-            <!--
-                <thead>
-                  <tr>
-                    <th>Date</th>
-                    <th>Event</th>
-                    <th>Attending</th>
-                  </tr>
-                </thead>
-            -->
-                <tbody>
+            <table class="table">
+            <thead>
+            <tr>
+            <th><button type="button" class="btn btn-default">Date</button></th>
+            <th>Event</th>
+            <th><button type="button" class="btn btn-default">Attending</button></th>
+            </tr>
+            </thead>
+            <tbody>
             `;
         for (var i = 0; i < events.length; i++) {
             var splitS = events[i].start_time.split('T'); // 2016-04-07T19:00:00-0300
@@ -203,9 +201,8 @@ function buildContent(accessToken) {
               </table>
             `;
         $('#progressBar').hide();
-        //$('#tableBody').replaceWith(str);
-        $('#z-table').replaceWith(str);
-        //$('.z-content').css('display', 'inline');
+        $('#contentNav').show();
+        $('#mainContent').replaceWith(str);
         // console.log(str);
         //document.getElementById("z_content").innerHTML = str;
     }
