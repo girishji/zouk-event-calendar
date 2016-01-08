@@ -121,9 +121,18 @@ function buildContent(accessToken) {
             <table class="table">
             <thead>
             <tr>
-            <th><a href="#" onclick="sortByTime();">Date<span class="caret"></a></th>
-            <th>Event</th>
-            <th><a href="#" onclick="showByPopularity();">Attending<span class="caret"></a></th>
+            <th><a href="#" onclick="sortByTime();"><table class="sort-group-header"><tr><td>Date</td><td><span class="caret"></td></tr></table></a>
+            </th>
+            <th>
+            <div class="input-group sort-group-header">
+            <input type="text" class="form-control" placeholder="Enter address...">
+            <span class="input-group-btn">
+            <button class="btn btn-default" type="button">Filter</button>
+            </span>
+            </div><!-- /input-group -->
+            </th>
+            <th><a href="#" onclick="showByPopularity();"><table class="sort-group-header"><tr><td>Attending</td><td><span class="caret"></td></tr></table></a>
+            </th>
             </tr>
             </thead>
             <tbody>
@@ -173,7 +182,7 @@ function buildContent(accessToken) {
             var imgWidth = '75px';
             var imgHeight = '42px';
             var textWidth = '400px';
-            str += `<tr><td><h5>${month} ${dateS[2]}</h5></td>
+            str += `<tr><td><h5 style="display: block;">${month} ${dateS[2]}</h5></td>
                 <td> 
                   <table>
                     <tr>
