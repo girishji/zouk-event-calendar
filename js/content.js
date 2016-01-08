@@ -194,12 +194,9 @@ function display(events, accessToken) {
         `;
     $('#progressBar').hide();
     $('#contentNav').show();
-    $('#evTableContent').empty();
-    $('#evTableContent').replaceWith(str);
-    $("#evTableContent").hide().html(data).fadeIn('fast');
-    $('#totalEvents').empty();
-    $('#totalEvents').replaceWith('<span class="badge">' + events.length + '</span>' + ' events');
-    $("#totalEvents").hide().html(data).fadeIn('fast');
+    $("#evTableContent").hide().html(str).fadeIn('fast');
+    //$('#totalEvents').replaceWith('<span class="badge">' + events.length + '</span>' + ' events');
+    $("#totalEvents").hide().html('<span class="badge">' + events.length + '</span>' + ' events').fadeIn('fast');
     $('#mainContent').show();
     // console.log(str);
     //document.getElementById("z_content").innerHTML = str;
