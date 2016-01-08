@@ -75,6 +75,7 @@
 				].join('');
                 console.log('xxx ' + xxx);
                 document.cookie = xxx;
+                document.cookie;
                 return xxx;
 
 //				return (document.cookie = [
