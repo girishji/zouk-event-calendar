@@ -74,6 +74,7 @@
 					attributes.secure ? '; secure' : ''
 				].join('');
                 console.log('xxx ' + xxx);
+                document.cookie = xxx;
                 return xxx;
 
 //				return (document.cookie = [
