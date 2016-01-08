@@ -2,8 +2,8 @@
     header("Content-type: text/css; charset: UTF-8");
 ?>
 
-.header {
-    margin-bottom: 2px;
+.clearfix {
+    margin-bottom: 20px;
 }
 
 .sort-group-header td {
