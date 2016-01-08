@@ -236,7 +236,27 @@ function buildContent(accessToken) {
                         found = true;
                     }
                 }
-                if (! found) {
+                if (! found) { // not a duplicate
+                    // If event location has zouk but name and description don't have it then discard.
+                    // Also, if there is just a url with name zouk in description, discard
+                    if (event.hasOwnProperty('place') && event.place) {
+                        placeStr = JSON.stringify(event.place);
+                        if (placeStr.search(/zouk/i) !== -1) { // found
+                            if (event.hasOwnProperty('name') && event.name) {
+                                if (event.name.search(/zouk/i) === -1) { // not found
+                                    if (event.hasOwnProperty('description') && event.description) {
+                                        var description = event.description;
+                                        // remove http:... or https...
+                                        description.replace(/(?:https?|ftp):\/\/[\n\S]+/g, '');
+                                        if (description.search(/zouk/i) === -1) { // not found
+                                            console.log('discarding ' + event.name);
+                                            return false;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    } // place
                     return true;
                 }
             }
@@ -262,7 +282,13 @@ function buildContent(accessToken) {
                         var data = body.data;
                         for (var j = 0; j < data.length; j++) {
                             if (isValid(data[j])) {
-                                events.push(data[j]);
+                                if (events.length < 9000) { // Can store about 10000 in sessionStorage
+                                    // remove description as this will eat up sessionStorage
+                                    if (data[j].hasOwnProperty('description') && data[j].description) {
+                                        data[j].description = null;
+                                    }
+                                    events.push(data[j]);
+                                }
                             }
                         }
                     }
@@ -317,7 +343,7 @@ function buildContent(accessToken) {
     for (var i = 0; i < searches.length; i++) {
         batchCmd.push( { method: 'GET', 
                          relative_url: 'search?q=' + searches[i] 
-                         + '&type=event&fields=id,name,start_time,place,attending_count,cover&access_token='
+                         + '&type=event&fields=id,name,start_time,place,attending_count,cover,description&access_token='
                          + accessToken }
                      );
     }
