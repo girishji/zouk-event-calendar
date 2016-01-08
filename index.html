@@ -116,10 +116,13 @@
       <div id="mainContent" style="display: none;">
 
         <table>
-          <tr>
-            <td><a href="#" onclick="sortByTime();">Date<span class="caret"></a>
+          <tr style="font-weight: bold;">
+            <td style="padding: 8px;">
+              <a href="#" onclick="sortByTime();">
+                <table><tr><td>Date</td><td><span class="caret"></td></tr></table>
+              </a>
             </td>
-            <td>
+            <td style="padding: 8px;">
               <div class="input-group sort-group-header">
                 <input type="text" class="form-control" placeholder="Enter address...">
                 <span class="input-group-btn">
@@ -127,7 +130,10 @@
                 </span>
               </div><!-- /input-group -->
             </td>
-            <td><a href="#" onclick="sortByAttending();">Attending<span class="caret"></a>
+            <td style="padding: 8px;">
+              <a href="#" onclick="sortByAttending();">
+                <table><tr><td>Attending</td><td><span class="caret"></td></tr></table>
+              </a>
             </td>
           </tr>
         </table>
