@@ -119,22 +119,6 @@ function buildContent(accessToken) {
         ];
         var str = `
             <table class="table">
-            <thead>
-            <tr>
-            <th><a href="#" onclick="sortByTime();"><table class="sort-group-header"><tr><td>Date</td><td><span class="caret"></td></tr></table></a>
-            </th>
-            <th>
-            <div class="input-group sort-group-header">
-            <input type="text" class="form-control" placeholder="Enter address...">
-            <span class="input-group-btn">
-            <button class="btn btn-default" type="button">Filter</button>
-            </span>
-            </div><!-- /input-group -->
-            </th>
-            <th><a href="#" onclick="showByPopularity();"><table class="sort-group-header"><tr><td>Attending</td><td><span class="caret"></td></tr></table></a>
-            </th>
-            </tr>
-            </thead>
             <tbody>
             `;
         for (var i = 0; i < events.length; i++) {
@@ -211,7 +195,7 @@ function buildContent(accessToken) {
             `;
         $('#progressBar').hide();
         $('#contentNav').show();
-        $('#mainContent').replaceWith(str);
+        $('#evTableContent').replaceWith(str);
         // console.log(str);
         //document.getElementById("z_content").innerHTML = str;
     }

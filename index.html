@@ -102,7 +102,7 @@
           <h4 class="text-muted">Searching Facebook ...</h4>
         </div>
         <div class="progress">
-          <div class="progress-bar" role="progressbar" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100" style="width:5%;"></div>
+          <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%;"></div>
         </div>
       </div>
 
@@ -112,62 +112,28 @@
         <li role="presentation"><a href="#" onclick="showMap();">Map</a></li>
       </ul>
 
-
      
-      <div id="mainContent">
+      <div id="mainContent" style="display: none;">
 
+        <table>
+          <tr>
+            <td><a href="#" onclick="sortByTime();">Date<span class="caret"></a>
+            </td>
+            <td>
+              <div class="input-group sort-group-header">
+                <input type="text" class="form-control" placeholder="Enter address...">
+                <span class="input-group-btn">
+                  <button class="btn btn-default" type="button">Filter</button>
+                </span>
+              </div><!-- /input-group -->
+            </td>
+            <td><a href="#" onclick="sortByAttending();">Attending<span class="caret"></a>
+            </td>
+          </tr>
+        </table>
+
+        <div id="evTableContent"> <div/>
       </div>
-
-      <table style="margin-bottom: 10px; width: 100%;">
-        <tr>
-          <td><h4 id="totalEvents" class="text-muted" style="text-align: left; padding-left: 10px;">Total: </h4></td>
-          <td>
-            <!-- search dropdown display: none; -->
-            <div class="dropdown" style="float: right; padding-right: 10px;">
-              <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                Sort by
-                <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
-                <li><a href="#" onclick="showByStartTime();">Start time</a></li>
-                <li><a href="#collapseLocation" data-toggle="collapse">Location</a></li>
-                <li><a href="#" onclick="showByPopularity();">Popularity</a></li>
-              </ul>
-            </div>
-          </td>
-        </tr>
-      </table>
-      <div class="collapse" id="collapseLocation">
-        <div class="well">
-          ...
-        </div>
-      </div>
-
-<button type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
-  Single toggle
-</button>
-
-<style>
-.btn-primary.active.focus,
-.btn-primary.active:focus {
-    color: #fff;
-    background-color: #000000;
-    border-color: #ff0000;
-}
-
-.btn-primary {
-    color: #fff;
-background-image: -webkit-linear-gradient(top,#337ab7 0,#265a88 100%);
-    background-color: #002200;
-    border-color: #ff0000;
-}
-.btn-primary:hover {
-    color: #fff;
-    background-color: #ff0000;
-    border-color: #ff0000;
-}
-
-</style>
 
 
       <footer class="footer">
