@@ -196,8 +196,10 @@ function display(events, accessToken) {
     $('#contentNav').show();
     $('#evTableContent').empty();
     $('#evTableContent').replaceWith(str);
+    $("#evTableContent").hide().html(data).fadeIn('fast');
     $('#totalEvents').empty();
     $('#totalEvents').replaceWith('<span class="badge">' + events.length + '</span>' + ' events');
+    $("#totalEvents").hide().html(data).fadeIn('fast');
     $('#mainContent').show();
     // console.log(str);
     //document.getElementById("z_content").innerHTML = str;
@@ -367,8 +369,7 @@ function showEventsByAttendingInner(accessToken) {
                 return (a < b) ? 1 : -1; // descending
             });
             if (events.length > 0) {
-                $('#evTableContent').empty();
-                //display(events, accessToken);
+                display(events, accessToken);
             } else {
                 console.log('No events in showEventsByAttendingInner');
             }
