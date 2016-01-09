@@ -257,9 +257,9 @@ var legitAttendeesCallback = function(response) {
                 if (body.hasOwnProperty('paging') && body.paging) {
                     var paging = body.paging;
                     if (paging.hasOwnProperty('next') && paging.next) {
-                        //nextPage.push(paging.next);
-                        batchCmd.push( { method: 'GET', relative_url: paging.next } );
-                        console.log('adding pag ' + paging.next);
+                        var rel_url = getRelativeUrl(paging.next);
+                        console.log('rel url ' + rel_url);
+                        batchCmd.push( { method: 'GET', relative_url: rel_url } );
                     }
                 }
             } 
@@ -281,6 +281,15 @@ var legitAttendeesCallback = function(response) {
         }
     }
 };
+
+/************************************************************/
+function getRelativeUrl(url) {
+    var splitted = url.split('?');
+    var before = splitted[0].split('/');
+    var len = before.length;
+    return before[len - 2] + '/' + before[len - 1] + '?' + splitted[1];
+}
+
 
 /************************************************************/
 function getSuspectEventAttendees() {
