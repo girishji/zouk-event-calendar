@@ -318,7 +318,7 @@ function buildContent(accessToken) {
                                             for (var j = 0; j < data.length; j++) {
                                                 // add id if it is not there
                                                 if (! batchInfo[i].attendees.hasOwnProperty(data[j].id)) {
-                                                    batchInfo[i].attendees.[data[j].id] = true;
+                                                    batchInfo[i].attendees[data[j].id] = true;
                                                 }
                                             }
                                         }
