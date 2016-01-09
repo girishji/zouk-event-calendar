@@ -95,6 +95,7 @@ var knownEvents = [ 'zouk libre',
                     'L.*A.*Zouk.*congress',
                     'zouktime',
                     'dutch.*international',
+                    'i\'m.*zouk',
                     'canada.*zouk' ];
 
 var knownSuspectPlaces = [ { latitude: '48.812053039547',  longitude: '2.4038419249911' }, 
@@ -476,6 +477,23 @@ function showEventsByAttendingInner() {
                 display(events);
             } else {
                 console.log('No events in showEventsByAttendingInner');
+            }
+        }
+    } else {
+        alert('Your browser does not support this operation');
+    }
+}
+
+/************************************************************/
+function showFiltered() {
+    if (typeof(Storage) !== "undefined") {
+        var data = sessionStorage.getItem('suspectevents');
+        if (data !== undefined && data) {
+            var events = JSON.parse(data);
+            if (events.length > 0) {
+                display(events);
+            } else {
+                console.log('No events to show');
             }
         }
     } else {
