@@ -292,7 +292,7 @@ function getSuspectEventAttendees() {
     for (var i = 0; i < events.length; i++) {
         if (events[i].attending_count > 100) {
             // verify this event's legitimacy
-            undecideSuspects.push( { id: events[i].id, attendees: {} } );
+            undecideSuspects.push( { id: events[i].id, attending: {} } );
         }
     }
     console.log('total undecideSuspects ' + undecideSuspects.length);
@@ -322,8 +322,8 @@ var suspectEventAttendeesCallback = function(response) {
                     var data = body.data;
                     for (var j = 0; j < data.length; j++) {
                         // add id if it is not there
-                        if (! undecideSuspects[i].attendees.hasOwnProperty(data[j].id)) {
-                            undecideSuspects[i].attendees[data[j].id] = true;
+                        if (! undecideSuspects[i].attending.hasOwnProperty(data[j].id)) {
+                            undecideSuspects[i].attending[data[j].id] = true;
                         }
                     }
                 }
