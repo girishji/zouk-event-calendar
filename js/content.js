@@ -495,7 +495,7 @@ function showFiltered() {
                     <table class="table table-condensed">
                     <thead>
                     <th>Date</th>
-                    <th>Discarded Event</th>
+                    <th>Event</th>
                     <th>Attending</th>
                     <tr>
                     </tr>
@@ -503,6 +503,8 @@ function showFiltered() {
                     `;
                 str += getTableBody(events);
                 str += '</table>';
+                $('#searchProgressBarDiv').hide();
+                $('#filterProgressBarDiv').hide();
                 $('#evTableHeader').hide();
                 $("#evTableContent").hide().html(str).fadeIn('fast');
                 $('#mainContent').show();
