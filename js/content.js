@@ -97,6 +97,13 @@ var knownEvents = [ 'zouk libre',
                     'dutch.*international',
                     'canada.*zouk' ];
 
+var knownSuspectPlaces = [ { latitude: '48.812053039547',  longitude: '2.4038419249911' }, 
+                           { latitude: '-22.882511415042', longitude: '-48.452376032727' },
+                           { latitude: '46.01244',         longitude: '-0.28403' },
+                           { latitude: '-22.9937382',      longitude: '-44.2409439' }
+                         ];
+
+
 var timeNow = new Date();
 // All events
 var events = [];    
@@ -616,6 +623,17 @@ function preFilter(event) {
                                     }
                                 }
                             }
+                        }
+                    }
+                    // if event is happening in a suspect location, discard
+                    var location = event.place.location;
+                    for (var k = 0; k < knownSuspectPlaces.length; k++) {
+                        if ((location.latitude == knownSuspectPlaces[k].latitude) 
+                            && (location.longitude == knownSuspectPlaces[k].longitude)) {
+                            // remove description as this will eat up sessionStorage
+                            event.description = null;
+                            suspects.push(event);
+                            return false;
                         }
                     }
                 } // place
