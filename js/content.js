@@ -99,7 +99,7 @@ var progress = 0;
 // undecided suspect list
 var undecideSuspects = [];
 // Facebook has 50 commands per batch limit
-var BATCH_MAX; // don't use const as it may not be supported in earlier browsers
+var BATCH_MAX = 45; // don't use const as it may not be supported in earlier browsers
 
 /************************************************************/
 function loginAndDo(doFunct) {
