@@ -238,11 +238,12 @@ var legitAttendeesCallback = function(response) {
         console.log('FB.api: Error occured');
         console.log(response);
     } else {
-        console.log(response);
         var batchCmd = [];
         for (var i = 0; i < response.length; i++) {
             if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
                 var body = JSON.parse(response[i].body);
+                console.log(body);
+                
                 if (body.hasOwnProperty('data') && body.data) {
                     var data = body.data;
                     for (var j = 0; j < data.length; j++) {
