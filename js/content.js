@@ -195,6 +195,7 @@ function buildContent(accessToken) {
 
         /************************************************************/
         function getMajorLegitEvents() {
+            console.log('getMajorLegitEvents');
             // These are known festivals
             var knownEvents = [ 'zouk libre', 
                                 'prague zouk congress',
