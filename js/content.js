@@ -97,16 +97,20 @@ var accessToken;
 /************************************************************/
 function loginAndDo(doFunct) {
     // Get access token and use it to do something (async).
+    // accessToken is obtained and set globally only from this function.
+    // FB.api() response does not have accessToken.
     FB.getLoginStatus(function(response) {
         if (response.status === 'connected') {
             // console.log('Logged in.');
-            doFunct(response.authResponse.accessToken);
+            accessToken = response.authResponse.accessToken;
+            doFunct();
         } else {
             FB.login(function(response) {
                 if (response.authResponse) {
                     if (response.status === 'connected') {
                         //console.log('Welcome!  Fetching information.... ');
-                        doFunct(response.authResponse.accessToken);
+                        accessToken = response.authResponse.accessToken;
+                        doFunct();
                     }
                 } else {
                     console.log('User cancelled login or did not fully authorize.');
@@ -118,16 +122,15 @@ function loginAndDo(doFunct) {
 
 /************************************************************/
 // Search FB
-function buildContent(accessTkn) {
+function buildContent() {
 
     var batchCmd = [];
-    accessToken = accessTkn;
 
     for (var i = 0; i < searches.length; i++) {
         batchCmd.push( { method: 'GET', 
                          relative_url: 'search?q=' + searches[i] 
                          + '&type=event&fields=id,name,start_time,place,attending_count,cover,description&access_token='
-                         + accessTkn }
+                         + accessToken }
                      );
     }
 
@@ -182,7 +185,7 @@ var eventsCallback = function(response) {
 
         // Recurse:
         // Clear out the batchCmd array, remember other places contain references
-        batchCmd.length = 0;
+        var batchCmd = [];
         // create batch command
         if (nextPage !== undefined) {
             for (var i = 0; i < nextPage.length; i++) {
@@ -258,8 +261,7 @@ var legitAttendeesCallback = function(response) {
             } 
         }
         // Recurse:
-        // Clear out the batchCmd array, remember other places contain references
-        batchCmd.length = 0;
+        var batchCmd = [];
         // create batch command
         if (nextPage !== undefined) {
             for (var i = 0; i < nextPage.length; i++) {
@@ -294,7 +296,7 @@ function getSuspectEventAttendees() {
                 count = 0;
                 damForBatchRequests++;
                 processOneBatch(batch);
-                batchCmd = []; // create new array to prevent overwriting
+                batch = []; // create new array to prevent overwriting
             }
         }
     }
@@ -349,8 +351,7 @@ var suspectEventAttendeesCallback = function(response) {
             } 
         }
         // Recurse:
-        // Clear out the batchCmd array, remember other places contain references
-        batchCmd.length = 0;
+        var batchCmd = [];
         // create batch command
         if (nextPage !== undefined) {
             if (batch.length != nextPage.length) {
@@ -397,7 +398,7 @@ function showEventsByTime() {
 }
 
 /************************************************************/
-function showEventsByTimeInner(accessToken) {
+function showEventsByTimeInner() {
     if (typeof(Storage) !== "undefined") {
         var data = sessionStorage.getItem('zoukevents');
         if (data !== undefined && data) {
@@ -409,7 +410,7 @@ function showEventsByTimeInner(accessToken) {
             }
         }
     } else {
-        buildContent(accessToken);
+        buildContent();
     }
 }
 
@@ -419,7 +420,7 @@ function showEventsByAttending() {
 }
 
 /************************************************************/
-function showEventsByAttendingInner(accessToken) {
+function showEventsByAttendingInner() {
     if (typeof(Storage) !== "undefined") {
         var data = sessionStorage.getItem('zoukevents');
         if (data !== undefined && data) {
@@ -430,7 +431,7 @@ function showEventsByAttendingInner(accessToken) {
                 return (a < b) ? 1 : -1; // descending
             });
             if (events.length > 0) {
-                display(events, accessToken);
+                display(events);
             } else {
                 console.log('No events in showEventsByAttendingInner');
             }
@@ -442,7 +443,7 @@ function showEventsByAttendingInner(accessToken) {
 
 
 /************************************************************/
-function display(events, accessToken) {
+function display(events) {
     console.log('total: ' + events.length);
     var monthNames = [
         "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
