@@ -704,7 +704,7 @@ function getEventIdFromName(name) {
         var re = new RegExp(name, "i");
         if (events[i].name.search(re) !== -1) { // found
             return events[i].id;
-            console.log('festival ' + events[i].name;                    
+            console.log('festival ' + events[i].name);
         }
     }
     console.log(name + ' not found');
