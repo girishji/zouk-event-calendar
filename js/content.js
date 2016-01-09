@@ -273,7 +273,7 @@ var legitAttendeesCallback = function(response) {
         } else {
             // We are done. Get suspect events
             console.log('legit set size ' + Object.keys(legitAttendees).length);
-            getSuspectEventAttendees();
+            //getSuspectEventAttendees();
         }
     }
 };
