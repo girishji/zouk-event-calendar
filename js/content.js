@@ -151,7 +151,7 @@ var eventsCallback = function(response) {
         // print response in console log. You'll see that you get back an array of 
         // objects, and each is a JSON serialied string. To turn it into a javascript
         // objects, use parse().
-        var nextPage = [];
+        var batchCmd = [];
         for (var i = 0; i < response.length; i++) {
             if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
                 var body = JSON.parse(response[i].body);
@@ -174,7 +174,10 @@ var eventsCallback = function(response) {
                 if (body.hasOwnProperty('paging') && body.paging) {
                     var paging = body.paging;
                     if (paging.hasOwnProperty('next') && paging.next) {
-                        nextPage.push(paging.next);
+                        var splitted = paging.next.split('?');
+                        var rel_url = 'search?' + splitted[1];
+                        console.log('rel url of event ' + rel_url);
+                        batchCmd.push( { method: 'GET', relative_url: rel_url } );
                     }
                 }
             } 
@@ -184,14 +187,6 @@ var eventsCallback = function(response) {
         $('.progress-bar').css('width', progress + '%').attr('aria-valuenow', progress);
 
         // Recurse:
-        // Clear out the batchCmd array, remember other places contain references
-        var batchCmd = [];
-        // create batch command
-        if (nextPage !== undefined) {
-            for (var i = 0; i < nextPage.length; i++) {
-                batchCmd.push( { method: 'GET', relative_url: nextPage[i] } );
-            }
-        }
         if (batchCmd.length > 0) {
             FB.api('/', 'POST', { batch: batchCmd }, eventsCallback);
         } else {
@@ -252,7 +247,7 @@ var legitAttendeesCallback = function(response) {
                         // add id if it is not there
                         if (! legitAttendees.hasOwnProperty(data[j].id)) {
                             legitAttendees[data[j].id] = true;
-                            console.log('adding ' + data[j].id + ' -- ' + Object.keys(legitAttendees).length);
+                            //console.log('adding ' + data[j].id + ' -- ' + Object.keys(legitAttendees).length);
                         }
                     }
                 }
@@ -261,7 +256,7 @@ var legitAttendeesCallback = function(response) {
                     var paging = body.paging;
                     if (paging.hasOwnProperty('next') && paging.next) {
                         var rel_url = getRelativeUrl(paging.next);
-                        console.log('rel url ' + rel_url);
+                        //console.log('rel url ' + rel_url);
                         batchCmd.push( { method: 'GET', relative_url: rel_url } );
                     }
                 }
