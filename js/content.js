@@ -119,18 +119,6 @@ function loginAndDo(doFunct) {
 /************************************************************/
 // Search FB
 function buildContent(accessToken) {
-    var batchCmd = [];
-
-    for (var i = 0; i < searches.length; i++) {
-        batchCmd.push( { method: 'GET', 
-                         relative_url: 'search?q=' + searches[i] 
-                         + '&type=event&fields=id,name,start_time,place,attending_count,cover,description&access_token='
-                         + accessToken }
-                     );
-    }
-    console.log('buildContent');
-    FB.api('/', 'POST', { batch: batchCmd }, eventsCallback);
-    // Response of FB.api is asynchronous, make it resursive from callback
 
     /************************************************************/
     var eventsCallback = function(response) {
@@ -387,6 +375,19 @@ function buildContent(accessToken) {
             };
         }
     };
+
+    var batchCmd = [];
+
+    for (var i = 0; i < searches.length; i++) {
+        batchCmd.push( { method: 'GET', 
+                         relative_url: 'search?q=' + searches[i] 
+                         + '&type=event&fields=id,name,start_time,place,attending_count,cover,description&access_token='
+                         + accessToken }
+                     );
+    }
+
+    FB.api('/', 'POST', { batch: batchCmd }, eventsCallback);
+    // Response of FB.api is asynchronous, make it resursive from callback
 }
 
 
