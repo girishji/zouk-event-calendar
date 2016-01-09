@@ -388,6 +388,7 @@ var suspectEventAttendeesCallback = function(response) {
     if ((batchCmd.length > 0) && (pageIterationCount < MAX_PAGE_ITERATIONS)) {
         FB.api('/', 'POST', { batch: batchCmd }, suspectEventAttendeesCallback);
     } else {
+
         // We are done with this batch, filter, and discard top batch
         var limit = unknownEvents.length < BATCH_MAX ? unknownEvents.length : BATCH_MAX;
         // filter events
@@ -401,13 +402,14 @@ var suspectEventAttendeesCallback = function(response) {
         if (pageIterationCount >= MAX_PAGE_ITERATIONS) {
             pageIterationCount = 0;
         }
+        var batchCmd = []; // reinitialize batchCmd
         limit = unknownEvents.length < BATCH_MAX ? unknownEvents.length : BATCH_MAX;
-        console.log('new batch size of unknownEvents ' + limit);
         if (limit > 0) {
             for (var i = 0; i < limit; i++) {
                 batchCmd.push( { method: 'GET', 
                                  relative_url:  unknownEvents[i].id + '/attending?' + 'access_token=' + accessToken } );
             }
+            console.log('new batch size of unknownEvents ' + batchCmd.length);
             FB.api('/', 'POST', { batch: batchCmd }, suspectEventAttendeesCallback);
         } else {
             // we are done, no more unknownEvents 
