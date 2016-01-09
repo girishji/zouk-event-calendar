@@ -367,7 +367,9 @@ var suspectEventAttendeesCallback = function(response) {
             filterSuspect(unknownEvents[i].id, unknownEvents[i].attending);
         }
         // remove 
+        console.log('before remove ' + Object.keys(unknownEvents).length + ' limit ' + limit);
         unknownEvents.splice(0, limit);
+        console.log('after remove ' + Object.keys(unknownEvents).length + ' limit ' + limit);
         // process next batch    
         if (pageIterationCount >= MAX_PAGE_ITERATIONS) {
             pageIterationCount = 0;
