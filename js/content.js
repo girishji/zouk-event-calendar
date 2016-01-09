@@ -185,7 +185,7 @@ var eventsCallback = function(response) {
         // Update progress bar
         progress = (progress < 90) ? progress + 10 : progress;
         $('.progress-bar').css('width', progress + '%').attr('aria-valuenow', progress);
-
+        console.log('progress ' + progress);
         // Recurse:
         if (batchCmd.length > 0) {
             FB.api('/', 'POST', { batch: batchCmd }, eventsCallback);
@@ -268,11 +268,11 @@ var legitAttendeesCallback = function(response) {
         } else {
             // We are done. Get suspect events
             console.log('legit set size ' + Object.keys(legitAttendees).length);
-            var keys = Object.keys(legitAttendees);
-            keys.sort();
-            for (var i = 0; i < keys.length; i++) {
-                console.log(keys[i]);
-            }
+            //var keys = Object.keys(legitAttendees);
+            //keys.sort();
+            //for (var i = 0; i < keys.length; i++) {
+            //    console.log(keys[i]);
+            //}
             //getSuspectEventAttendees();
         }
     }
