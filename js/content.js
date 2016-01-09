@@ -128,12 +128,13 @@ function buildContent(accessToken) {
                          + accessToken }
                      );
     }
-
+    console.log('buildContent');
     FB.api('/', 'POST', { batch: batchCmd }, eventsCallback);
     // Response of FB.api is asynchronous, make it resursive from callback
 
     /************************************************************/
     var eventsCallback = function(response) {
+        console.log('eventsCallback');
         // Progress bar
         var progress = 0;
 
