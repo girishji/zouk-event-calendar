@@ -112,7 +112,6 @@ function loginAndDo(doFunct) {
 /************************************************************/
 function display(events, accessToken) {
     console.log('total: ' + events.length);
-    console.log(JSON.stringify(events));
     var monthNames = [
         "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
         "Aug", "Sep", "Oct", "Nov", "Dec"
@@ -196,10 +195,8 @@ function display(events, accessToken) {
     $('#progressBar').hide();
     $('#contentNav').show();
     $("#evTableContent").hide().html(str).fadeIn('fast');
-    //$('#totalEvents').replaceWith('<span class="badge">' + events.length + '</span>' + ' events');
     $("#totalEvents").hide().html('<span class="badge">' + events.length + '</span>' + ' events').fadeIn('fast');
     $('#mainContent').show();
-    // console.log(str);
     //document.getElementById("z_content").innerHTML = str;
 }
 
@@ -219,10 +216,20 @@ function parseTime(str) { // milliseconds since 1970 00:00:00
 function buildContent(accessToken) {
     var timeNow = new Date();
     var batchCmd = [];
-    var events = []; // All events
+    // All events
+    var events = [];    
+    // Suspect events
+    var suspect = [];
+    // Set of legit attendees; Use an object since objects are ordered pairs in javascript, 
+    // like: var obj = {"1":true, "2":true, "3":true, "9":true}
+    var legitAttendees = {}; // empty object
+    // Many batch commands are executed in parallel. There is no issue with thread safety
+    // as javascript is single threaded, but need to be able to know when all of them
+    // finished their async execution. Set this number to 
+    var damForBatchRequests = -1;
 
-    ////////////////////////////////////////////////////////////
-    function isValid(event) {
+    /************************************************************/
+    function preFilter(event) {
         if (event && event.hasOwnProperty('start_time')) {
             // Parsing does not work in Safari. Recommended that you parse manually (see article below)
             // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse
@@ -243,18 +250,16 @@ function buildContent(accessToken) {
                     if (event.hasOwnProperty('place') && event.place) {
                         placeStr = JSON.stringify(event.place);
                         if (placeStr.search(/zouk/i) !== -1) { // found
-                            console.log('place has zouk ' + event.name);
                             if (event.hasOwnProperty('name') && event.name) {
                                 if (event.name.search(/zouk/i) === -1) { // not found
-                                    console.log('place name has no zouk ' + event.name);
                                     if (event.hasOwnProperty('description') && event.description) {
                                         var description = event.description;
-                                        console.log('before: ' + event.description);
                                         // remove http:... or https...
                                         var desc = description.replace(/(?:https?|ftp):\/\/[\n\S]+/g, '');
-                                        console.log('after: ' + event.description);
                                         if (desc.search(/zouk/i) === -1) { // not found
-                                            console.log('discarding ' + event.name);
+                                            // remove description as this will eat up sessionStorage
+                                            event.description = null;
+                                            suspect.push(event);
                                             return false;
                                         }
                                     }
@@ -269,7 +274,7 @@ function buildContent(accessToken) {
         return false;
     }
 
-    /////////////////////////////////////////////////
+    /************************************************************/
     var responseCallback = function(response) {
         if (!response || response.error) {
             console.log('FB.api: Error occured');
@@ -286,7 +291,7 @@ function buildContent(accessToken) {
                     if (body.hasOwnProperty('data') && body.data) {
                         var data = body.data;
                         for (var j = 0; j < data.length; j++) {
-                            if (isValid(data[j])) {
+                            if (preFilter(data[j])) {
                                 if (events.length < 9000) { // Can store about 10000 in sessionStorage
                                     // remove description as this will eat up sessionStorage
                                     if (data[j].hasOwnProperty('description') && data[j].description) {
@@ -302,18 +307,14 @@ function buildContent(accessToken) {
                         var paging = body.paging;
                         if (paging.hasOwnProperty('next') && paging.next) {
                             var next = paging.next.split('?'); // like .../search?q=...
+                            console.log('after split ' + next);
                             next = 'search?' + next;
+                            console.log('after append ' + next);
                             nextPage.push(next);
                         }
                     }
                 } 
             }
-            // post process
-            events.sort(function(at, bt) {
-                var a = parseTime(at.start_time);
-                var b = parseTime(bt.start_time);
-                return (a > b) ? 1 : -1;
-            });
             // Update progress bar
             progress = (progress < 90) ? progress + 10 : progress;
             $('.progress-bar').css('width', progress + '%').attr('aria-valuenow', progress);
@@ -330,13 +331,20 @@ function buildContent(accessToken) {
             if (batchCmd.length > 0) {
                     FB.api('/', 'POST', { batch: batchCmd }, responseCallback);
             } else {
-                // We are done, show results
+                // We are done, do further filtering
+                //getMajorLegitEvents(events, accessToken);
                 $('.progress-bar').css('width', '100%').attr('aria-valuenow', 100);
                 if (events.length > 0) {
+                    // post process, filter out more events
+                    events.sort(function(at, bt) {
+                        var a = parseTime(at.start_time);
+                        var b = parseTime(bt.start_time);
+                        return (a > b) ? 1 : -1;
+                    });
                     setTimeout(function() { display(events, accessToken); }, 800); // wait for some millisec so progress bar shows completion
                     // XXX cookies have 4k limit - so can't be used to store events. It siliently fails. Use
                     // localStorage / sessionStorage - has 5MB limit
-                    if(typeof(Storage) !== "undefined") {
+                    if(typeof(Storage) !== "undefined") { // This browser supports sessionStorage and localStorage
                         // Save data to sessionStorage
                         sessionStorage.setItem('zoukevents', JSON.stringify(events));
                     } 
@@ -356,6 +364,103 @@ function buildContent(accessToken) {
     progress = 0;
     FB.api('/', 'POST', { batch: batchCmd }, responseCallback);
     // Response of FB.api is asynchronous, make it resursive from callback
+
+//    /************************************************************/
+//    function getEventIdFromName(events, name) {
+//        for (var i = 0; i < events.length; i++) {
+//            var re = new RegExp(name, "i");
+//            if (event[i].name.search(re) !== -1) { // found
+//                return event[i].id;
+//            }
+//        }
+//        console.log(name + ' not found');
+//        return null;
+//    }
+//
+//    /************************************************************/
+//    function getMajorLegitEvents(events, accessToken) {
+//        // These are known festivals
+//        var knownEvents = [ 'zouk libre', 
+//                            'prague zouk congress',
+//                            'prague zouk marathon',
+//                            'rio zouk congress',
+//                            'F.I.E.L',
+//                            'zoukmx',
+//                            'zoukfest',
+//                            'L A Zouk congress',
+//                            'L.A. Zouk congress',
+//                            'zouktime',
+//                            'dutch international',
+//                            'canada zouk' ];
+//        // get api links
+//        var batchCmd = [];
+//        for (var i = 0; i < knownEvents.length; i++) {
+//            var id = getEventIdFromName(knownEvents[i]);
+//            if (id) {
+//                batchCmd.push( { method: 'GET',
+//                                 relative_url:  id + '/attending?' + 'access_token=' + accessToken } );
+//            }
+//        }
+//        if (batchCmd.length > 0) {
+//            // get a set of legit attendees
+//            FB.api('/', 'POST', { batch: batchCmd }, legitAttendeesCallback);
+//        }
+//    }
+//
+//    /************************************************************/
+//    var legitAttendeesCallback = function(response) {
+//        if (!response || response.error) {
+//            console.log('FB.api: Error occured');
+//            console.log(response);
+//        } else {
+//            var nextPage = [];
+//            for (var i = 0; i < response.length; i++) {
+//                if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
+//                    var body = JSON.parse(response[i].body);
+//                    // console.log('properties ' + Object.getOwnPropertyNames(body));                           
+//                    if (body.hasOwnProperty('data') && body.data) {
+//                        var data = body.data;
+//                        for (var j = 0; j < data.length; j++) {
+//                            // add id if it is not there
+//                            if (! legitAttendees.hasOwnProperty(data[j].id)) {
+//                                legitAttendees[data[j].id] = true;
+//                            }
+//                        }
+//                    }
+//                    // next paging link
+//                    if (body.hasOwnProperty('paging') && body.paging) {
+//                        var paging = body.paging;
+//                        if (paging.hasOwnProperty('next') && paging.next) {
+//                            var next = paging.next.split('?'); // like .../search?q=...
+//                            // XXX
+//                            next = xx + '/attending?' + next;
+//                            nextPage.push(next);
+//                        }
+//                    }
+//                } 
+//            }
+//            // Recurse:
+//            // Clear out the batchCmd array, remember other places contain references
+//            batchCmd.length = 0;
+//            // create batch command
+//            if (nextPage !== undefined) {
+//                for (var i = 0; i < nextPage.length; i++) {
+//                    batchCmd.push( { method: 'GET', relative_url: nextPage[i] } );
+//                }
+//            }
+//            if (batchCmd.length > 0) {
+//                    FB.api('/', 'POST', { batch: batchCmd }, legitAttendeesCallback);
+//            } else {
+//                // We are done, do further stuff
+//                for (var i = 0; i < events.length; i++) {
+//                    if (events[i].attending_count > 100) {
+//                        // verify this event's legitimacy
+//                        XXX
+//                    }
+//                }
+//            }
+//        }
+//    };
 }
 
 /************************************************************/
@@ -407,7 +512,3 @@ function showEventsByAttendingInner(accessToken) {
     }
 }
 
-/************************************************************/
-function getAttendees() {
-
-}
