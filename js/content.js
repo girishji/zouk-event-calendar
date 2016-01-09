@@ -357,7 +357,6 @@ var suspectEventAttendeesCallback = function(response) {
                     for (var idx = 0; idx < unknownEvents.length; idx++) {
                         if (splitted[0] == unknownEvents[idx].id) {
                             idxUnknownEv = idx;
-                            console.log('index to unknownEvents found ' + splitted[0]);
                             break;
                         }
                     }
@@ -386,6 +385,7 @@ var suspectEventAttendeesCallback = function(response) {
 
     // Recurse:
     if ((batchCmd.length > 0) && (pageIterationCount < MAX_PAGE_ITERATIONS)) {
+        console.log('request length of batch ' + batchCmd.length);
         FB.api('/', 'POST', { batch: batchCmd }, suspectEventAttendeesCallback);
     } else {
 
@@ -402,7 +402,7 @@ var suspectEventAttendeesCallback = function(response) {
         if (pageIterationCount >= MAX_PAGE_ITERATIONS) {
             pageIterationCount = 0;
         }
-        var batchCmd = []; // reinitialize batchCmd
+        var batchCmd = []; // reinitialize (recreate) batchCmd, old one has stuff in it
         limit = unknownEvents.length < BATCH_MAX ? unknownEvents.length : BATCH_MAX;
         if (limit > 0) {
             for (var i = 0; i < limit; i++) {
