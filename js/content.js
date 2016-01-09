@@ -390,7 +390,7 @@ var suspectEventAttendeesCallback = function(response) {
                     return (a > b) ? 1 : -1;
                 };
                 events.sort(sortTime);
-                decidedSuspects.(sortTime);
+                decidedSuspects.sort(sortTime);
                 // wait for some millisec so progress bar shows completion
                 setTimeout(function() { display(events, accessToken); }, 800); 
                 // cookies have 4k limit - so can't be used to store events. It siliently fails. Use
