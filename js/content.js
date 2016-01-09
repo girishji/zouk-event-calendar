@@ -216,7 +216,7 @@ var eventsCallback = function(response) {
         // We are done, do further filtering
         console.log('total events ' + events.length);
         $('#searchProgressBar').css('width', '100%').attr('aria-valuenow', 100);
-        $('#filterProgressBar').show();
+        $('#filterProgressBarDiv').show();
         progress = 0; // for next progress bar
         getMajorLegitEvents();
     }
@@ -303,7 +303,7 @@ function getSuspectEventAttendees() {
     for (var i = 0; i < events.length; i++) {
         if (events[i].attending_count > 100) {
             // verify this event's legitimacy
-            unknownEvents.push( { id: events[i].id, attending: {}, done: false } );
+            unknownEvents.push( { id: events[i].id, attending: {} } );
         }
     }
     console.log('total unknownEvents ' + unknownEvents.length);
@@ -335,47 +335,63 @@ var suspectEventAttendeesCallback = function(response) {
 
     console.log('response length ' + response.length + ' u-suspects ' + Object.keys(unknownEvents).length);
     var batchCmd = [];
+
+    // Note: Facebook does not send equal # of responses to requests. Responses comes back
+    // without 'next' page, and sometimes response count < request count. Only way
+    // to deal with it is to get event id from 'next' link and only treat these
+    // responses as legit
     for (var i = 0; i < response.length; i++) {
+
         if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
             var body = JSON.parse(response[i].body);
+
+            var idxUnknownEv = -1;
+            // next paging link
+            if (body.hasOwnProperty('paging') && body.paging) {
+                var paging = body.paging;
+                if (paging.hasOwnProperty('next') && paging.next) {
+                    var relUrl = getRelativeUrl(paging.next);
+                    batchCmd.push( { method: 'GET', relative_url: relUrl } );
+                    // get the index of event, from relUrl 234234234234/attending?... 
+                    var splitted = relUrl.split('/');
+                    for (var idx = 0; idx < unknownEvents.length; idx++) {
+                        if (splitted[0] == unknownEvents[idx].id) {
+                            idxUnknownEv = idx;
+                            break;
+                        }
+                    }
+                    if (idxUnknownEv == -1) {
+                        console.log('Error, index to unknownEvents array not found');
+                        continue;
+                    }
+                }
+            }
+            if (idxUnknownEv == -1) {
+                // discard this response, it has no next page
+                continue;
+            }
+
             if (body.hasOwnProperty('data') && body.data) {
                 var data = body.data;
                 for (var j = 0; j < data.length; j++) {
                     // add id if it is not there
-                    if (! unknownEvents[i].attending.hasOwnProperty(data[j].id)) {
-                        unknownEvents[i].attending[data[j].id] = true;
+                    if (! unknownEvents[idxUnknownEv].attending.hasOwnProperty(data[j].id)) {
+                        unknownEvents[idxUnknownEv].attending[data[j].id] = true;
                     }
                 }
             }
-            // next paging link
-            var eventIsDone = true;
-            if (body.hasOwnProperty('paging') && body.paging) {
-                var paging = body.paging;
-                if (paging.hasOwnProperty('next') && paging.next) {
-                    var rel_url = getRelativeUrl(paging.next);
-                    batchCmd.push( { method: 'GET', relative_url: rel_url } );
-                    eventIsDone = false;
-                }
-            }
-            unknownEvents[i].done = eventIsDone;
         } 
     }
-
-     for (var i = 0; i < response.length; i++) {
-         if (unknownEvents[i].done) {
-             // process
-             filterSuspect(unknownEvents[i].id, unknownEvents[i].attending);
-             // remove this because next batch will not have response for this
-             console.log('before remove ' + Object.keys(unknownEvents).length);
-             unknownEvents.splice(i, 1);
-             console.log('after remove ' + Object.keys(unknownEvents).length);
-         }
-     }
 
     // Recurse:
     if ((batchCmd.length > 0) && (pageIterationCount < MAX_PAGE_ITERATIONS)) {
         FB.api('/', 'POST', { batch: batchCmd }, suspectEventAttendeesCallback);
     } else {
+
+
+
+
+
         // We are done with this batch
         var limit =  unknownEvents.length < BATCH_MAX ? unknownEvents.length : BATCH_MAX;
         // process next batch    
@@ -394,6 +410,12 @@ var suspectEventAttendeesCallback = function(response) {
             // we are done, no more unknownEvents 
             // sort and display
             $('#filterProgressBar').css('width', '100%').attr('aria-valuenow', 100);
+
+            // filter events
+            for (var i = 0; i < limit; i++) {
+                filterSuspect(unknownEvents[i].id, unknownEvents[i].attending);
+            }
+
             if (events.length > 0) {
                 // post process, filter out more events
                 var sortTime = function(at, bt) {
