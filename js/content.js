@@ -279,7 +279,7 @@ var legitAttendeesCallback = function(response) {
             //for (var i = 0; i < keys.length; i++) {
             //    console.log(keys[i]);
             //}
-            //getSuspectEventAttendees();
+            getSuspectEventAttendees();
         }
     }
 };
@@ -295,9 +295,11 @@ function getSuspectEventAttendees() {
             undecideSuspects.push( { id: events[i].id, attendees: {} } );
         }
     }
+    console.log('total undecideSuspects ' + undecideSuspects.length);
     // Pick top BATCH_MAX from the list, batch them, after done remove from list, repeat
     var batchCmd = [];
     var limit =  undecideSuspects.length < BATCH_MAX ? undecideSuspects.length : BATCH_MAX;
+    console.log('batch size of undecideSuspects ' + limit);
     for (var i = 0; i < limit; i++) {
         batchCmd.push( { method: 'GET', 
                          relative_url:  undecideSuspects[i].id + '/attending?' + 'access_token=' + accessToken } );
@@ -348,6 +350,7 @@ var suspectEventAttendeesCallback = function(response) {
             undecideSuspects.splice(0, limit);
             // process next batch    
             limit =  undecideSuspects.length < BATCH_MAX ? undecideSuspects.length : BATCH_MAX;
+            console.log('batch size of undecideSuspects ' + limit);
             if (limit > 0) {
                 for (var i = 0; i < limit; i++) {
                     batchCmd.push( { method: 'GET', 
