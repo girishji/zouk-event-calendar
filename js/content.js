@@ -357,11 +357,12 @@ var suspectEventAttendeesCallback = function(response) {
                     for (var idx = 0; idx < unknownEvents.length; idx++) {
                         if (splitted[0] == unknownEvents[idx].id) {
                             idxUnknownEv = idx;
+                            console.log('index to unknownEvents found ' + splitted[0]);
                             break;
                         }
                     }
                     if (idxUnknownEv == -1) {
-                        console.log('Error, index to unknownEvents array not found');
+                        console.log('Error, index to unknownEvents array not found ' + splitted[0]);
                         continue;
                     }
                 }
