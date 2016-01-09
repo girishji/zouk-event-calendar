@@ -101,7 +101,7 @@ var timeNow = new Date();
 // All events
 var events = [];    
 // Suspect events
-var decidedSuspects = [];
+var suspects = [];
 // Set of legit attendees; Use an object since objects are ordered pairs in javascript, 
 // like: var obj = {"1":true, "2":true, "3":true, "9":true}
 var legitAttendees = {}; // empty object
@@ -110,7 +110,7 @@ var accessToken;
 // Progress bar
 var progress = 0;
 // undecided suspect list
-var undecideSuspects = [];
+var unknownEvents = [];
 // Facebook has 50 commands per batch limit
 var BATCH_MAX = 45; // don't use const as it may not be supported in earlier browsers
 // Each query comes back with 25 results (even if you set higher limit). For deciding
@@ -303,17 +303,17 @@ function getSuspectEventAttendees() {
     for (var i = 0; i < events.length; i++) {
         if (events[i].attending_count > 100) {
             // verify this event's legitimacy
-            undecideSuspects.push( { id: events[i].id, attending: {} } );
+            unknownEvents.push( { id: events[i].id, attending: {} } );
         }
     }
-    console.log('total undecideSuspects ' + undecideSuspects.length);
+    console.log('total unknownEvents ' + unknownEvents.length);
     // Pick top BATCH_MAX from the list, batch them, after done remove from list, repeat
     var batchCmd = [];
-    var limit =  undecideSuspects.length < BATCH_MAX ? undecideSuspects.length : BATCH_MAX;
-    console.log('batch size of undecideSuspects ' + limit);
+    var limit =  unknownEvents.length < BATCH_MAX ? unknownEvents.length : BATCH_MAX;
+    console.log('batch size of unknownEvents ' + limit);
     for (var i = 0; i < limit; i++) {
         batchCmd.push( { method: 'GET', 
-                         relative_url:  undecideSuspects[i].id + '/attending?' + 'access_token=' + accessToken } );
+                         relative_url:  unknownEvents[i].id + '/attending?' + 'access_token=' + accessToken } );
     }
     FB.api('/', 'POST', { batch: batchCmd }, suspectEventAttendeesCallback);
 }
@@ -333,7 +333,7 @@ var suspectEventAttendeesCallback = function(response) {
     progress = (progress < 100) ? progress + 5 : progress;
     $('#filterProgressBar').css('width', progress + '%').attr('aria-valuenow', progress);
 
-    console.log('response length ' + response.length + ' u-suspects ' + Object.keys(undecideSuspects).length);
+    console.log('response length ' + response.length + ' u-suspects ' + Object.keys(unknownEvents).length);
     var batchCmd = [];
     for (var i = 0; i < response.length; i++) {
         if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
@@ -342,8 +342,8 @@ var suspectEventAttendeesCallback = function(response) {
                 var data = body.data;
                 for (var j = 0; j < data.length; j++) {
                     // add id if it is not there
-                    if (! undecideSuspects[i].attending.hasOwnProperty(data[j].id)) {
-                        undecideSuspects[i].attending[data[j].id] = true;
+                    if (! unknownEvents[i].attending.hasOwnProperty(data[j].id)) {
+                        unknownEvents[i].attending[data[j].id] = true;
                     }
                 }
             }
@@ -362,26 +362,26 @@ var suspectEventAttendeesCallback = function(response) {
         FB.api('/', 'POST', { batch: batchCmd }, suspectEventAttendeesCallback);
     } else {
         // We are done with this batch
-        var limit =  undecideSuspects.length < BATCH_MAX ? undecideSuspects.length : BATCH_MAX;
+        var limit =  unknownEvents.length < BATCH_MAX ? unknownEvents.length : BATCH_MAX;
         for (var i = 0; i < limit; i++) {
-            filterSuspect(undecideSuspects[i].id, undecideSuspects[i].attending);
+            filterSuspect(unknownEvents[i].id, unknownEvents[i].attending);
         }
         // remove 
-        undecideSuspects.splice(0, limit);
+        unknownEvents.splice(0, limit);
         // process next batch    
         if (pageIterationCount >= MAX_PAGE_ITERATIONS) {
             pageIterationCount = 0;
         }
-        limit =  undecideSuspects.length < BATCH_MAX ? undecideSuspects.length : BATCH_MAX;
-        console.log('batch size of undecideSuspects ' + limit);
+        limit =  unknownEvents.length < BATCH_MAX ? unknownEvents.length : BATCH_MAX;
+        console.log('batch size of unknownEvents ' + limit);
         if (limit > 0) {
             for (var i = 0; i < limit; i++) {
                 batchCmd.push( { method: 'GET', 
-                                 relative_url:  undecideSuspects[i].id + '/attending?' + 'access_token=' + accessToken } );
+                                 relative_url:  unknownEvents[i].id + '/attending?' + 'access_token=' + accessToken } );
             }
             FB.api('/', 'POST', { batch: batchCmd }, suspectEventAttendeesCallback);
         } else {
-            // we are done, no more undecideSuspects 
+            // we are done, no more unknownEvents 
             // sort and display
             $('#filterProgressBar').css('width', '100%').attr('aria-valuenow', 100);
             if (events.length > 0) {
@@ -392,7 +392,7 @@ var suspectEventAttendeesCallback = function(response) {
                     return (a > b) ? 1 : -1;
                 };
                 events.sort(sortTime);
-                decidedSuspects.sort(sortTime);
+                suspects.sort(sortTime);
                 // wait for some millisec so progress bar shows completion
                 setTimeout(function() { display(events, accessToken); }, 800); 
                 // cookies have 4k limit - so can't be used to store events. It siliently fails. Use
@@ -400,7 +400,7 @@ var suspectEventAttendeesCallback = function(response) {
                 if(typeof(Storage) !== "undefined") { // This browser supports sessionStorage and localStorage
                     // Save data to sessionStorage
                     sessionStorage.setItem('zoukevents', JSON.stringify(events));
-                    sessionStorage.setItem('suspectevents', JSON.stringify(decidedSuspects));
+                    sessionStorage.setItem('suspectevents', JSON.stringify(suspects));
                 } 
             }
         }
@@ -592,7 +592,7 @@ function preFilter(event) {
                                     if (desc.search(/zouk/i) === -1) { // not found
                                         // remove description as this will eat up sessionStorage
                                         event.description = null;
-                                        decidedSuspects.push(event);
+                                        suspects.push(event);
                                         return false;
                                     }
                                 }
@@ -642,7 +642,7 @@ function filterSuspect(id, attending) {
     }
     // remove event
     var event = events.splice(evIdx, 1); // returns array of 1
-    decidedSuspects.splice(0, 0, event[0]);
+    suspects.splice(0, 0, event[0]);
     console.log('Removing ' + event[0].name);
 }
 
