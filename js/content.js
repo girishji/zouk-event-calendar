@@ -251,7 +251,7 @@ var legitAttendeesCallback = function(response) {
         return;
     }
     // Update progress bar
-    progress = (progress < 30) ? progress + 10 : progress;
+    progress = (progress < 10) ? progress + 2 : progress;
     $('#filterProgressBar').css('width', progress + '%').attr('aria-valuenow', progress);
 
     var batchCmd = [];
@@ -336,10 +336,6 @@ var suspectEventAttendeesCallback = function(response) {
     console.log('response length ' + response.length + ' u-suspects ' + Object.keys(unknownEvents).length);
     var batchCmd = [];
 
-    // Note: Facebook does not send equal # of responses to requests. Responses comes back
-    // without 'next' page, and sometimes response count < request count. Only way
-    // to deal with it is to get event id from 'next' link and only treat these
-    // responses as legit
     for (var i = 0; i < response.length; i++) {
         if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
             var body = JSON.parse(response[i].body);
@@ -371,6 +367,7 @@ var suspectEventAttendeesCallback = function(response) {
     // check if there are too many iterations (big events with thousands of attendees)
     if (pageIterationCount >= MAX_PAGE_ITERATIONS) {
         // mark batch done
+        console.log('MAX_PAGE_ITERATIONS reached');
         for (var i = 0; i < response.length; i++) {
             unknownEvents[i].done = true;
         }
