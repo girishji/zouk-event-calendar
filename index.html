@@ -36,7 +36,7 @@
   </head>
 
   <body>
-     <div id="fb-root"></div>
+    <div id="fb-root"></div>
 
     <!-- Nav bar -->
     <div class="container">
@@ -84,7 +84,7 @@
               <h4 class="modal-title" id="myModalLabel">Contact</h4>
             </div>
             <div class="modal-body">
-              Contact @biggieg_zouk
+              Send message to @biggieg_zouk
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -120,7 +120,7 @@
         <li role="presentation"><a href="#" onclick="showMap();">Map</a></li>
         <li role="presentation"><a href="#" onclick="showFiltered();">Filtered</a></li>
       </ul>
-             
+      
       <div id="mainContent" style="display: none;">
 
         <table id="evTableHeader" style="width: 100%;">
@@ -147,33 +147,17 @@
         </table>
 
         <div id="evTableContent"> <div/>
-      </div>
+        </div>
 
 
-      <footer class="footer">
-        <p>&copy; 2015 @biggieg_zouk</p>
-      </footer>
+        <footer class="footer">
+          <p>&copy; 2015 @biggieg_zouk</p>
+        </footer>
 
-    </div> <!-- /container -->
-    <!--
-      FB first makes a request to server with a signed-request. This has access-token in it.
-      So server side should already have correct FB app-id. Then server sends this index.php
-      after processing all php. Client (browser) proceeds to load this page in addition to
-      processing Javascript in this page.
-
-      You can search FB from client side or server side. First check if app has permission,
-      otherwise prompt for login.
-      Server side FB search: After login, or if access-token is obtained from pageHelper 
-              (by the broser), send that token to server through ajax and get search 
-              results back.
-      Client side FB search: Use javascript to manipulate DOMs. No need for ajax, but
-              still load jquery library since it is easier to manipulate objects through
-              jquery (a wrapper on DOM objects like document etc.)
-     -->
-     <!-- <div id="z_content" /> -->
-     <?php
-              //http://stackoverflow.com/questions/18846744/responsive-images-in-tables-bootstrap-3 
-     ?>
+      </div> <!-- /container -->
+      <?php
+         //http://stackoverflow.com/questions/18846744/responsive-images-in-tables-bootstrap-3 
+         ?>
   </body>
 </html>
 

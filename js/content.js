@@ -85,16 +85,17 @@ var searcheStrings = [
 ];
 
 // These are known festivals to compare against
-var knownEvents = [ 'zouk libre',
+var knownEvents = [ 'zouk.*libre',
                     'prague.*zouk.*congress',
                     'prague.*zouk.*marathon',
                     'rio.*zouk.*congress',
-                    'F.I.E.L',
+                    'f.i.e.l',
                     'zoukmx',
                     'zoukfest',
-                    'L.*A.*Zouk.*congress',
+                    'l.*a.*Zouk.*congress',
                     'zouktime',
                     'dutch.*international',
+                    'berg.*congres',
                     'i\'m.*zouk',
                     'canada.*zouk' ];
 
@@ -232,7 +233,7 @@ var eventsCallback = function(response) {
 
 /************************************************************/
 function getMajorLegitEvents() {
-    console.log('getMajorLegitEvents');
+    //console.log('getMajorLegitEvents');
     // get api links
     var batchCmd = [];
     for (var i = 0; i < knownEvents.length; i++) {
@@ -252,7 +253,7 @@ function getMajorLegitEvents() {
 var legitAttendeesCallback = function(response) {
     // XXX facebook is limited 3 pages of results (less than 75); verfied with facebook api explorer
     // maybe it is a bug they neex to fix
-    console.log('legitAttendeesCallback');
+    //console.log('legitAttendeesCallback');
     if (!response || response.error) {
         console.log('FB.api: Error occured');
         console.log(response);
@@ -292,20 +293,17 @@ var legitAttendeesCallback = function(response) {
     if (batchCmd.length > 0) {
         FB.api('/', 'POST', { batch: batchCmd }, legitAttendeesCallback);
     } else {
-        // We are done. Get suspect events
-        console.log('legit set size ' + Object.keys(legitAttendees).length);
-        //var keys = Object.keys(legitAttendees);
-        //keys.sort();
-        //for (var i = 0; i < keys.length; i++) {
-        //    console.log(keys[i]);
-        //}
+        // We are done. Store, and get suspect events
+        if(typeof(Storage) !== "undefined") { // This browser supports sessionStorage and localStorage
+            sessionStorage.setItem('zoukattendees', Object.keys(legitAttendees).length);
+        } 
         getSuspectEventAttendees();
     }
 };
 
 /************************************************************/
 function getSuspectEventAttendees() {
-    console.log('getSuspectEventAttendees');
+    //console.log('getSuspectEventAttendees');
     // Batch requests are chained, after one finishes next one starts.
     // javascript is single threaded so thread safe
     for (var i = 0; i < events.length; i++) {
@@ -314,11 +312,11 @@ function getSuspectEventAttendees() {
             unknownEvents.push( { id: events[i].id, attending: {}, done: false } );
         }
     }
-    console.log('total unknownEvents ' + unknownEvents.length);
+    //console.log('total unknownEvents ' + unknownEvents.length);
     // Pick top BATCH_MAX from the list, batch them, after done remove from list, repeat
     var batchCmd = [];
     var limit =  unknownEvents.length < BATCH_MAX ? unknownEvents.length : BATCH_MAX;
-    console.log('batch size of unknownEvents ' + limit);
+    //console.log('batch size of unknownEvents ' + limit);
     for (var i = 0; i < limit; i++) {
         batchCmd.push( { method: 'GET', 
                          relative_url:  unknownEvents[i].id + '/attending?' + 'access_token=' + accessToken } );
@@ -328,7 +326,7 @@ function getSuspectEventAttendees() {
 
 /************************************************************/
 var suspectEventAttendeesCallback = function(response) {
-    console.log('suspectEventAttendeesCallback');
+    //console.log('suspectEventAttendeesCallback');
     pageIterationCount++;
 
     if (!response || response.error) {
@@ -341,7 +339,7 @@ var suspectEventAttendeesCallback = function(response) {
     progress = (progress < 95) ? progress + 2 : progress;
     $('#filterProgressBar').css('width', progress + '%').attr('aria-valuenow', progress);
 
-    console.log('response length ' + response.length + ' u-suspects ' + Object.keys(unknownEvents).length);
+    //console.log('response length ' + response.length + ' u-suspects ' + Object.keys(unknownEvents).length);
     var batchCmd = [];
 
     for (var i = 0; i < response.length; i++) {
@@ -375,7 +373,7 @@ var suspectEventAttendeesCallback = function(response) {
     // check if there are too many iterations (big events with thousands of attendees)
     if (pageIterationCount >= MAX_PAGE_ITERATIONS) {
         // mark batch done
-        console.log('MAX_PAGE_ITERATIONS reached');
+        //console.log('MAX_PAGE_ITERATIONS reached');
         for (var i = 0; i < response.length; i++) {
             unknownEvents[i].done = true;
         }
@@ -393,7 +391,7 @@ var suspectEventAttendeesCallback = function(response) {
 
     // Recurse:
     if (batchCmd.length > 0) {
-        console.log('request length of batch ' + batchCmd.length);
+        //console.log('request length of batch ' + batchCmd.length);
         FB.api('/', 'POST', { batch: batchCmd }, suspectEventAttendeesCallback);
     } else {
         // We are done with this batch, process next
@@ -404,7 +402,7 @@ var suspectEventAttendeesCallback = function(response) {
                 batchCmd.push( { method: 'GET', 
                                  relative_url:  unknownEvents[i].id + '/attending?' + 'access_token=' + accessToken } );
             }
-            console.log('new batch size of unknownEvents ' + batchCmd.length);
+            //console.log('new batch size of unknownEvents ' + batchCmd.length);
             FB.api('/', 'POST', { batch: batchCmd }, suspectEventAttendeesCallback);
         } else {
             // we are done, no more unknownEvents 
@@ -421,7 +419,7 @@ var suspectEventAttendeesCallback = function(response) {
                 events.sort(sortTime);
                 suspects.sort(sortTime);
                 // wait for some millisec so progress bar shows completion
-                setTimeout(function() { display(events, accessToken); }, 100); 
+                setTimeout(function() { display(events, accessToken); }, 700); 
                 // cookies have 4k limit - so can't be used to store events. It siliently fails. Use
                 // localStorage / sessionStorage. They have 5MB limit
                 if(typeof(Storage) !== "undefined") { // This browser supports sessionStorage and localStorage
@@ -521,6 +519,14 @@ function showFiltered() {
 /************************************************************/
 function display(events) {
     //console.log('total: ' + events.length);
+    var msg = '';
+    if (typeof(Storage) !== "undefined") {
+        var data = sessionStorage.getItem('zoukattendees');
+        if (data !== undefined && data) {
+            msg += ', ' + '<span class="badge">' + data + '</span>' 
+                + ' unique attendees to <a href="#" onclick="showTopFestivals();">top festivals</a>';
+        }
+    }
     var str = `
         <table class="table table-condensed">
         `;
@@ -531,7 +537,8 @@ function display(events) {
     $('#contentNav').show();
     $('#evTableHeader').show();
     $("#evTableContent").hide().html(str).fadeIn('fast');
-    $("#totalEvents").hide().html('<span class="badge">' + events.length + '</span>' + ' events').fadeIn('fast');
+    msg = '<span class="badge">' + events.length + '</span>' + ' events' + msg;
+    $("#totalEvents").hide().html(msg).fadeIn('fast');
     $('#mainContent').show();
     //document.getElementById("z_content").innerHTML = str;
 }
@@ -545,7 +552,6 @@ function getTableBody(events) {
     var str = `
         <tbody>
         `;
-
     for (var i = 0; i < events.length; i++) {
         var splitS = events[i].start_time.split('T'); // 2016-04-07T19:00:00-0300
         var dateS = splitS[0].split('-');
