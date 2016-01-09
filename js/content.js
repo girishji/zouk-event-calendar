@@ -205,17 +205,17 @@ var eventsCallback = function(response) {
 function getMajorLegitEvents() {
     console.log('getMajorLegitEvents');
     // These are known festivals
-    var knownEvents = [ 'zouk libre' ];
-//                        'prague.*zouk.*congress',
-//                        'prague.*zouk.*marathon',
-//                        'rio.*zouk.*congress',
-//                        'F.I.E.L',
-//                        'zoukmx',
-//                        'zoukfest',
-//                        'L.*A.*Zouk.*congress',
-//                        'zouktime',
-//                        'dutch.*international',
-//                        'canada.*zouk' ];
+    var knownEvents = [ 'zouk libre',
+                        'prague.*zouk.*congress',
+                        'prague.*zouk.*marathon',
+                        'rio.*zouk.*congress',
+                        'F.I.E.L',
+                        'zoukmx',
+                        'zoukfest',
+                        'L.*A.*Zouk.*congress',
+                        'zouktime',
+                        'dutch.*international',
+                        'canada.*zouk' ];
     // get api links
     var batchCmd = [];
     for (var i = 0; i < knownEvents.length; i++) {
@@ -233,6 +233,8 @@ function getMajorLegitEvents() {
    
 /************************************************************/
 var legitAttendeesCallback = function(response) {
+    // XXX facebook is limited 3 pages of results (less than 75); verfied with facebook api explorer
+    // maybe it is a bug they neex to fix
     console.log('legitAttendeesCallback');
     if (!response || response.error) {
         console.log('FB.api: Error occured');
