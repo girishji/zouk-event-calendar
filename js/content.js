@@ -368,6 +368,13 @@ var suspectEventAttendeesCallback = function(response) {
         } 
     }
 
+    // check if there are too many iterations (big events with thousands of attendees)
+    if (pageIterationCount >= MAX_PAGE_ITERATIONS) {
+        // mark batch done
+        for (var i = 0; i < response.length; i++) {
+            unknownEvents[i].done = true;
+        }
+    }
     // filter and remove finished events, do this outside above loop so as not to affect array indexes
     for (var i = 0; i < unknownEvents.length; i++) {
         if (unknownEvents[i].done) {
