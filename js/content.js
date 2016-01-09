@@ -205,17 +205,17 @@ var eventsCallback = function(response) {
 function getMajorLegitEvents() {
     console.log('getMajorLegitEvents');
     // These are known festivals
-    var knownEvents = [ 'zouk libre', 
-                        'prague.*zouk.*congress',
-                        'prague.*zouk.*marathon',
-                        'rio.*zouk.*congress',
-                        'F.I.E.L',
-                        'zoukmx',
-                        'zoukfest',
-                        'L.*A.*Zouk.*congress',
-                        'zouktime',
-                        'dutch.*international',
-                        'canada.*zouk' ];
+    var knownEvents = [ 'zouk libre' ];
+//                        'prague.*zouk.*congress',
+//                        'prague.*zouk.*marathon',
+//                        'rio.*zouk.*congress',
+//                        'F.I.E.L',
+//                        'zoukmx',
+//                        'zoukfest',
+//                        'L.*A.*Zouk.*congress',
+//                        'zouktime',
+//                        'dutch.*international',
+//                        'canada.*zouk' ];
     // get api links
     var batchCmd = [];
     for (var i = 0; i < knownEvents.length; i++) {
@@ -248,6 +248,7 @@ var legitAttendeesCallback = function(response) {
                         // add id if it is not there
                         if (! legitAttendees.hasOwnProperty(data[j].id)) {
                             legitAttendees[data[j].id] = true;
+                            console.log('adding ' + data[j].id + ' -- ' + Object.keys(legitAttendees).length);
                         }
                     }
                 }
