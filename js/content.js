@@ -357,7 +357,7 @@ var suspectEventAttendeesCallback = function(response) {
                     eventIsDone = false;
                 }
             }
-            unknownEvents[i].done = true; // remove this event outside this loop
+            unknownEvents[i].done = eventIsDone; // remove this event outside this loop
         } 
     }
 
@@ -366,9 +366,9 @@ var suspectEventAttendeesCallback = function(response) {
              // process
              filterSuspect(unknownEvents[i].id, unknownEvents[i].attending);
              // remove this because next batch will not have response for this
-             console.log('before remove ' + Object.keys(unknownEvents).length + ' limit ' + limit);
+             console.log('before remove ' + Object.keys(unknownEvents).length);
              unknownEvents.splice(i, 1);
-             console.log('after remove ' + Object.keys(unknownEvents).length + ' limit ' + limit);
+             console.log('after remove ' + Object.keys(unknownEvents).length);
          }
      }
 
