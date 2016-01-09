@@ -357,7 +357,7 @@ var suspectEventAttendeesCallback = function(response) {
                     eventIsDone = false;
                 }
             }
-            unknownEvents[i].done = eventIsDone; // remove this event outside this loop
+            unknownEvents[i].done = eventIsDone;
         } 
     }
 
