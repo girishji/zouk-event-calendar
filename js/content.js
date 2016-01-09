@@ -386,7 +386,7 @@ var suspectEventAttendeesCallback = function(response) {
     }
 
     // Recurse:
-    if (batchCmd.length > 0) {
+    if ((batchCmd.length > 0) && (pageIterationCount < MAX_PAGE_ITERATIONS)) {
         console.log('request length of batch ' + batchCmd.length);
         FB.api('/', 'POST', { batch: batchCmd }, suspectEventAttendeesCallback);
     } else {
