@@ -306,11 +306,7 @@ function buildContent(accessToken) {
                     if (body.hasOwnProperty('paging') && body.paging) {
                         var paging = body.paging;
                         if (paging.hasOwnProperty('next') && paging.next) {
-                            var nextArr = paging.next.split('?'); // like .../search?q=...
-                            console.log('after split ' + nextArr);
-                            var nextLink = 'search?' + nextArr[1];
-                            console.log('after append ' + nextLink);
-                            nextPage.push(nextLink);
+                            nextPage.push(paging.next);
                         }
                     }
                 } 
