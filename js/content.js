@@ -191,6 +191,7 @@ var eventsCallback = function(response) {
             FB.api('/', 'POST', { batch: batchCmd }, eventsCallback);
         } else {
             // We are done, do further filtering
+            console.log('total events ' + events.length);
             getMajorLegitEvents();
         }
     }
@@ -239,8 +240,7 @@ var legitAttendeesCallback = function(response) {
         for (var i = 0; i < response.length; i++) {
             if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
                 var body = JSON.parse(response[i].body);
-                console.log(body);
-                
+                //console.log(body);                
                 if (body.hasOwnProperty('data') && body.data) {
                     var data = body.data;
                     for (var j = 0; j < data.length; j++) {
@@ -263,31 +263,18 @@ var legitAttendeesCallback = function(response) {
             } 
         }
         // Recurse:
-        //var batchCmd = [];
-        // create batch command
-        //if (nextPage !== undefined) {
-        //    for (var i = 0; i < nextPage.length; i++) {
-        //        batchCmd.push( { method: 'GET', relative_url: nextPage[i] } );
-        //    }
-        //}
         if (batchCmd.length > 0) {
             FB.api('/', 'POST', { batch: batchCmd }, legitAttendeesCallback);
         } else {
             // We are done. Get suspect events
             console.log('legit set size ' + Object.keys(legitAttendees).length);
+            var keys = Object.keys(legitAttendees);
+            keys.sort();
+            console.log(keys);
             //getSuspectEventAttendees();
         }
     }
 };
-
-/************************************************************/
-function getRelativeUrl(url) {
-    var splitted = url.split('?');
-    var before = splitted[0].split('/');
-    var len = before.length;
-    return before[len - 2] + '/' + before[len - 1] + '?' + splitted[1];
-}
-
 
 /************************************************************/
 function getSuspectEventAttendees() {
@@ -299,7 +286,7 @@ function getSuspectEventAttendees() {
     var maxCmdsInBatch = 40; // Facebook limit is 50
     var batch = [];
     for (var i = 0, count = 0; i < events.length; i++) {
-        if (events[i].attending_count > 100) {
+        if (events[i].attending_count > 200) {
             // verify this event's legitimacy
             batch.push( { eventId: events[i].id, attendees: {} } );
             count++;
@@ -636,5 +623,13 @@ function filterSuspect(id, attending) {
     }
     // remove event
     events.splice(evIdx, 1);
+}
+
+/************************************************************/
+function getRelativeUrl(url) {
+    var splitted = url.split('?');
+    var before = splitted[0].split('/');
+    var len = before.length;
+    return before[len - 2] + '/' + before[len - 1] + '?' + splitted[1];
 }
 
