@@ -238,7 +238,8 @@ var legitAttendeesCallback = function(response) {
         console.log('FB.api: Error occured');
         console.log(response);
     } else {
-        var nextPage = [];
+        console.log(response);
+        var batchCmd = [];
         for (var i = 0; i < response.length; i++) {
             if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
                 var body = JSON.parse(response[i].body);
@@ -256,19 +257,21 @@ var legitAttendeesCallback = function(response) {
                 if (body.hasOwnProperty('paging') && body.paging) {
                     var paging = body.paging;
                     if (paging.hasOwnProperty('next') && paging.next) {
-                        nextPage.push(paging.next);
+                        //nextPage.push(paging.next);
+                        batchCmd.push( { method: 'GET', relative_url: paging.next } );
+                        console.log('adding pag ' + paging.next);
                     }
                 }
             } 
         }
         // Recurse:
-        var batchCmd = [];
+        //var batchCmd = [];
         // create batch command
-        if (nextPage !== undefined) {
-            for (var i = 0; i < nextPage.length; i++) {
-                batchCmd.push( { method: 'GET', relative_url: nextPage[i] } );
-            }
-        }
+        //if (nextPage !== undefined) {
+        //    for (var i = 0; i < nextPage.length; i++) {
+        //        batchCmd.push( { method: 'GET', relative_url: nextPage[i] } );
+        //    }
+        //}
         if (batchCmd.length > 0) {
             FB.api('/', 'POST', { batch: batchCmd }, legitAttendeesCallback);
         } else {
