@@ -491,7 +491,21 @@ function showFiltered() {
         if (data !== undefined && data) {
             var events = JSON.parse(data);
             if (events.length > 0) {
-                display(events);
+                var str = `
+                    <table class="table table-condensed">
+                    <thead>
+                    <th>Date</th>
+                    <th>Discarded Event</th>
+                    <th>Attending</th>
+                    <tr>
+                    </tr>
+                    </thead>
+                    `;
+                str += getTableBody(events);
+                str += '</table>';
+                $('#evTableHeader').hide();
+                $("#evTableContent").hide().html(str).fadeIn('fast');
+                $('#mainContent').show();
             } else {
                 console.log('No events to show');
             }
@@ -504,15 +518,32 @@ function showFiltered() {
 
 /************************************************************/
 function display(events) {
-    console.log('total: ' + events.length);
+    //console.log('total: ' + events.length);
+    var str = `
+        <table class="table table-condensed">
+        `;
+    str += getTableBody(events);
+    str += '</table>';
+    $('#searchProgressBarDiv').hide();
+    $('#filterProgressBarDiv').hide();
+    $('#contentNav').show();
+    $('#evTableHeader').show();
+    $("#evTableContent").hide().html(str).fadeIn('fast');
+    $("#totalEvents").hide().html('<span class="badge">' + events.length + '</span>' + ' events').fadeIn('fast');
+    $('#mainContent').show();
+    //document.getElementById("z_content").innerHTML = str;
+}
+
+/************************************************************/
+function getTableBody(events) {
     var monthNames = [
         "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
         "Aug", "Sep", "Oct", "Nov", "Dec"
     ];
     var str = `
-        <table class="table table-condensed">
         <tbody>
         `;
+
     for (var i = 0; i < events.length; i++) {
         var splitS = events[i].start_time.split('T'); // 2016-04-07T19:00:00-0300
         var dateS = splitS[0].split('-');
@@ -583,15 +614,8 @@ function display(events) {
 
     str += `
     </tbody>
-        </table>
         `;
-    $('#searchProgressBarDiv').hide();
-    $('#filterProgressBarDiv').hide();
-    $('#contentNav').show();
-    $("#evTableContent").hide().html(str).fadeIn('fast');
-    $("#totalEvents").hide().html('<span class="badge">' + events.length + '</span>' + ' events').fadeIn('fast');
-    $('#mainContent').show();
-    //document.getElementById("z_content").innerHTML = str;
+    return str;
 }
 
 /************************************************************/
