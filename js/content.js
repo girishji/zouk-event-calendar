@@ -270,7 +270,9 @@ var legitAttendeesCallback = function(response) {
             console.log('legit set size ' + Object.keys(legitAttendees).length);
             var keys = Object.keys(legitAttendees);
             keys.sort();
-            console.log(keys);
+            for (var i = 0; i < keys.length; i++) {
+                console.log(keys[i]);
+            }
             //getSuspectEventAttendees();
         }
     }
