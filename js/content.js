@@ -112,6 +112,7 @@ function loginAndDo(doFunct) {
 /************************************************************/
 function display(events, accessToken) {
     console.log('total: ' + events.length);
+    console.log(JSON.stringify(events));
     var monthNames = [
         "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
         "Aug", "Sep", "Oct", "Nov", "Dec"
