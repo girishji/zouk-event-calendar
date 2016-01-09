@@ -88,11 +88,18 @@ var timeNow = new Date();
 // All events
 var events = [];    
 // Suspect events
-var suspectEvents = [];
+var decidedSuspects = [];
 // Set of legit attendees; Use an object since objects are ordered pairs in javascript, 
 // like: var obj = {"1":true, "2":true, "3":true, "9":true}
 var legitAttendees = {}; // empty object
+// Access token, set only from FB.getLoginStatus().
 var accessToken;
+// Progress bar
+var progress = 0;
+// undecided suspect list
+var undecideSuspects = [];
+// Facebook has 50 commands per batch limit
+var BATCH_MAX; // don't use const as it may not be supported in earlier browsers
 
 /************************************************************/
 function loginAndDo(doFunct) {
@@ -141,8 +148,6 @@ function buildContent() {
 /************************************************************/
 var eventsCallback = function(response) {
     console.log('eventsCallback');
-    // Progress bar
-    var progress = 0;
 
     if (!response || response.error) {
         console.log('FB.api: Error occured');
@@ -186,6 +191,7 @@ var eventsCallback = function(response) {
         progress = (progress < 90) ? progress + 10 : progress;
         $('.progress-bar').css('width', progress + '%').attr('aria-valuenow', progress);
         console.log('progress ' + progress);
+
         // Recurse:
         if (batchCmd.length > 0) {
             FB.api('/', 'POST', { batch: batchCmd }, eventsCallback);
@@ -278,118 +284,103 @@ var legitAttendeesCallback = function(response) {
     }
 };
 
-// /************************************************************/
-// function getSuspectEventAttendees() {
-//     console.log('getSuspectEventAttendees');
-//     // Many batch commands are executed in parallel. There is no issue with thread safety
-//     // as javascript is single threaded, but need to be able to know when all of them
-//     // finished their async execution. Set this number to 
-//     var damForBatchRequests = 0;
-//     var maxCmdsInBatch = 40; // Facebook limit is 50
-//     var batch = [];
-//     for (var i = 0, count = 0; i < events.length; i++) {
-//         if (events[i].attending_count > 200) {
-//             // verify this event's legitimacy
-//             batch.push( { eventId: events[i].id, attendees: {} } );
-//             count++;
-//             if (count >= maxCmdsInBatch) {
-//                 count = 0;
-//                 damForBatchRequests++;
-//                 processOneBatch(batch);
-//                 batch = []; // create new array to prevent overwriting
-//             }
-//         }
-//     }
-//     console.log('damForBatchRequests ' + damForBatchRequests);
-// }
-// 
-// /************************************************************/
-// function processOneBatch(batch) {
-//     var batchCmd = [];
-//     for (var i = 0; i < batch.length; i++) {
-//         batchCmd.push( { method: 'GET', 
-//                          relative_url:  batch[i].eventId + '/attending?' + 'access_token=' + accessToken } );
-//     }
-//     FB.api('/', 'POST', { batch: batchCmd }, suspectEventAttendeesCallback);
-// }
-// 
-// /************************************************************/
-// var suspectEventAttendeesCallback = function(response) {
-//     console.log('suspectEventAttendeesCallback');
-//     if (!response || response.error) {
-//         console.log('FB.api: Error occured');
-//         console.log(response);
-//     } else {
-//         var nextPage = [];
-//         for (var i = 0; i < response.length; i++) {
-//             if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
-//                 var body = JSON.parse(response[i].body);
-//                 if (body.hasOwnProperty('data') && body.data) {
-//                     var data = body.data;
-//                     for (var j = 0; j < data.length; j++) {
-//                         // add id if it is not there
-//                         if (! batch[i].attendees.hasOwnProperty(data[j].id)) {
-//                             batch[i].attendees[data[j].id] = true;
-//                         }
-//                     }
-//                 }
-//                 // next paging link
-//                 var done = true;
-//                 if (body.hasOwnProperty('paging') && body.paging) {
-//                     var paging = body.paging;
-//                     if (paging.hasOwnProperty('next') && paging.next) {
-//                         nextPage.push(paging.next); // i-th event still has attendees left
-//                         done = false;
-//                     }
-//                 }
-//                 if (done) {
-//                     // finally, check if this event is relevant
-//                     filterSuspect(batch[i].eventId, batch[i].attending);
-//                     // remove from list
-//                     batch.splice(i, 1);
-//                 }
-//             } 
-//         }
-//         // Recurse:
-//         var batchCmd = [];
-//         // create batch command
-//         if (nextPage !== undefined) {
-//             if (batch.length != nextPage.length) {
-//                 console.log('Oops, something went wrong ' + batch.length + ', ' + nextPage.length); 
-//             }
-//             for (var i = 0; i < nextPage.length; i++) {
-//                 batchCmd.push( { method: 'GET', relative_url: nextPage[i] } );
-//             }
-//         }
-//         if (batchCmd.length > 0) {
-//             FB.api('/', 'POST', { batch: batchCmd }, suspectEventAttendeesCallback);
-//         } else {
-//             // We are done with this batch
-//             damForBatchRequests--;
-//             if (damForBatchRequests <= 0) { // all batches done
-//                 // sort and display
-//                 $('.progress-bar').css('width', '100%').attr('aria-valuenow', 100);
-//                 if (events.length > 0) {
-//                     // post process, filter out more events
-//                     events.sort(function(at, bt) {
-//                         var a = parseTime(at.start_time);
-//                         var b = parseTime(bt.start_time);
-//                         return (a > b) ? 1 : -1;
-//                     });
-//                     // wait for some millisec so progress bar shows completion
-//                     setTimeout(function() { display(events, accessToken); }, 800); 
-//                     // cookies have 4k limit - so can't be used to store events. It siliently fails. Use
-//                     // localStorage / sessionStorage. They have 5MB limit
-//                     if(typeof(Storage) !== "undefined") { // This browser supports sessionStorage and localStorage
-//                         // Save data to sessionStorage
-//                         sessionStorage.setItem('zoukevents', JSON.stringify(events));
-//                         sessionStorage.setItem('suspectevents', JSON.stringify(suspectEvents));
-//                     } 
-//                 }
-//             }
-//         }
-//     }
-// };
+/************************************************************/
+function getSuspectEventAttendees() {
+    console.log('getSuspectEventAttendees');
+    // Batch requests are chained, after one finishes next one starts.
+    // javascript is single threaded so thread safe
+    for (var i = 0; i < events.length; i++) {
+        if (events[i].attending_count > 100) {
+            // verify this event's legitimacy
+            undecideSuspects.push( { id: events[i].id, attendees: {} } );
+        }
+    }
+    // Pick top BATCH_MAX from the list, batch them, after done remove from list, repeat
+    var batchCmd = [];
+    var limit =  undecideSuspects.length < BATCH_MAX ? undecideSuspects.length : BATCH_MAX;
+    for (var i = 0; i < limit; i++) {
+        batchCmd.push( { method: 'GET', 
+                         relative_url:  undecideSuspects[i].id + '/attending?' + 'access_token=' + accessToken } );
+    }
+    FB.api('/', 'POST', { batch: batchCmd }, suspectEventAttendeesCallback);
+}
+
+/************************************************************/
+var suspectEventAttendeesCallback = function(response) {
+    console.log('suspectEventAttendeesCallback');
+    if (!response || response.error) {
+        console.log('FB.api: Error occured');
+        console.log(response);
+    } else {
+        var batchCmd = [];
+        for (var i = 0; i < response.length; i++) {
+            if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
+                var body = JSON.parse(response[i].body);
+                if (body.hasOwnProperty('data') && body.data) {
+                    var data = body.data;
+                    for (var j = 0; j < data.length; j++) {
+                        // add id if it is not there
+                        if (! undecideSuspects[i].attendees.hasOwnProperty(data[j].id)) {
+                            undecideSuspects[i].attendees[data[j].id] = true;
+                        }
+                    }
+                }
+                // next paging link
+                if (body.hasOwnProperty('paging') && body.paging) {
+                    var paging = body.paging;
+                    if (paging.hasOwnProperty('next') && paging.next) {
+                        var rel_url = getRelativeUrl(paging.next);
+                        batchCmd.push( { method: 'GET', relative_url: rel_url } );
+                    }
+                }
+            } 
+        }
+        // Recurse:
+        if (batchCmd.length > 0) {
+            FB.api('/', 'POST', { batch: batchCmd }, suspectEventAttendeesCallback);
+        } else {
+            // We are done with this batch
+            var limit =  undecideSuspects.length < BATCH_MAX ? undecideSuspects.length : BATCH_MAX;
+            for (var i = 0; i < limit; i++) {
+                filterSuspect(undecideSuspects[i].id, undecideSuspects[i].attending);
+            }
+            // remove 
+            undecideSuspects.splice(0, limit);
+            // process next batch    
+            limit =  undecideSuspects.length < BATCH_MAX ? undecideSuspects.length : BATCH_MAX;
+            if (limit > 0) {
+                for (var i = 0; i < limit; i++) {
+                    batchCmd.push( { method: 'GET', 
+                                     relative_url:  undecideSuspects[i].id + '/attending?' + 'access_token=' + accessToken } );
+                }
+                FB.api('/', 'POST', { batch: batchCmd }, suspectEventAttendeesCallback);
+            } else {
+                // we are done
+                // sort and display
+                $('.progress-bar').css('width', '100%').attr('aria-valuenow', 100);
+                if (events.length > 0) {
+                    // post process, filter out more events
+                    var sortTime = function(at, bt) {
+                        var a = parseTime(at.start_time);
+                        var b = parseTime(bt.start_time);
+                        return (a > b) ? 1 : -1;
+                    };
+                    events.sort(sortTime);
+                    decidedSuspects(sortTime);
+                    // wait for some millisec so progress bar shows completion
+                    setTimeout(function() { display(events, accessToken); }, 800); 
+                    // cookies have 4k limit - so can't be used to store events. It siliently fails. Use
+                    // localStorage / sessionStorage. They have 5MB limit
+                    if(typeof(Storage) !== "undefined") { // This browser supports sessionStorage and localStorage
+                        // Save data to sessionStorage
+                        sessionStorage.setItem('zoukevents', JSON.stringify(events));
+                        sessionStorage.setItem('suspectevents', JSON.stringify(decidedSuspects));
+                    } 
+                }
+            }
+        }
+    }
+};
 
 
 /************************************************************/
@@ -575,7 +566,7 @@ function preFilter(event) {
                                     if (desc.search(/zouk/i) === -1) { // not found
                                         // remove description as this will eat up sessionStorage
                                         event.description = null;
-                                        suspectEvents.push(event);
+                                        decidedSuspects.push(event);
                                         return false;
                                     }
                                 }
@@ -624,7 +615,9 @@ function filterSuspect(id, attending) {
         }
     }
     // remove event
-    events.splice(evIdx, 1);
+    var event = events.splice(evIdx, 1); // returns array of 1
+    decidedSuspects.splice(0, 0, event[0]);
+    console.log('Removing ' + event[0].name);
 }
 
 /************************************************************/
