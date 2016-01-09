@@ -704,6 +704,7 @@ function getEventIdFromName(name) {
         var re = new RegExp(name, "i");
         if (events[i].name.search(re) !== -1) { // found
             return events[i].id;
+            console.log('festival ' + events[i].name;                    
         }
     }
     console.log(name + ' not found');
@@ -734,7 +735,7 @@ function filterSuspect(id, attending) {
     // remove event
     var event = events.splice(evIdx, 1); // returns array of 1
     suspects.splice(0, 0, event[0]);
-    console.log('Removing ' + event[0].name);
+    //console.log('Removing ' + event[0].name);
 }
 
 /************************************************************/
