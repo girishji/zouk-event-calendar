@@ -303,7 +303,7 @@ function getSuspectEventAttendees() {
     for (var i = 0; i < events.length; i++) {
         if (events[i].attending_count > 100) {
             // verify this event's legitimacy
-            unknownEvents.push( { id: events[i].id, attending: {} } );
+            unknownEvents.push( { id: events[i].id, attending: {}, done: false } );
         }
     }
     console.log('total unknownEvents ' + unknownEvents.length);
@@ -348,28 +348,36 @@ var suspectEventAttendeesCallback = function(response) {
                 }
             }
             // next paging link
+            var eventIsDone = true;
             if (body.hasOwnProperty('paging') && body.paging) {
                 var paging = body.paging;
                 if (paging.hasOwnProperty('next') && paging.next) {
                     var rel_url = getRelativeUrl(paging.next);
                     batchCmd.push( { method: 'GET', relative_url: rel_url } );
+                    eventIsDone = false;
                 }
             }
+            unknownEvents[i].done = true; // remove this event outside this loop
         } 
     }
+
+     for (var i = 0; i < response.length; i++) {
+         if (unknownEvents[i].done) {
+             // process
+             filterSuspect(unknownEvents[i].id, unknownEvents[i].attending);
+             // remove this because next batch will not have response for this
+             console.log('before remove ' + Object.keys(unknownEvents).length + ' limit ' + limit);
+             unknownEvents.splice(i, 1);
+             console.log('after remove ' + Object.keys(unknownEvents).length + ' limit ' + limit);
+         }
+     }
+
     // Recurse:
     if ((batchCmd.length > 0) && (pageIterationCount < MAX_PAGE_ITERATIONS)) {
         FB.api('/', 'POST', { batch: batchCmd }, suspectEventAttendeesCallback);
     } else {
         // We are done with this batch
         var limit =  unknownEvents.length < BATCH_MAX ? unknownEvents.length : BATCH_MAX;
-        for (var i = 0; i < limit; i++) {
-            filterSuspect(unknownEvents[i].id, unknownEvents[i].attending);
-        }
-        // remove 
-        console.log('before remove ' + Object.keys(unknownEvents).length + ' limit ' + limit);
-        unknownEvents.splice(0, limit);
-        console.log('after remove ' + Object.keys(unknownEvents).length + ' limit ' + limit);
         // process next batch    
         if (pageIterationCount >= MAX_PAGE_ITERATIONS) {
             pageIterationCount = 0;
