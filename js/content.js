@@ -374,6 +374,7 @@ var suspectEventAttendeesCallback = function(response) {
         for (var i = 0; i < response.length; i++) {
             unknownEvents[i].done = true;
         }
+        pageIterationCount = 0;
     }
     // filter and remove finished events, do this outside above loop so as not to affect array indexes
     for (var i = 0; i < unknownEvents.length; i++) {
@@ -385,15 +386,11 @@ var suspectEventAttendeesCallback = function(response) {
     }
 
     // Recurse:
-    if ((batchCmd.length > 0) && (pageIterationCount < MAX_PAGE_ITERATIONS)) {
+    if (batchCmd.length > 0) {
         console.log('request length of batch ' + batchCmd.length);
         FB.api('/', 'POST', { batch: batchCmd }, suspectEventAttendeesCallback);
     } else {
-
-        // We are done with this batch, process next batch 
-        if (pageIterationCount >= MAX_PAGE_ITERATIONS) {
-            pageIterationCount = 0;
-        }
+        // We are done with this batch, process next
         var batchCmd = []; // reinitialize (recreate) batchCmd, old one has stuff in it
         var limit = unknownEvents.length < BATCH_MAX ? unknownEvents.length : BATCH_MAX;
         if (limit > 0) {
