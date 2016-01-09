@@ -703,8 +703,9 @@ function getEventIdFromName(name) {
     for (var i = 0; i < events.length; i++) {
         var re = new RegExp(name, "i");
         if (events[i].name.search(re) !== -1) { // found
-            return events[i].id;
             console.log('festival ' + events[i].name);
+            return events[i].id;
+
         }
     }
     console.log(name + ' not found');
