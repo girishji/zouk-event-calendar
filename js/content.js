@@ -92,7 +92,7 @@ var suspectEvents = [];
 // Set of legit attendees; Use an object since objects are ordered pairs in javascript, 
 // like: var obj = {"1":true, "2":true, "3":true, "9":true}
 var legitAttendees = {}; // empty object
-
+var accessToken;
 
 /************************************************************/
 function loginAndDo(doFunct) {
@@ -118,15 +118,16 @@ function loginAndDo(doFunct) {
 
 /************************************************************/
 // Search FB
-function buildContent(accessToken) {
+function buildContent(accessTkn) {
 
     var batchCmd = [];
+    accessToken = accessTkn;
 
     for (var i = 0; i < searches.length; i++) {
         batchCmd.push( { method: 'GET', 
                          relative_url: 'search?q=' + searches[i] 
                          + '&type=event&fields=id,name,start_time,place,attending_count,cover,description&access_token='
-                         + accessToken }
+                         + accessTkn }
                      );
     }
 
@@ -144,7 +145,6 @@ var eventsCallback = function(response) {
         console.log('FB.api: Error occured');
         console.log(response);
     } else {
-        var accessToken = response.authResponse.accessToken;
         // print response in console log. You'll see that you get back an array of 
         // objects, and each is a JSON serialied string. To turn it into a javascript
         // objects, use parse().
@@ -193,13 +193,13 @@ var eventsCallback = function(response) {
             FB.api('/', 'POST', { batch: batchCmd }, eventsCallback);
         } else {
             // We are done, do further filtering
-            getMajorLegitEvents(accessToken);
+            getMajorLegitEvents();
         }
     }
 };
 
 /************************************************************/
-function getMajorLegitEvents(accessToken) {
+function getMajorLegitEvents() {
     console.log('getMajorLegitEvents');
     // These are known festivals
     var knownEvents = [ 'zouk libre', 
@@ -235,7 +235,6 @@ var legitAttendeesCallback = function(response) {
         console.log('FB.api: Error occured');
         console.log(response);
     } else {
-        var accessToken = response.authResponse.accessToken;
         var nextPage = [];
         for (var i = 0; i < response.length; i++) {
             if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
@@ -272,13 +271,13 @@ var legitAttendeesCallback = function(response) {
         } else {
             // We are done. Get suspect events
             console.log('legit set size ' + Object.keys(legitAttendees).length);
-            getSuspectEventAttendees(accessToken);
+            getSuspectEventAttendees();
         }
     }
 };
 
 /************************************************************/
-function getSuspectEventAttendees(accessToken) {
+function getSuspectEventAttendees() {
     console.log('getSuspectEventAttendees');
     // Many batch commands are executed in parallel. There is no issue with thread safety
     // as javascript is single threaded, but need to be able to know when all of them
@@ -294,7 +293,7 @@ function getSuspectEventAttendees(accessToken) {
             if (count >= maxCmdsInBatch) {
                 count = 0;
                 damForBatchRequests++;
-                processOneBatch(batch, accessToken);
+                processOneBatch(batch);
                 batchCmd = []; // create new array to prevent overwriting
             }
         }
@@ -303,7 +302,7 @@ function getSuspectEventAttendees(accessToken) {
 }
 
 /************************************************************/
-function processOneBatch(batch, accessToken) {
+function processOneBatch(batch) {
     var batchCmd = [];
     for (var i = 0; i < batch.length; i++) {
         batchCmd.push( { method: 'GET', 
