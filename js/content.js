@@ -216,6 +216,7 @@ var eventsCallback = function(response) {
         // We are done, do further filtering
         console.log('total events ' + events.length);
         $('#searchProgressBar').css('width', '100%').attr('aria-valuenow', 100);
+        $('#filterProgressBar').show();
         progress = 0; // for next progress bar
         getMajorLegitEvents();
     }
@@ -332,7 +333,7 @@ var suspectEventAttendeesCallback = function(response) {
     progress = (progress < 100) ? progress + 5 : progress;
     $('#filterProgressBar').css('width', progress + '%').attr('aria-valuenow', progress);
 
-    console.log('response length ' + response.length + ' u-suspects ' + Array.keys(undecideSuspects).length);
+    console.log('response length ' + response.length + ' u-suspects ' + Object.keys(undecideSuspects).length);
     var batchCmd = [];
     for (var i = 0; i < response.length; i++) {
         if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
