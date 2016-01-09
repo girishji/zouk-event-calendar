@@ -303,7 +303,7 @@ function getSuspectEventAttendees() {
     for (var i = 0; i < events.length; i++) {
         if (events[i].attending_count > 100) {
             // verify this event's legitimacy
-            unknownEvents.push( { id: events[i].id, attending: {} } );
+            unknownEvents.push( { id: events[i].id, attending: {}, done: false } );
         }
     }
     console.log('total unknownEvents ' + unknownEvents.length);
@@ -341,46 +341,40 @@ var suspectEventAttendeesCallback = function(response) {
     // to deal with it is to get event id from 'next' link and only treat these
     // responses as legit
     for (var i = 0; i < response.length; i++) {
-
         if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
             var body = JSON.parse(response[i].body);
+            // responses correspond with requests sent in batch command
+            if (body.hasOwnProperty('data') && body.data) {
+                var data = body.data;
+                for (var j = 0; j < data.length; j++) {
+                    // add id if it is not there
+                    if (! unknownEvents[i].attending.hasOwnProperty(data[j].id)) {
+                        unknownEvents[i].attending[data[j].id] = true;
+                    }
+                }
+            }
 
-            var idxUnknownEv = -1;
             // next paging link
+            var done = true;
             if (body.hasOwnProperty('paging') && body.paging) {
                 var paging = body.paging;
                 if (paging.hasOwnProperty('next') && paging.next) {
                     var relUrl = getRelativeUrl(paging.next);
                     batchCmd.push( { method: 'GET', relative_url: relUrl } );
-                    // get the index of event, from relUrl 234234234234/attending?... 
-                    var splitted = relUrl.split('/');
-                    for (var idx = 0; idx < unknownEvents.length; idx++) {
-                        if (splitted[0] == unknownEvents[idx].id) {
-                            idxUnknownEv = idx;
-                            break;
-                        }
-                    }
-                    if (idxUnknownEv == -1) {
-                        console.log('Error, index to unknownEvents array not found ' + splitted[0]);
-                        continue;
-                    }
+                    done = false;
                 }
             }
-            if (idxUnknownEv == -1) {
-                // discard this response, it has no next page
-                continue;
-            }
-
-            if (body.hasOwnProperty('data') && body.data) {
-                var data = body.data;
-                for (var j = 0; j < data.length; j++) {
-                    // add id if it is not there
-                    if (! unknownEvents[idxUnknownEv].attending.hasOwnProperty(data[j].id)) {
-                        unknownEvents[idxUnknownEv].attending[data[j].id] = true;
-                    }
-                }
-            }
+            unknownEvents[i].done = done;
         } 
+    }
+
+    // filter and remove finished events, do this outside above loop so as not to affect array indexes
+    for (var i = 0; i < unknownEvents.length; i++) {
+        if (unknownEvents[i].done) {
+            filterSuspect(unknownEvents[i].id, unknownEvents[i].attending);
+            // remove
+            unknownEvents.splice(i, 1);
+        }
     }
 
     // Recurse:
@@ -389,21 +383,12 @@ var suspectEventAttendeesCallback = function(response) {
         FB.api('/', 'POST', { batch: batchCmd }, suspectEventAttendeesCallback);
     } else {
 
-        // We are done with this batch, filter, and discard top batch
-        var limit = unknownEvents.length < BATCH_MAX ? unknownEvents.length : BATCH_MAX;
-        // filter events
-        for (var i = 0; i < limit; i++) {
-            filterSuspect(unknownEvents[i].id, unknownEvents[i].attending);
-        }
-        // remove
-        unknownEvents.splice(0, limit);
-
-        // process next batch 
+        // We are done with this batch, process next batch 
         if (pageIterationCount >= MAX_PAGE_ITERATIONS) {
             pageIterationCount = 0;
         }
         var batchCmd = []; // reinitialize (recreate) batchCmd, old one has stuff in it
-        limit = unknownEvents.length < BATCH_MAX ? unknownEvents.length : BATCH_MAX;
+        var limit = unknownEvents.length < BATCH_MAX ? unknownEvents.length : BATCH_MAX;
         if (limit > 0) {
             for (var i = 0; i < limit; i++) {
                 batchCmd.push( { method: 'GET', 
