@@ -387,19 +387,21 @@ var suspectEventAttendeesCallback = function(response) {
     if ((batchCmd.length > 0) && (pageIterationCount < MAX_PAGE_ITERATIONS)) {
         FB.api('/', 'POST', { batch: batchCmd }, suspectEventAttendeesCallback);
     } else {
+        // We are done with this batch, filter, and discard top batch
+        var limit = unknownEvents.length < BATCH_MAX ? unknownEvents.length : BATCH_MAX;
+        // filter events
+        for (var i = 0; i < limit; i++) {
+            filterSuspect(unknownEvents[i].id, unknownEvents[i].attending);
+        }
+        // remove
+        unknownEvents.splice(0, limit);
 
-
-
-
-
-        // We are done with this batch
-        var limit =  unknownEvents.length < BATCH_MAX ? unknownEvents.length : BATCH_MAX;
-        // process next batch    
+        // process next batch 
         if (pageIterationCount >= MAX_PAGE_ITERATIONS) {
             pageIterationCount = 0;
         }
-        limit =  unknownEvents.length < BATCH_MAX ? unknownEvents.length : BATCH_MAX;
-        console.log('batch size of unknownEvents ' + limit);
+        limit = unknownEvents.length < BATCH_MAX ? unknownEvents.length : BATCH_MAX;
+        console.log('new batch size of unknownEvents ' + limit);
         if (limit > 0) {
             for (var i = 0; i < limit; i++) {
                 batchCmd.push( { method: 'GET', 
@@ -410,11 +412,6 @@ var suspectEventAttendeesCallback = function(response) {
             // we are done, no more unknownEvents 
             // sort and display
             $('#filterProgressBar').css('width', '100%').attr('aria-valuenow', 100);
-
-            // filter events
-            for (var i = 0; i < limit; i++) {
-                filterSuspect(unknownEvents[i].id, unknownEvents[i].attending);
-            }
 
             if (events.length > 0) {
                 // post process, filter out more events
