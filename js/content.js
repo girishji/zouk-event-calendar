@@ -627,13 +627,15 @@ function preFilter(event) {
                     }
                     // if event is happening in a suspect location, discard
                     var location = event.place.location;
-                    for (var k = 0; k < knownSuspectPlaces.length; k++) {
-                        if ((location.latitude == knownSuspectPlaces[k].latitude) 
-                            && (location.longitude == knownSuspectPlaces[k].longitude)) {
-                            // remove description as this will eat up sessionStorage
-                            event.description = null;
-                            suspects.push(event);
-                            return false;
+                    if (location.hasOwnProperty('latitude') && location.hasOwnProperty('longitude')) {
+                        for (var k = 0; k < knownSuspectPlaces.length; k++) {
+                            if ((location.latitude == knownSuspectPlaces[k].latitude) 
+                                && (location.longitude == knownSuspectPlaces[k].longitude)) {
+                                // remove description as this will eat up sessionStorage
+                                event.description = null;
+                                suspects.push(event);
+                                return false;
+                            }
                         }
                     }
                 } // place
