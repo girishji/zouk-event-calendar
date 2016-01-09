@@ -330,7 +330,7 @@ var suspectEventAttendeesCallback = function(response) {
     }
 
     // Update progress bar
-    progress = (progress < 100) ? progress + 5 : progress;
+    progress = (progress < 95) ? progress + 2 : progress;
     $('#filterProgressBar').css('width', progress + '%').attr('aria-valuenow', progress);
 
     console.log('response length ' + response.length + ' u-suspects ' + Object.keys(unknownEvents).length);
@@ -372,6 +372,7 @@ var suspectEventAttendeesCallback = function(response) {
             unknownEvents[i].done = true;
         }
         pageIterationCount = 0;
+        batchCmd.length = 0; // remove batch commands
     }
     // filter and remove finished events, do this outside above loop so as not to affect array indexes
     for (var i = 0; i < unknownEvents.length; i++) {
@@ -383,7 +384,7 @@ var suspectEventAttendeesCallback = function(response) {
     }
 
     // Recurse:
-    if ((batchCmd.length > 0) && (pageIterationCount < MAX_PAGE_ITERATIONS)) {
+    if (batchCmd.length > 0) {
         console.log('request length of batch ' + batchCmd.length);
         FB.api('/', 'POST', { batch: batchCmd }, suspectEventAttendeesCallback);
     } else {
