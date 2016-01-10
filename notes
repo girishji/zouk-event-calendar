@@ -104,9 +104,6 @@ debug: https://www.youtube.com/watch?v=aQb2-RIst0Q
 
 ====
 
-Use http://closure-compiler.appspot.com/ from google to minify your js file.
-
-====
 
 XXX remove facebook debug js
 XXX remove popup blocker on website

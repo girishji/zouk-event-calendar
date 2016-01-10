@@ -8,7 +8,8 @@
 window.fbAsyncInit = function() {
     FB.init({
         //appId      : <?php echo getenv('FACEBOOK_APP_ID'); ?>, //set from server side
-        appId      : 1263842110297634, // from FB app settings page
+        //appId      : 1263842110297634, // from FB app settings page
+        appId      : 1261883747160137, // from FB app settings page
         cookie     : true,
         xfbml      : true,
         version    : 'v2.5'
