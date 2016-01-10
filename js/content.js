@@ -188,11 +188,13 @@ function loginAndDo(doFunct) {
             accessToken = response.authResponse.accessToken;
             doFunct();
         } else {
+            $('#bannerMsg').show();
             FB.login(function(response) {
                 if (response.authResponse) {
                     if (response.status === 'connected') {
                         //console.log('Welcome!  Fetching information.... ');
                         accessToken = response.authResponse.accessToken;
+                        $('#bannerMsg').hide();
                         doFunct();
                     }
                 } else {
@@ -215,6 +217,7 @@ function buildContent() {
                      );
     }
 
+    $('#searchProgressBar').show();
     FB.api('/', 'POST', { batch: batchCmd }, eventsCallback);
     // Response of FB.api is asynchronous, make it resursive from callback
 }
