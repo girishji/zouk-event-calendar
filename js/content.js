@@ -227,20 +227,20 @@ var eventsCallback = function(response) {
         $('#searchProgressBar').css('width', '100%').attr('aria-valuenow', 100);
         $('#filterProgressBarDiv').show();
         progress = 0; // for next progress bar
-        getMajorLegitEvents();
+        getMajorLegitEventAttendees();
     }
 };
 
 /************************************************************/
-function getMajorLegitEvents() {
-    //console.log('getMajorLegitEvents');
+function getMajorLegitEventAttendees() {
+    //console.log('getMajorLegitEventAttendees');
     // get api links
     var batchCmd = [];
     for (var i = 0; i < knownEvents.length; i++) {
-        var id = getEventIdFromName(knownEvents[i]);
-        if (id) {
+        var ev = getEventFromName(knownEvents[i]);
+        if (ev) {
             batchCmd.push( { method: 'GET',
-                             relative_url:  id + '/attending?' + 'access_token=' + accessToken } );
+                             relative_url: ev.id + '/attending?' + 'access_token=' + accessToken } );
         }
     }
     if (batchCmd.length > 0) {
@@ -699,13 +699,12 @@ function preFilter(event) {
 }
 
 /************************************************************/
-function getEventIdFromName(name) {
+function getEventFromName(name) {
     for (var i = 0; i < events.length; i++) {
         var re = new RegExp(name, "i");
         if (events[i].name.search(re) !== -1) { // found
-            console.log('festival ' + events[i].name);
-            return events[i].id;
-
+            //console.log('festival ' + events[i].name);
+            return events[i];
         }
     }
     console.log(name + ' not found');
