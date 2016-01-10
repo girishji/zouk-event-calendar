@@ -564,7 +564,7 @@ function showFiltered() {
 
 /************************************************************/
 function showLocation(lat, lng) {
-    if (typeof(Storage) !== "undefined") {
+    if (typeof(Storage) === "undefined") {
         alert('Your browser does not support this operation');
         return;
     }
