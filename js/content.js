@@ -211,7 +211,9 @@ function buildContent() {
     for (var i = 0; i < searcheStrings.length; i++) {
         batchCmd.push( { method: 'GET', 
                          relative_url: 'search?q=' + searcheStrings[i] 
-                         + '&type=event&fields=id,name,start_time,place,attending_count,cover,description&access_token='
+                         + '&type=page&access_token='
+                         //xxx
+                         //+ '&type=event&fields=id,name,start_time,place,attending_count,cover,description&access_token='
                          + accessToken }
                      );
     }
@@ -241,6 +243,13 @@ var eventsCallback = function(response) {
             if (body.hasOwnProperty('data') && body.data) {
                 var data = body.data;
                 for (var j = 0; j < data.length; j++) {
+
+                    //xxx
+                    console.log(data[j].name);
+                    events.push(data[j]);
+                    continue;
+
+
                     if (preFilter(data[j])) {
                         if (events.length < 9000) { // Can store about 10000 in sessionStorage
                             // remove description as this will eat up sessionStorage
@@ -277,7 +286,9 @@ var eventsCallback = function(response) {
         $('#searchProgressBar').css('width', '100%').attr('aria-valuenow', 100);
         $('#filterProgressBarDiv').show();
         progress = 0; // for next progress bar
-        getMajorLegitEventAttendees();
+
+        //xx
+        //getMajorLegitEventAttendees();
     }
 };
 
@@ -666,7 +677,7 @@ function showMap() {
         $('#mainContent').show();
         $('#map').show();
 
-        var myLatLng = {lat: 27.363, lng: -9.0};
+        var myLatLng = {lat: 32.0, lng: -9.0};
         var map = new google.maps.Map(document.getElementById('map'), {
             zoom: 2,
             center: myLatLng
