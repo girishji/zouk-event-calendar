@@ -34,7 +34,7 @@ window.fbAsyncInit = function() {
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 
-// You are supposed to add the javascript code (including jquery) in
+// all javascript code should go (including jquery) in
 // a $(document).ready(function() {}); block.
 $(document).ready(function() {
     // bootstrap:
@@ -52,11 +52,10 @@ $(document).ready(function() {
         var loc = $('#locationInput').value;
         geocoder.geocode( { 'address': loc }, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
-                //$('#locationAlert').show();
                 showLocation(results[0].geometry.location.lat(), results[0].geometry.location.lng());
                 //alert("location : " + results[0].geometry.location.lat() + " " +results[0].geometry.location.lng()); 
             } else {
-                aleart('not found');
+                alert('not found');
                 //$('#locationAlert').show();
             }
         });
