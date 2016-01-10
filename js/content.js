@@ -298,10 +298,12 @@ function getBatchCmdFromPages() {
     var batchCmd = [];
     for (var i = 0; i < limit; i++) {
         var pid = ids[i]; // page id
+        var url = pid + '/events?fields=id,name,start_time,place,attending_count,cover,description&access_token='
+            + accessToken;
         batchCmd.push( { method: 'GET', 
-                         relative_url: pid + '/attending?fields=id,name,start_time,place,attending_count,cover,description&access_token='
-                         + accessToken }
+                         relative_url: url }
                      );
+        console.log(url);
     }
     // remove pages from top
     for (var i = 0; i < limit; i++) {
@@ -432,9 +434,6 @@ var pagesCallback = function(response) {
         //
     }
 };
-
-
-
 
 /************************************************************/
 function getMajorLegitEventAttendees() {
