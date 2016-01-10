@@ -583,7 +583,7 @@ function showLocation(lat, lng) {
                 if ((location.hasOwnProperty('latitude') && location.latitude) && 
                     (location.hasOwnProperty('longitude') && location.longitude)) {
                     var dist = distance(lat, location.latitude, lng, location.longitude);
-                    events[i].attending_count = dist; // kludge alert: replace attening_count with dist
+                    events[i].attending_count = Math.round(dist); // kludge alert: replace attening_count with dist
                     selected.push(events[i]);
                 }
             }
@@ -591,7 +591,7 @@ function showLocation(lat, lng) {
     }
     if (selected.length > 0) { // sort
         selected.sort(function(a, b) {
-            return (a.attening_count < b.attening_count) ? 1 : -1; // descending
+            return (a.attening_count > b.attening_count) ? 1 : -1; // descending
         });
         var str = `
             <table class="table table-condensed">
