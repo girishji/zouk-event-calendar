@@ -541,7 +541,7 @@ function showFiltered() {
             var events = JSON.parse(data);
             if (events.length > 0) {
                 var str = `
-                    <button type="button" class="btn btn-default btn-sm" onclick="showEventsByTimeInner();" style="margin-top:10px;">
+                    <button type="button" class="btn btn-default btn-sm" onclick="showEventsByTimeInner();" style="margin-top:10px; margin-bottom: 5px;">
                     <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back
                     </button>
                     <table class="table table-condensed">
@@ -626,6 +626,51 @@ function showLocation(geoResult) {
         $('#evTableHeader').hide();
         $("#evTableContent").hide().html(str).fadeIn('fast');
         $('#mainContent').show();
+    }
+}
+
+/************************************************************/
+function showMap() {
+    if (typeof(Storage) === "undefined") {
+        alert('Your browser does not support this operation');
+        return;
+    }
+    var data = sessionStorage.getItem('zoukevents');
+    if (data === undefined || (! data)) {
+        console.log('No events in showEventsByAttendingInner');
+    }
+    events = JSON.parse(data);
+    var selected = [];
+
+    for (var i = 0; i < events.length; i++) {
+        if (events[i].hasOwnProperty('place') && events[i].place) {
+            var place = events[i].place;
+            if (place.hasOwnProperty('location') && place.location) {
+                var location = place.location;  
+                if ((location.hasOwnProperty('latitude') && location.latitude) && 
+                    (location.hasOwnProperty('longitude') && location.longitude)) {
+                    selected.push(events[i]);
+                }
+            }
+        }
+    }
+    if (selected.length > 0) { 
+        $('#evTableHeader').hide();
+        $("#evTableContent").empty();
+        var myLatLng = {lat: -25.363, lng: 131.044};
+        var map = new google.maps.Map(document.getElementById('evTableContent'), {
+            zoom: 4,
+            center: myLatLng
+        });
+
+        var marker = new google.maps.Marker({
+            position: myLatLng,
+            map: map,
+            title: 'Hello World!'
+        });
+
+        //$("#evTableContent").hide().html(str).fadeIn('fast');
+        //$('#mainContent').show();
     }
 }
 
