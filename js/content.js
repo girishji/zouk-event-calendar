@@ -584,8 +584,6 @@ function showLocation(lat, lng) {
                     (location.hasOwnProperty('longitude') && location.longitude)) {
                     var dist = distance(lat, location.latitude, lng, location.longitude);
                     events[i].attending_count = Math.round(dist); // kludge alert: replace attening_count with dist
-                    // although you can add new property to object, keep attening_count since it is 
-                    // used by getTableBody
                     selected.push(events[i]);
                 }
             }
