@@ -541,10 +541,13 @@ function showFiltered() {
             var events = JSON.parse(data);
             if (events.length > 0) {
                 var str = `
+                    <button type="button" class="btn btn-default btn-sm" onclick="showEventsByTimeInner();" style="margin-top:10px;">
+                    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back
+                    </button>
                     <table class="table table-condensed">
                     <thead>
                     <th>Date</th>
-                    <th>Event</th>
+                    <th>Filtered Event</th>
                     <th>Attending</th>
                     <tr>
                     </tr>
@@ -853,7 +856,7 @@ function filterSuspect(id, attending) {
     }
     var ratio = 100.0 * intersection / attendees.length
     //console.log('ratio ' + ratio);
-    if (ratio < 5) {
+    if (ratio < 2) {
         // remove event
         var event = events.splice(evIdx, 1); // returns array of 1
         suspects.splice(0, 0, event[0]);
