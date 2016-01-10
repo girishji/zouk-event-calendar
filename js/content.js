@@ -1033,7 +1033,7 @@ function filterSuspect(id, attending) {
     // We asked fb to give all attendees of events where more
     // than 100 are going. But we many not get all the attendee id's
     // Discard events with less attendees
-    if (attending && Object.keys(attendees).length < 90) {
+    if (attending && Object.keys(attending).length < 90) {
         return;
     }
     // get the even
