@@ -524,7 +524,7 @@ function display(events) {
     if (typeof(Storage) !== "undefined") {
         var data = sessionStorage.getItem('zoukattendees');
         if (data !== undefined && data) {
-            msg += ', ' + '<span class="badge">' + data + '</span>' 
+            msg += '| ' + '<span class="badge">' + data + '</span>' 
                 + ' unique attendees to <a href="#" onclick="showTopFestivals();">selected festivals</a>';
         }
     }
