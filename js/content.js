@@ -51,10 +51,11 @@ $(document).ready(function() {
         var geocoder =  new google.maps.Geocoder();
         geocoder.geocode( { 'address': 'miami, us'}, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
-                $('#locationAlert').show();
+                //$('#locationAlert').show();
+                showLocation(results[0].geometry.location.lat(), results[0].geometry.location.lng());
                 //alert("location : " + results[0].geometry.location.lat() + " " +results[0].geometry.location.lng()); 
             } else {
-                $('#locationAlert').show();
+                //$('#locationAlert').show();
             }
         });
     });
@@ -558,6 +559,55 @@ function showFiltered() {
         }
     } else {
         alert('Your browser does not support this operation');
+    }
+}
+
+/************************************************************/
+function showLocation(lat, lng) {
+    if (typeof(Storage) !== "undefined") {
+        alert('Your browser does not support this operation');
+        return;
+    }
+    var data = sessionStorage.getItem('zoukevents');
+    if (data === undefined || (! data)) {
+        console.log('No events in showEventsByAttendingInner');
+    }
+    events = JSON.parse(data);
+    var selected = [];
+
+    for (var i = 0; i < events.length; i++) {
+        if (events[i].hasOwnProperty('place') && events[i].place) {
+            var place = events[i].place;
+            if (place.hasOwnProperty('location') && place.location) {
+                var location = place.location;  
+                if ((location.hasOwnProperty('latitude') && location.latitude) && 
+                    (location.hasOwnProperty('longitude') && location.longitude)) {
+                    var dist = distance(lat, location.latitude, lng, location.longitude);
+                    event[i].attending_count = dist; // kludge alert: replace attening_count with dist
+                    selected.push(events[i]);
+                }
+            }
+        }
+    }
+    if (selected.length > 0) { // sort
+        selected.sort(function(a, b) {
+            return (a.dist < b.dist) ? 1 : -1; // descending
+        });
+        var str = `
+            <table class="table table-condensed">
+            <thead>
+            <th>Date</th>
+            <th>Event</th>
+            <th>Distance (mi)</th>
+            <tr>
+            </tr>
+            </thead>
+            `;
+        str += getTableBody(events);
+        str += '</table>';
+        $('#evTableHeader').hide();
+        $("#evTableContent").hide().html(str).fadeIn('fast');
+        $('#mainContent').show();
     }
 }
 
