@@ -139,7 +139,7 @@ var knownEvents = [ 'zouk\\s+libre.*festival',
                     'zoukmx\\s',
                     '\\s*zoukfest\\s',
                     'l.*a.*Zouk.*congress',
-                    '[^t]zouktime!\\s',
+                    '[^t]zouktime!\|^zouktime!\\s',
                     'dutch.+international.+zouk.+congr',
                     'berg.*congres',
                     'i\'m\\s*zouk',
@@ -150,7 +150,6 @@ var knownSuspectPlaces = [ { latitude: '48.812053039547',  longitude: '2.4038419
                            { latitude: '46.01244',         longitude: '-0.28403' },
                            { latitude: '-22.9937382',      longitude: '-44.2409439' }
                          ];
-
 
 var timeNow = new Date();
 // All events
