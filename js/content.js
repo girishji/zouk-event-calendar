@@ -34,23 +34,26 @@ window.fbAsyncInit = function() {
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 
-// bootstrap:
-// For performance reasons, the Tooltip and Popover data-apis are opt-in, meaning you must initialize them yourself.
-// One way to initialize all tooltips on a page would be to select them by their data-toggle attribute:
-$(function() {
-    $('[data-toggle="tooltip"]').tooltip();
-});
+// You are supposed to add the javascript code in a $(document).ready(function() {}); block.
+$(document).ready(function() {
+    // bootstrap:
+    // For performance reasons, the Tooltip and Popover data-apis are opt-in, meaning you must initialize them yourself.
+    // One way to initialize all tooltips on a page would be to select them by their data-toggle attribute:
+    $(function() {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
 
-// get location and sort
-$("#locationBtn").click(function() {
-    console.log('in locationBtn');
-    var geocoder =  new google.maps.Geocoder();
-    geocoder.geocode( { 'address': 'miami, us'}, function(results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-            alert("location : " + results[0].geometry.location.lat() + " " +results[0].geometry.location.lng()); 
-        } else {
-            alert("Something got wrong " + status);
-        }
+    // get location and sort
+    $("#locationBtn").click(function() {
+        console.log('in locationBtn');
+        var geocoder =  new google.maps.Geocoder();
+        geocoder.geocode( { 'address': 'miami, us'}, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                alert("location : " + results[0].geometry.location.lat() + " " +results[0].geometry.location.lng()); 
+            } else {
+                alert("Something got wrong " + status);
+            }
+        });
     });
 });
 
@@ -105,9 +108,11 @@ var knownEvents = [ 'zouk.*libre.*festival',
                     'rio.*zouk.*congress',
                     'f.i.e.l',
                     'zoukmx',
-                    'zoukfest\b',
+                    '\szoukfest\s',
+                    '^zoukfest\s',
                     'l.*a.*Zouk.*congress',
-                    '[^\w]zouktime',
+                    '\szouktime!',
+                    '^zouktime!',
                     'dutch.+international.+zouk.+congr',
                     'berg.*congres',
                     'i\'m.*zouk',
