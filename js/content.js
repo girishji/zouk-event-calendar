@@ -85,15 +85,15 @@ var searcheStrings = [
 ];
 
 // These are known festivals to compare against
-var knownEvents = [ 'zouk.*libre',
+var knownEvents = [ 'zouk.*libre.*festival',
                     'prague.*zouk.*congress',
                     'prague.*zouk.*marathon',
                     'rio.*zouk.*congress',
                     'f.i.e.l',
                     'zoukmx',
-                    'zoukfest',
+                    '\bzoukfest\b',
                     'l.*a.*Zouk.*congress',
-                    'zouktime',
+                    '\bzouktime',
                     'dutch.*international',
                     'berg.*congres',
                     'i\'m.*zouk',
@@ -174,7 +174,7 @@ function buildContent() {
 
 /************************************************************/
 var eventsCallback = function(response) {
-    console.log('eventsCallback');
+    //console.log('eventsCallback');
 
     if (!response || response.error) {
         console.log('FB.api: Error occured');
