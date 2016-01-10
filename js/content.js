@@ -583,7 +583,7 @@ function showLocation(lat, lng) {
                 if ((location.hasOwnProperty('latitude') && location.latitude) && 
                     (location.hasOwnProperty('longitude') && location.longitude)) {
                     var dist = distance(lat, location.latitude, lng, location.longitude);
-                    event[i].attending_count = dist; // kludge alert: replace attening_count with dist
+                    events[i].attending_count = dist; // kludge alert: replace attening_count with dist
                     selected.push(events[i]);
                 }
             }
