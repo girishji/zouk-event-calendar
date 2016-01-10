@@ -85,12 +85,6 @@ $(document).ready(function() {
                 }
             }
         }
-      // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-
-        //modal.find('.modal-title').text('New message to ' + recipient)
-        //modal.find('.modal-body input').val(recipient)
-    // Add content to the festivals modal
-
     });
 });
 
@@ -139,20 +133,18 @@ var searcheStrings = [
 ];
 
 // These are known festivals to compare against
-var knownEvents = [ 'zouk.*libre.*festival',
+var knownEvents = [ 'zouk\\s+libre.*festival',
                     'prague.*zouk.*congress',
-                    'prague.*zouk.*marathon',
+                    'prague\\s+zouk\\s+marathon',
                     'rio.*zouk.*congress',
                     'f.i.e.l',
-                    'zoukmx',
-                    '\szoukfest\s',
-                    '^zoukfest\s',
+                    'zoukmx\\s',
+                    '\\s*zoukfest\\s',
                     'l.*a.*Zouk.*congress',
-                    '\szouktime!',
-                    '^zouktime!',
+                    '\\s*zouktime!\\s',
                     'dutch.+international.+zouk.+congr',
                     'berg.*congres',
-                    'i\'m.*zouk',
+                    'i\'m\\s*zouk',
                     'canada.*zouk' ];
 
 var knownSuspectPlaces = [ { latitude: '48.812053039547',  longitude: '2.4038419249911' }, 
@@ -213,9 +205,7 @@ function loginAndDo(doFunct) {
 /************************************************************/
 // Search FB
 function buildContent() {
-
     var batchCmd = [];
-
     for (var i = 0; i < searcheStrings.length; i++) {
         batchCmd.push( { method: 'GET', 
                          relative_url: 'search?q=' + searcheStrings[i] 
