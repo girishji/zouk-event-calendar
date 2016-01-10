@@ -37,26 +37,9 @@ window.fbAsyncInit = function() {
 // bootstrap:
 // For performance reasons, the Tooltip and Popover data-apis are opt-in, meaning you must initialize them yourself.
 // One way to initialize all tooltips on a page would be to select them by their data-toggle attribute:
-$(function () {
+$(function() {
     $('[data-toggle="tooltip"]').tooltip();
-})
-
-// Modal to show selected festivals
-$('#festivalsModal').on('show.bs.modal', function (event) {
-    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-//    var events = [];
-//    for (var i = 0; i < knownEvents.length; i++) {
-//        var ev = getEventFromName(knownEvents[i]);
-//        if (ev) {
-//            //events.push
-//        }
-//    }
-    console.log('modal is fired');
-    var modal = $(this);
-    //modal.find('#selectedFestivalsTable').hide().html("foo").fadeIn('fast');
-    modal.find('.modal-title').text('New message to ' + 'foo')
-    modal.find('.modal-body input').val('foo')
-})
+});
 
 // Global
 // Batch request maximum is 50
@@ -254,17 +237,27 @@ function getMajorLegitEventAttendees() {
     //console.log('getMajorLegitEventAttendees');
     // get api links
     var batchCmd = [];
+    var evForModal = [];
     for (var i = 0; i < knownEvents.length; i++) {
         var ev = getEventFromName(knownEvents[i]);
         if (ev) {
             batchCmd.push( { method: 'GET',
                              relative_url: ev.id + '/attending?' + 'access_token=' + accessToken } );
+            evForModal.push(ev);
         }
     }
     if (batchCmd.length > 0) {
         // get a set of legit attendees
         FB.api('/', 'POST', { batch: batchCmd }, legitAttendeesCallback);
     }
+    // Add content to the festivals modal
+    var str = `
+        <table class="table table-condensed">
+        <thead><th>Date</th><th>Event</th><th>Attending</th><tr></tr></thead>
+        `;
+    str += getTableBody(evForModal);
+    str += '</table>';
+    $("#selectedFestivalsTable").hide().html(str).fadeIn('fast');
 }
    
 /************************************************************/
