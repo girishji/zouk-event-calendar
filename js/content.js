@@ -41,6 +41,13 @@ $(function () {
     $('[data-toggle="tooltip"]').tooltip();
 })
 
+// Modal to show selected festivals
+$('#festivalsModal').on('show.bs.modal', function (event) {
+    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+    var modal = $(this);
+    modal.find('.modal-body table').html('<tr><td>asf</td></tr>');
+})
+
 // Global
 // Batch request maximum is 50
 var searcheStrings = [
@@ -525,7 +532,7 @@ function display(events) {
         var data = sessionStorage.getItem('zoukattendees');
         if (data !== undefined && data) {
             msg += '&nbsp; &nbsp; ' + '<span class="badge">' + data + '</span>' 
-                + ' unique attendees to <a href="#" onclick="showTopFestivals();">selected festivals</a>';
+                + ' unique attendees to <a href="#" data-toggle="modal" data-target="#festivalsModal">selected festivals</a>';
         }
     }
     var str = `
