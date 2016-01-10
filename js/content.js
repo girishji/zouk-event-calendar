@@ -60,31 +60,31 @@ $(document).ready(function() {
     // Modal for top festivals
     $('#festivalsModal').on('show.bs.modal', function (event) {
         console.log('here');
-  
-        if (typeof(Storage) !== "undefined") {
-            var data = sessionStorage.getItem('zoukevents');
-            if (data !== undefined && data) {
-                var events = JSON.parse(data);
-                if (events.length > 0) {
-                    var selected = [];
-                    for (var i = 0; i < knownEvents.length; i++) {
-                        var ev = getEventFromName(knownEvents[i], events);
-                        if (ev) {
-                            selected.push(ev);
-                        }
-                    }
-                    if (selected.length > 0) {
-                        var str = `
-                            <table class="table table-condensed">
-                            <thead><th>Date</th><th>Event</th><th>Attending</th><tr></tr></thead>
-                            `;
-                        str += getTableBody(selected);
-                        str += '</table>';
-                        $("#selectedFestivalsTable").html(str);
-                    }
-                }
-            }
-        }
+    
+//        if (typeof(Storage) !== "undefined") {
+//            var data = sessionStorage.getItem('zoukevents');
+//            if (data !== undefined && data) {
+//                var events = JSON.parse(data);
+//                if (events.length > 0) {
+//                    var selected = [];
+//                    for (var i = 0; i < knownEvents.length; i++) {
+//                        var ev = getEventFromName(knownEvents[i], events);
+//                        if (ev) {
+//                            selected.push(ev);
+//                        }
+//                    }
+//                    if (selected.length > 0) {
+//                        var str = `
+//                            <table class="table table-condensed">
+//                            <thead><th>Date</th><th>Event</th><th>Attending</th><tr></tr></thead>
+//                            `;
+//                        str += getTableBody(selected);
+//                        str += '</table>';
+//                        $("#selectedFestivalsTable").html(str);
+//                    }
+//                }
+//            }
+//        }
       // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
 
         //modal.find('.modal-title').text('New message to ' + recipient)
