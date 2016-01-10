@@ -582,7 +582,7 @@ function showLocation(lat, lng) {
                 var location = place.location;  
                 if ((location.hasOwnProperty('latitude') && location.latitude) && 
                     (location.hasOwnProperty('longitude') && location.longitude)) {
-                    var dist = distance(lat, location.latitude, lng, location.longitude);
+                    var dist = distance(lat, lng, location.latitude, location.longitude);
                     events[i].attending_count = Math.round(dist); // kludge alert: replace attening_count with dist
                     console.log('dist ' + Math.round(dist));
                     selected.push(events[i]);
@@ -873,4 +873,22 @@ function distance(lat1, lon1, lat2, lon2, unit) {
     if (unit=="K") { dist = dist * 1.609344 }
     if (unit=="N") { dist = dist * 0.8684 }
     return dist
+}
+
+function distance1(lat1,lon1,lat2,lon2) {
+    var R = 6371; // Radius of the earth in km
+    var dLat = deg2rad(lat2-lat1);  // deg2rad below
+    var dLon = deg2rad(lon2-lon1); 
+  var a = 
+        Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+        Math.sin(dLon/2) * Math.sin(dLon/2)
+    ; 
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+    var d = R * c; // Distance in km
+    return d;
+}
+
+function deg2rad(deg) {
+    return deg * (Math.PI/180)
 }
