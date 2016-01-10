@@ -27,7 +27,10 @@
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <link href="https://maxcdn.bootstrapcdn.com/js/ie10-viewport-bug-workaround.js" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
+    <!-- google map -->
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+ 
+   <!-- Custom styles for this template -->
     <link href="/stylesheets/jumbotron-narrow.css" rel="stylesheet">
     <link href="/stylesheets/custom.css" rel="stylesheet">
 
@@ -68,8 +71,10 @@
                 who are attending at least one of the well known festivals (listed in the link). This gives a measure of the 'scene'.</p>
               <p>Effort has been made to filter out events related to Caribbean Zouk based on analyzing the attendance pattern of relevant 
                 events, but this process is not fool proof. All the filtered events are displayed in a separate tab. </p>
-              <p>Finally, since this is a Facebook application, you are required to login to the app in addition to Facebook. This app
-                does not collect any personal data.<br>- biggieg.
+              <p>Finally, since this is a Facebook app, you are required to login to the app in addition to Facebook. However, this app
+                does not have access to your personal information.
+              </p>
+              <p>- biggieg
               </p>
             </div>
             <div class="modal-footer">
@@ -151,7 +156,7 @@
               <div class="input-group sort-group-header">
                 <input type="text" class="form-control" placeholder="Enter address...">
                 <span class="input-group-btn">
-                  <button class="btn btn-default" type="button" title="Sort by location" data-toggle="tooltip">Go</button>
+                  <button id="locationBtn" class="btn btn-default" type="button" title="Sort by location" data-toggle="tooltip">Go</button>
                 </span>
               </div><!-- /input-group -->
             </td>

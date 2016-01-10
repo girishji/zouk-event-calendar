@@ -494,6 +494,19 @@ function showEventsByAttendingInner() {
 }
 
 /************************************************************/
+
+$("#locationBtn").click(function() {
+    var geocoder =  new google.maps.Geocoder();
+    geocoder.geocode( { 'address': 'miami, us'}, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            alert("location : " + results[0].geometry.location.lat() + " " +results[0].geometry.location.lng()); 
+        } else {
+            alert("Something got wrong " + status);
+        }
+    });
+});
+
+/************************************************************/
 function showFiltered() {
     if (typeof(Storage) !== "undefined") {
         var data = sessionStorage.getItem('suspectevents');
@@ -526,7 +539,6 @@ function showFiltered() {
     }
 }
 
-
 /************************************************************/
 function display(events) {
     //console.log('total: ' + events.length);
@@ -535,7 +547,7 @@ function display(events) {
         var data = sessionStorage.getItem('zoukattendees');
         if (data !== undefined && data) {
             msg += '&nbsp; &nbsp; ' + '<span class="badge">' + data + '</span>' 
-                + ' unique attendees going to <a href="#" data-toggle="modal" data-target="#festivalsModal">these festivals</a>';
+                + ' unique attendees going to <a href="#" data-toggle="modal" data-target="#festivalsModal">top festivals</a>';
         }
     }
     var str = `
