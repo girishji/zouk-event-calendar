@@ -47,12 +47,14 @@ $(document).ready(function() {
     // get location and sort
     $("#locationBtn").click(function() {
         console.log('in locationBtn');
+        $('#locationAlert').hide();
         var geocoder =  new google.maps.Geocoder();
         geocoder.geocode( { 'address': 'miami, us'}, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
-                alert("location : " + results[0].geometry.location.lat() + " " +results[0].geometry.location.lng()); 
+                $('#locationAlert').show();
+                //alert("location : " + results[0].geometry.location.lat() + " " +results[0].geometry.location.lng()); 
             } else {
-                alert("Something got wrong " + status);
+                $('#locationAlert').show();
             }
         });
     });
@@ -145,12 +147,11 @@ var knownEvents = [ 'zouk\\s+libre.*festival',
                     'i\'m\\s*zouk',
                     'canada.*zouk' ];
 
-var knownSuspectPlaces = [];
-//var knownSuspectPlaces = [ { latitude: '48.812053039547',  longitude: '2.4038419249911' }, 
-//                           { latitude: '-22.882511415042', longitude: '-48.452376032727' },
-//                           { latitude: '46.01244',         longitude: '-0.28403' },
-//                           { latitude: '-22.9937382',      longitude: '-44.2409439' }
-//                         ];
+var knownSuspectPlaces = [ { latitude: '48.812053039547',  longitude: '2.4038419249911' }, 
+                           { latitude: '-22.882511415042', longitude: '-48.452376032727' },
+                           { latitude: '46.01244',         longitude: '-0.28403' },
+                           { latitude: '-22.9937382',      longitude: '-44.2409439' }
+                         ];
 
 var timeNow = new Date();
 // All events
