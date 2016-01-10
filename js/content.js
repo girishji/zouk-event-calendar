@@ -584,14 +584,17 @@ function showLocation(lat, lng) {
                     (location.hasOwnProperty('longitude') && location.longitude)) {
                     var dist = distance(lat, location.latitude, lng, location.longitude);
                     events[i].attending_count = Math.round(dist); // kludge alert: replace attening_count with dist
+                    console.log('dist ' + Math.round(dist));
                     selected.push(events[i]);
                 }
             }
         }
     }
     if (selected.length > 0) { // sort
-        selected.sort(function(a, b) {
-            return (a.attening_count > b.attening_count) ? 1 : -1; // descending
+        selected.sort(function(at, bt) {
+            var a = parseInt(at.attending_count);
+            var b = parseInt(bt.attending_count);
+            return (a > b) ? 1 : -1; 
         });
         var str = `
             <table class="table table-condensed">
