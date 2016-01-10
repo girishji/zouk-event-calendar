@@ -289,10 +289,87 @@ var eventsCallback = function(response) {
 };
 
 /************************************************************/
-function getEventsFromPages() {
-    getPages();
+var getBatchCmdFromPages() {
+    var ids = Object.keys(pages);
+    if (ids.length <= 0) {
+        return null;
+    }
+    var limit = ids.length > BATCH_MAX ? BATCH_MAX : ids.length;
+    var batchCmd = [];
+    for (var i = 0; i < limit; i++) {
+        var pid = ids[i]; // page id
+        batchCmd.push( { method: 'GET', 
+                         relative_url: pid + '/attending?fields=id,name,start_time,place,attending_count,cover,description&access_token='
+                         + accessToken }
+                     );
+    }
+    // remove pages from top
+    for (var i = 0; i < limit; i++) {
+        var pid = ids[i]; // page id
+        delete pages[pid];
+    }
+    console.log('pages length ' + Object.keys(pages).length);
+    return batchCmd;
 }
 
+/************************************************************/
+function getEventsFromPages() {
+    getPages();
+    var batchCmd = getBatchCmdFromPages();
+    // Only get first page of events, usually latest events show up first
+    if (batchCmd) {
+        FB.api('/', 'POST', { batch: batchCmd }, pageEventsCallback);
+    }
+}
+
+/************************************************************/
+var pageEventsCallback = function(response) {
+    console.log('pageEventsCallback');
+    if (!response || response.error) {
+        console.log('FB.api: Error occured');
+        console.log(response);
+        return;
+    }
+    var batchCmd = [];
+    for (var i = 0; i < response.length; i++) {
+        if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
+            var body = JSON.parse(response[i].body);
+            if (body.hasOwnProperty('data') && body.data) {
+                var data = body.data;
+                for (var j = 0; j < data.length; j++) {
+                    if (preFilter(data[j])) {
+                        if (events.length < 9000) { // Can store about 10000 in sessionStorage
+                            // remove description as this will eat up sessionStorage
+                            if (data[j].hasOwnProperty('description') && data[j].description) {
+                                data[j].description = null;
+                            }
+                            events.push(data[j]);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    // we process only one page 
+    // Update progress bar
+    progress = (progress < 98) ? progress + 1 : progress;
+    $('#searchProgressBar').css('width', progress + '%').attr('aria-valuenow', progress);
+    // Recurse
+    var batchCmd = getBatchCmdFromPages();
+    // Only get first page of events, usually latest events show up first
+    if (batchCmd) {
+        FB.api('/', 'POST', { batch: batchCmd }, pageEventsCallback);
+    } else {
+        // We are done, do further filtering
+        console.log('total events ' + events.length);
+        //$('#searchProgressBar').css('width', '100%').attr('aria-valuenow', 100);
+        //$('#filterProgressBarDiv').show();
+        //progress = 0; // for next progress bar
+
+        //xx
+        //getMajorLegitEventAttendees();
+    }
+};
 
 /************************************************************/
 function getPages() {
@@ -326,7 +403,6 @@ var pagesCallback = function(response) {
             if (body.hasOwnProperty('data') && body.data) {
                 var data = body.data;
                 for (var j = 0; j < data.length; j++) {
-                    console.log(data[j].id);
                     pages[data[j].id] = true; // overwrites any previous value (set)
                 }
             }
