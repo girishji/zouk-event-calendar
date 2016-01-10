@@ -34,7 +34,8 @@ window.fbAsyncInit = function() {
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 
-// You are supposed to add the javascript code in a $(document).ready(function() {}); block.
+// You are supposed to add the javascript code (including jquery) in
+// a $(document).ready(function() {}); block.
 $(document).ready(function() {
     // bootstrap:
     // For performance reasons, the Tooltip and Popover data-apis are opt-in, meaning you must initialize them yourself.
@@ -59,11 +60,38 @@ $(document).ready(function() {
     // Modal for top festivals
     $('#festivalsModal').on('show.bs.modal', function (event) {
         console.log('here');
-        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-        var modal = $(this)
+  
+        if (typeof(Storage) !== "undefined") {
+            var data = sessionStorage.getItem('zoukevents');
+            if (data !== undefined && data) {
+                var events = JSON.parse(data);
+                if (events.length > 0) {
+                    var selected = [];
+                    for (var i = 0; i < knownEvents.length; i++) {
+                        var ev = getEventFromName(knownEvents[i], events);
+                        if (ev) {
+                            selected.push(ev);
+                        }
+                    }
+                    if (selected.length > 0) {
+                        var str = `
+                            <table class="table table-condensed">
+                            <thead><th>Date</th><th>Event</th><th>Attending</th><tr></tr></thead>
+                            `;
+                        str += getTableBody(selected);
+                        str += '</table>';
+                        $("#selectedFestivalsTable").html(str);
+                    }
+                }
+            }
+        }
+      // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+
         //modal.find('.modal-title').text('New message to ' + recipient)
         //modal.find('.modal-body input').val(recipient)
-    })
+    // Add content to the festivals modal
+
+    });
 });
 
 
@@ -265,27 +293,17 @@ function getMajorLegitEventAttendees() {
     //console.log('getMajorLegitEventAttendees');
     // get api links
     var batchCmd = [];
-    var evForModal = [];
     for (var i = 0; i < knownEvents.length; i++) {
         var ev = getEventFromName(knownEvents[i]);
         if (ev) {
             batchCmd.push( { method: 'GET',
                              relative_url: ev.id + '/attending?' + 'access_token=' + accessToken } );
-            evForModal.push(ev);
         }
     }
     if (batchCmd.length > 0) {
         // get a set of legit attendees
         FB.api('/', 'POST', { batch: batchCmd }, legitAttendeesCallback);
     }
-    // Add content to the festivals modal
-    var str = `
-        <table class="table table-condensed">
-        <thead><th>Date</th><th>Event</th><th>Attending</th><tr></tr></thead>
-        `;
-    str += getTableBody(evForModal);
-    str += '</table>';
-    $("#selectedFestivalsTable").hide().html(str).fadeIn('fast');
 }
    
 /************************************************************/
@@ -737,7 +755,7 @@ function preFilter(event) {
 }
 
 /************************************************************/
-function getEventFromName(name) {
+function getEventFromName(name, events) {
     for (var i = 0; i < events.length; i++) {
         var re = new RegExp(name, "i");
         if (events[i].name.search(re) !== -1) { // found
