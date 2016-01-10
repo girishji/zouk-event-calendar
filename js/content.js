@@ -47,7 +47,6 @@ $(document).ready(function() {
     // get location and sort
     $("#locationBtn").click(function() {
         console.log('in locationBtn');
-        $('#locationAlert').hide();
         var geocoder =  new google.maps.Geocoder();
         var loc = $('#locationInput').val();
         geocoder.geocode( { 'address': loc }, function(results, status) {
@@ -558,6 +557,7 @@ function showFiltered() {
                 $('#searchProgressBarDiv').hide();
                 $('#filterProgressBarDiv').hide();
                 $('#evTableHeader').hide();
+                $('#map').hide();
                 $("#evTableContent").hide().html(str).fadeIn('fast');
                 $('#mainContent').show();
             } else {
@@ -623,6 +623,7 @@ function showLocation(geoResult) {
             `;
         str += getTableBody(selected);
         str += '</table>';
+        $('#map').hide();
         $('#evTableHeader').hide();
         $("#evTableContent").hide().html(str).fadeIn('fast');
         $('#mainContent').show();
@@ -655,8 +656,15 @@ function showMap() {
         }
     }
     if (selected.length > 0) { 
+        var str = `
+            <button type="button" class="btn btn-default btn-sm" onclick="showEventsByTimeInner();" style="margin: 10px 0px 10px 0px;">
+            <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back
+            </button>
+            `;
         $('#evTableHeader').hide();
-        $('#evTableContent').hide();
+        $("#evTableContent").hide().html(str).fadeIn('fast');
+        $('#mainContent').show();
+
         var myLatLng = {lat: -25.363, lng: 131.044};
         var map = new google.maps.Map(document.getElementById('map'), {
             zoom: 4,
@@ -668,8 +676,15 @@ function showMap() {
             map: map,
             title: 'Hello World!'
         });
-
-        //$('#mainContent').show();
+        for (var i = 0; i < selected.length; i++) {
+            var myLatLng = {lat: selected[i].place.location.latitude,
+                            lng: selected[i].place.location.longitude };
+            var marker = new google.maps.Marker({
+                position: myLatLng,
+                map: map,
+                title: selected[i].name
+            });
+        }
     }
 }
 
@@ -691,6 +706,7 @@ function display(events) {
     str += '</table>';
     $('#searchProgressBarDiv').hide();
     $('#filterProgressBarDiv').hide();
+    $('#map').hide();
     $('#contentNav').show();
     $('#evTableHeader').show();
     $("#evTableContent").hide().html(str).fadeIn('fast');
