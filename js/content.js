@@ -51,6 +51,7 @@ $('#festivalsModal').on('show.bs.modal', function (event) {
 //            //events.push
 //        }
 //    }
+    console.log('modal is fired');
     var modal = $(this);
     //modal.find('#selectedFestivalsTable').hide().html("foo").fadeIn('fast');
     modal.find('.modal-title').text('New message to ' + 'foo')
