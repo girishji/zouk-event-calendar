@@ -390,7 +390,7 @@ var pageEventsCallback = function(response) {
         FB.api('/', 'POST', { batch: batchCmd }, pageEventsCallback);
     } else {
         // We are done, do further filtering
-        console.log(events);
+        //console.log(events);
         console.log('total events ' + events.length);
         $('#searchProgressBar').css('width', '100%').attr('aria-valuenow', 100);
         $('#filterProgressBarDiv').show();
