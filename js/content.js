@@ -52,14 +52,9 @@ $(document).ready(function() {
         var loc = $('#locationInput').val();
         geocoder.geocode( { 'address': loc }, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
-                showLocation(results[0].geometry.location.lat(), results[0].geometry.location.lng());
-                //alert("location : " + results[0].geometry.location.lat() + " " +results[0].geometry.location.lng()); 
+                showLocation(results[0]);
             } else {
-                str = `
-                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                    <span class="sr-only">Error:</span>
-                    Enter a valid address
-                `;
+                str = 'Enter a valid address...';
                 $('#locationInput').val(str);
                 //alert('not found');
             }
@@ -569,7 +564,9 @@ function showFiltered() {
 }
 
 /************************************************************/
-function showLocation(lat, lng) {
+function showLocation(geoResult) {
+    var lat = geoResult.geometry.location.lat();
+    var lng = geoResult.geometry.location.lng();
     if (typeof(Storage) === "undefined") {
         alert('Your browser does not support this operation');
         return;
@@ -602,6 +599,7 @@ function showLocation(lat, lng) {
             return (a > b) ? 1 : -1; 
         });
         var str = `
+            <h5>Address: ${geometry.formatted_address}</h5>
             <table class="table table-condensed">
             <thead>
             <th>Date</th>
