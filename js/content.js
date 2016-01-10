@@ -124,7 +124,8 @@ var unknownEvents = [];
 var BATCH_MAX = 45; // don't use const as it may not be supported in earlier browsers
 // Each query comes back with 25 results (even if you set higher limit). For deciding
 // on suspicious events, get max 1000 attendees and compare to known zouk attendees
-var MAX_PAGE_ITERATIONS = 40; // 40x25=1000
+//var MAX_PAGE_ITERATIONS = 40; // 40x25=1000
+var MAX_PAGE_ITERATIONS = 20;
 var pageIterationCount = 0;
 
 /************************************************************/
@@ -524,7 +525,7 @@ function display(events) {
         var data = sessionStorage.getItem('zoukattendees');
         if (data !== undefined && data) {
             msg += ', ' + '<span class="badge">' + data + '</span>' 
-                + ' unique attendees to <a href="#" onclick="showTopFestivals();">top festivals</a>';
+                + ' unique attendees to <a href="#" onclick="showTopFestivals();">selected festivals</a>';
         }
     }
     var str = `
