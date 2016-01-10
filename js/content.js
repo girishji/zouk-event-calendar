@@ -49,7 +49,7 @@ $(document).ready(function() {
         console.log('in locationBtn');
         $('#locationAlert').hide();
         var geocoder =  new google.maps.Geocoder();
-        var loc = $('#locationInput').value;
+        var loc = $('#locationInput').val();
         geocoder.geocode( { 'address': loc }, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
                 showLocation(results[0].geometry.location.lat(), results[0].geometry.location.lng());
