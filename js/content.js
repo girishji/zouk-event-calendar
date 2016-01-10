@@ -238,6 +238,7 @@ var eventsCallback = function(response) {
     for (var i = 0; i < response.length; i++) {
         if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
             var body = JSON.parse(response[i].body);
+            checkError(body);
             // console.log('properties ' + Object.getOwnPropertyNames(body));                           
             if (body.hasOwnProperty('data') && body.data) {
                 var data = body.data;
@@ -294,7 +295,7 @@ function getPages() {
 
 /************************************************************/
 var pagesCallback = function(response) {
-    console.log('pagesCallback');
+    //console.log('pagesCallback');
 
     if (!response || response.error) {
         console.log('FB.api: Error occured');
@@ -305,6 +306,7 @@ var pagesCallback = function(response) {
     for (var i = 0; i < response.length; i++) {
         if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
             var body = JSON.parse(response[i].body);
+            checkError(body);
             // console.log('properties ' + Object.getOwnPropertyNames(body));                           
             if (body.hasOwnProperty('data') && body.data) {
                 var data = body.data;
@@ -350,7 +352,7 @@ function getEventsFromPages() {
 
 /************************************************************/
 var pageEventsCallback = function(response) {
-    console.log('pageEventsCallback');
+    //console.log('pageEventsCallback');
     if (!response || response.error) {
         console.log('FB.api: Error occured');
         console.log(response);
@@ -360,6 +362,7 @@ var pageEventsCallback = function(response) {
     for (var i = 0; i < response.length; i++) {
         if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
             var body = JSON.parse(response[i].body);
+            checkError(body);
             if (body.hasOwnProperty('data') && body.data) {
                 var data = body.data;
                 for (var j = 0; j < data.length; j++) {
@@ -457,6 +460,7 @@ var legitAttendeesCallback = function(response) {
     for (var i = 0; i < response.length; i++) {
         if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
             var body = JSON.parse(response[i].body);
+            checkError(body);
             //console.log(body);                
             if (body.hasOwnProperty('data') && body.data) {
                 var data = body.data;
@@ -535,6 +539,7 @@ var suspectEventAttendeesCallback = function(response) {
     for (var i = 0; i < response.length; i++) {
         if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
             var body = JSON.parse(response[i].body);
+            checkError(body);
             // responses correspond with requests sent in batch command
             if (body.hasOwnProperty('data') && body.data) {
                 var data = body.data;
@@ -622,6 +627,12 @@ var suspectEventAttendeesCallback = function(response) {
     }
 };
 
+/************************************************************/
+function checkError(body) {
+    if (body.hasOwnProperty('error') && body.error) {
+        alert('Facebook is temporarily down, try later (error: ' + body.error.code + ')');
+    }
+}
 
 /************************************************************/
 function showEventsByTime() {
