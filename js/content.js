@@ -666,17 +666,12 @@ function showMap() {
         $('#mainContent').show();
         $('#map').show();
 
-        var myLatLng = {lat: -27.363, lng: 0.0};
+        var myLatLng = {lat: 27.363, lng: -9.0};
         var map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 0,
+            zoom: 2,
             center: myLatLng
         });
 
-        var marker = new google.maps.Marker({
-            position: myLatLng,
-            map: map,
-            title: 'Hello World!'
-        });
         for (var i = 0; i < selected.length; i++) {
             var myLatLng = {lat: selected[i].place.location.latitude,
                             lng: selected[i].place.location.longitude };
