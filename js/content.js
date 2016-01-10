@@ -145,11 +145,12 @@ var knownEvents = [ 'zouk\\s+libre.*festival',
                     'i\'m\\s*zouk',
                     'canada.*zouk' ];
 
-var knownSuspectPlaces = [ { latitude: '48.812053039547',  longitude: '2.4038419249911' }, 
-                           { latitude: '-22.882511415042', longitude: '-48.452376032727' },
-                           { latitude: '46.01244',         longitude: '-0.28403' },
-                           { latitude: '-22.9937382',      longitude: '-44.2409439' }
-                         ];
+var knownSuspectPlaces = [];
+//var knownSuspectPlaces = [ { latitude: '48.812053039547',  longitude: '2.4038419249911' }, 
+//                           { latitude: '-22.882511415042', longitude: '-48.452376032727' },
+//                           { latitude: '46.01244',         longitude: '-0.28403' },
+//                           { latitude: '-22.9937382',      longitude: '-44.2409439' }
+//                         ];
 
 var timeNow = new Date();
 // All events
@@ -567,7 +568,7 @@ function display(events) {
         var data = sessionStorage.getItem('zoukattendees');
         if (data !== undefined && data) {
             msg += '&nbsp; &nbsp; ' + '<span class="badge">' + data + '</span>' 
-                + ' unique attendees going to <a href="#" data-toggle="modal" data-target="#festivalsModal">top festivals</a>';
+                + ' attending <a href="#" data-toggle="modal" data-target="#festivalsModal">major festivals</a>';
         }
     }
     var str = `
@@ -778,15 +779,20 @@ function filterSuspect(id, attending) {
     //console.log('examining ' + events[i].name);
     // do sets intersection
     var attendees = Object.keys(attending);
+    var intersection = 0;
     for (var i = 0; i < attendees.length; i++) {
         if (legitAttendees.hasOwnProperty(attendees[i])) {
-            return; // legit event
+            intersection++;
         }
     }
-    // remove event
-    var event = events.splice(evIdx, 1); // returns array of 1
-    suspects.splice(0, 0, event[0]);
-    //console.log('Removing ' + event[0].name);
+    var ratio = 100.0 * intersection / attendees.length
+    console.log('ratio ' + ratio);
+    if (ratio < 5) {
+        // remove event
+        var event = events.splice(evIdx, 1); // returns array of 1
+        suspects.splice(0, 0, event[0]);
+        //console.log('Removing ' + event[0].name);
+    }
 }
 
 /************************************************************/
