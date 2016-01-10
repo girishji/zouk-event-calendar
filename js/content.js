@@ -209,10 +209,6 @@ function loginAndDo(doFunct) {
 /************************************************************/
 // Search FB
 function buildContent() {
-
-    getPages();
-    return;
-
     var batchCmd = [];
     for (var i = 0; i < searcheStrings.length; i++) {
         batchCmd.push( { method: 'GET', 
@@ -279,41 +275,8 @@ var eventsCallback = function(response) {
     } else {
         // We are done, do further filtering
         console.log('total events ' + events.length);
-        //$('#searchProgressBar').css('width', '100%').attr('aria-valuenow', 100);
-        //$('#filterProgressBarDiv').show();
-        //progress = 0; // for next progress bar
-
-        //xx
-        //getMajorLegitEventAttendees();
     }
 };
-
-/************************************************************/
-function getBatchCmdFromPages() {
-    var ids = Object.keys(pages);
-    if (ids.length <= 0) {
-        return null;
-    }
-    var limit = ids.length > BATCH_MAX ? BATCH_MAX : ids.length;
-    var batchCmd = [];
-    for (var i = 0; i < limit; i++) {
-        var pid = ids[i]; // page id
-        var url = pid + '/events?fields=id,name,start_time,place,'
-            + 'attending_count,cover,description&access_token='
-            + accessToken;
-        batchCmd.push( { method: 'GET', 
-                         relative_url: url }
-                     );
-        console.log(url);
-    }
-    // remove pages from top
-    for (var i = 0; i < limit; i++) {
-        var pid = ids[i]; // page id
-        delete pages[pid];
-    }
-    console.log('pages length ' + Object.keys(pages).length);
-    return batchCmd;
-}
 
 /************************************************************/
 function getPages() {
@@ -427,14 +390,38 @@ var pageEventsCallback = function(response) {
         // We are done, do further filtering
         console.log(events);
         console.log('total events ' + events.length);
-        //$('#searchProgressBar').css('width', '100%').attr('aria-valuenow', 100);
-        //$('#filterProgressBarDiv').show();
-        //progress = 0; // for next progress bar
-
-        //xx
-        //getMajorLegitEventAttendees();
+        $('#searchProgressBar').css('width', '100%').attr('aria-valuenow', 100);
+        $('#filterProgressBarDiv').show();
+        progress = 0; // for next progress bar
+        getMajorLegitEventAttendees();
     }
 };
+
+/************************************************************/
+function getBatchCmdFromPages() {
+    var ids = Object.keys(pages);
+    if (ids.length <= 0) {
+        return null;
+    }
+    var limit = ids.length > BATCH_MAX ? BATCH_MAX : ids.length;
+    var batchCmd = [];
+    for (var i = 0; i < limit; i++) {
+        var pid = ids[i]; // page id
+        var url = pid + '/events?fields=id,name,start_time,place,'
+            + 'attending_count,cover,description&access_token='
+            + accessToken;
+        batchCmd.push( { method: 'GET', 
+                         relative_url: url }
+                     );
+        console.log(url);
+    }
+    // remove pages from top
+    for (var i = 0; i < limit; i++) {
+        var pid = ids[i]; // page id
+        delete pages[pid];
+    }
+    return batchCmd;
+}
 
 
 /************************************************************/
