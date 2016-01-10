@@ -49,12 +49,14 @@ $(document).ready(function() {
         console.log('in locationBtn');
         $('#locationAlert').hide();
         var geocoder =  new google.maps.Geocoder();
-        geocoder.geocode( { 'address': 'miami, us'}, function(results, status) {
+        var loc = $('#locationInput').value;
+        geocoder.geocode( { 'address': loc }, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
                 //$('#locationAlert').show();
                 showLocation(results[0].geometry.location.lat(), results[0].geometry.location.lng());
                 //alert("location : " + results[0].geometry.location.lat() + " " +results[0].geometry.location.lng()); 
             } else {
+                aleart('not found');
                 //$('#locationAlert').show();
             }
         });
@@ -584,7 +586,6 @@ function showLocation(lat, lng) {
                     (location.hasOwnProperty('longitude') && location.longitude)) {
                     var dist = distance(lat, lng, location.latitude, location.longitude);
                     events[i].attending_count = Math.round(dist); // kludge alert: replace attening_count with dist
-                    console.log('dist ' + Math.round(dist));
                     selected.push(events[i]);
                 }
             }
