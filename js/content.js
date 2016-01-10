@@ -746,15 +746,23 @@ function preFilter(event) {
 
 /************************************************************/
 function getEventFromName(name, events) {
+    // if you find more than one event, pick one with more attending.
+    var event = null;
+    var attending = 0;
     for (var i = 0; i < events.length; i++) {
         var re = new RegExp(name, "i");
         if (events[i].name.search(re) !== -1) { // found
             //console.log('festival ' + events[i].name);
-            return events[i];
+            if (events[i].attending_count > attending) {
+                event = events[i];
+                attending = events[i].attending_count;
+            }
         }
     }
-    console.log(name + ' not found');
-    return null;
+    if (! event) {
+        console.log(name + ' not found');
+    }
+    return event;
 }
 
 /************************************************************/
