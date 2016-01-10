@@ -656,9 +656,8 @@ function showMap() {
     }
     if (selected.length > 0) { 
         $('#evTableHeader').hide();
-        //$("#evTableContent").empty();
         var myLatLng = {lat: -25.363, lng: 131.044};
-        var map = new google.maps.Map(document.getElementById('evTableContent'), {
+        var map = new google.maps.Map(document.getElementById('map'), {
             zoom: 4,
             center: myLatLng
         });
@@ -669,7 +668,7 @@ function showMap() {
             title: 'Hello World!'
         });
 
-        $('#mainContent').show();
+        //$('#mainContent').show();
     }
 }
 
