@@ -294,7 +294,7 @@ function getPages() {
 
 /************************************************************/
 var pagesCallback = function(response) {
-    //console.log('pagesCallback');
+    console.log('pagesCallback');
 
     if (!response || response.error) {
         console.log('FB.api: Error occured');
@@ -350,7 +350,7 @@ function getEventsFromPages() {
 
 /************************************************************/
 var pageEventsCallback = function(response) {
-    //console.log('pageEventsCallback');
+    console.log('pageEventsCallback');
     if (!response || response.error) {
         console.log('FB.api: Error occured');
         console.log(response);
