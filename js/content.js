@@ -41,6 +41,20 @@ $(function() {
     $('[data-toggle="tooltip"]').tooltip();
 });
 
+// get location and sort
+$("#locationBtn").click(function() {
+    console.log('in locationBtn');
+    var geocoder =  new google.maps.Geocoder();
+    geocoder.geocode( { 'address': 'miami, us'}, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            alert("location : " + results[0].geometry.location.lat() + " " +results[0].geometry.location.lng()); 
+        } else {
+            alert("Something got wrong " + status);
+        }
+    });
+});
+
+
 // Global
 // Batch request maximum is 50
 var searcheStrings = [
@@ -91,9 +105,9 @@ var knownEvents = [ 'zouk.*libre.*festival',
                     'rio.*zouk.*congress',
                     'f.i.e.l',
                     'zoukmx',
-                    '\bzoukfest\b',
+                    'zoukfest\b',
                     'l.*a.*Zouk.*congress',
-                    '\bzouktime',
+                    '[^\w]zouktime',
                     'dutch.+international.+zouk.+congr',
                     'berg.*congres',
                     'i\'m.*zouk',
@@ -492,19 +506,6 @@ function showEventsByAttendingInner() {
         alert('Your browser does not support this operation');
     }
 }
-
-/************************************************************/
-
-$("#locationBtn").click(function() {
-    var geocoder =  new google.maps.Geocoder();
-    geocoder.geocode( { 'address': 'miami, us'}, function(results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-            alert("location : " + results[0].geometry.location.lat() + " " +results[0].geometry.location.lng()); 
-        } else {
-            alert("Something got wrong " + status);
-        }
-    });
-});
 
 /************************************************************/
 function showFiltered() {
