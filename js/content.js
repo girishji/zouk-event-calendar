@@ -239,6 +239,9 @@ var eventsCallback = function(response) {
             if (body.hasOwnProperty('data') && body.data) {
                 var data = body.data;
                 for (var j = 0; j < data.length; j++) {
+                    if (data[j].id == '1632572110336516') {
+                        console.log('found event....');
+                    }
                     if (preFilter(data[j])) {
                         if (events.length < 9000) { // Can store about 10000 in sessionStorage
                             // remove description as this will eat up sessionStorage
