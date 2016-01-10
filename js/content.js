@@ -175,6 +175,8 @@ var BATCH_MAX = 45; // don't use const as it may not be supported in earlier bro
 //var MAX_PAGE_ITERATIONS = 40; // 40x25=1000
 var MAX_PAGE_ITERATIONS = 20;
 var pageIterationCount = 0;
+// pages set using an object
+var pages = {};
 
 /************************************************************/
 function loginAndDo(doFunct) {
@@ -207,13 +209,15 @@ function loginAndDo(doFunct) {
 /************************************************************/
 // Search FB
 function buildContent() {
+
+    getEventsFromPages();
+    return;
+
     var batchCmd = [];
     for (var i = 0; i < searcheStrings.length; i++) {
         batchCmd.push( { method: 'GET', 
                          relative_url: 'search?q=' + searcheStrings[i] 
-                         + '&type=page&access_token='
-                         //xxx
-                         //+ '&type=event&fields=id,name,start_time,place,attending_count,cover,description&access_token='
+                         + '&type=event&fields=id,name,start_time,place,attending_count,cover,description&access_token='
                          + accessToken }
                      );
     }
@@ -226,7 +230,6 @@ function buildContent() {
 /************************************************************/
 var eventsCallback = function(response) {
     //console.log('eventsCallback');
-
     if (!response || response.error) {
         console.log('FB.api: Error occured');
         console.log(response);
@@ -243,13 +246,6 @@ var eventsCallback = function(response) {
             if (body.hasOwnProperty('data') && body.data) {
                 var data = body.data;
                 for (var j = 0; j < data.length; j++) {
-
-                    //xxx
-                    console.log(data[j].name);
-                    events.push(data[j]);
-                    continue;
-
-
                     if (preFilter(data[j])) {
                         if (events.length < 9000) { // Can store about 10000 in sessionStorage
                             // remove description as this will eat up sessionStorage
@@ -274,7 +270,7 @@ var eventsCallback = function(response) {
         } 
     }
     // Update progress bar
-    progress = (progress < 90) ? progress + 10 : progress;
+    progress = (progress < 40) ? progress + 5 : progress;
     $('#searchProgressBar').css('width', progress + '%').attr('aria-valuenow', progress);
 
     // Recurse:
@@ -283,14 +279,85 @@ var eventsCallback = function(response) {
     } else {
         // We are done, do further filtering
         console.log('total events ' + events.length);
-        $('#searchProgressBar').css('width', '100%').attr('aria-valuenow', 100);
-        $('#filterProgressBarDiv').show();
-        progress = 0; // for next progress bar
+        //$('#searchProgressBar').css('width', '100%').attr('aria-valuenow', 100);
+        //$('#filterProgressBarDiv').show();
+        //progress = 0; // for next progress bar
 
         //xx
         //getMajorLegitEventAttendees();
     }
 };
+
+/************************************************************/
+function getEventsFromPages() {
+    getPages();
+}
+
+
+/************************************************************/
+function getPages() {
+    var batchCmd = [];
+    for (var i = 0; i < searcheStrings.length; i++) {
+        batchCmd.push( { method: 'GET', 
+                         relative_url: 'search?q=' + searcheStrings[i] 
+                         + '&type=page&fields=id&access_token='
+                         + accessToken }
+                     );
+    }
+    //$('#searchProgressBarDiv').show();
+    FB.api('/', 'POST', { batch: batchCmd }, pagesCallback);
+    // Response of FB.api is asynchronous, make it resursive from callback
+}
+
+/************************************************************/
+var pagesCallback = function(response) {
+    console.log('pagesCallback');
+
+    if (!response || response.error) {
+        console.log('FB.api: Error occured');
+        console.log(response);
+        return;
+    }
+    var batchCmd = [];
+    for (var i = 0; i < response.length; i++) {
+        if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
+            var body = JSON.parse(response[i].body);
+            // console.log('properties ' + Object.getOwnPropertyNames(body));                           
+            if (body.hasOwnProperty('data') && body.data) {
+                var data = body.data;
+                for (var j = 0; j < data.length; j++) {
+                    console.log(data[j].id);
+                    pages[data[j].id] = true; // overwrites any previous value (set)
+                }
+            }
+            // next paging link
+            if (body.hasOwnProperty('paging') && body.paging) {
+                var paging = body.paging;
+                if (paging.hasOwnProperty('next') && paging.next) {
+                    var splitted = paging.next.split('?');
+                    var rel_url = 'search?' + splitted[1];
+                    //console.log('rel url of event ' + rel_url);
+                    batchCmd.push( { method: 'GET', relative_url: rel_url } );
+                }
+            }
+        } 
+    }
+    // Update progress bar
+    progress = (progress < 75) ? progress + 5 : progress;
+    $('#searchProgressBar').css('width', progress + '%').attr('aria-valuenow', progress);
+
+    // Recurse:
+    if (batchCmd.length > 0) {
+        FB.api('/', 'POST', { batch: batchCmd }, pagesCallback);
+    } else {
+        // We are done, do further filtering
+        console.log('total pages ' + Object.keys(pages).length);
+        //
+    }
+};
+
+
+
 
 /************************************************************/
 function getMajorLegitEventAttendees() {
