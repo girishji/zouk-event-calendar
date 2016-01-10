@@ -217,7 +217,7 @@ function buildContent() {
                      );
     }
 
-    $('#searchProgressBar').show();
+    $('#searchProgressBarDiv').show();
     FB.api('/', 'POST', { batch: batchCmd }, eventsCallback);
     // Response of FB.api is asynchronous, make it resursive from callback
 }
