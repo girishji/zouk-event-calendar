@@ -44,8 +44,15 @@ $(function () {
 // Modal to show selected festivals
 $('#festivalsModal').on('show.bs.modal', function (event) {
     // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+    var events = [];
+    for (var i = 0; i < knownEvents.length; i++) {
+        var ev = getEventFromName(knownEvents[i]);
+        if (ev) {
+            //events.push
+        }
+    }
     var modal = $(this);
-    modal.find('.modal-body table').html('<tr><td>asf</td></tr>');
+    modal.find('#selectedFestivalsTable').hide().html("foo").fadeIn('fast');
 })
 
 // Global
