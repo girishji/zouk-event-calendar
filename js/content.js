@@ -94,7 +94,7 @@ var knownEvents = [ 'zouk.*libre.*festival',
                     '\bzoukfest\b',
                     'l.*a.*Zouk.*congress',
                     '\bzouktime',
-                    'dutch.*international',
+                    'dutch.+international.+zouk.+congr',
                     'berg.*congres',
                     'i\'m.*zouk',
                     'canada.*zouk' ];
