@@ -273,7 +273,7 @@ var eventsCallback = function(response) {
     if (batchCmd.length > 0) {
         FB.api('/', 'POST', { batch: batchCmd }, eventsCallback);
     } else {
-        // We are done, check pages
+        // We are done, check pages and their events
         console.log('total events ' + events.length);
         getPages();
     }
@@ -289,9 +289,7 @@ function getPages() {
                          + accessToken }
                      );
     }
-    //$('#searchProgressBarDiv').show();
     FB.api('/', 'POST', { batch: batchCmd }, pagesCallback);
-    // Response of FB.api is asynchronous, make it resursive from callback
 }
 
 /************************************************************/
@@ -414,7 +412,6 @@ function getBatchCmdFromPages() {
         batchCmd.push( { method: 'GET', 
                          relative_url: url }
                      );
-        console.log(url);
     }
     // remove pages from top
     for (var i = 0; i < limit; i++) {
@@ -1036,7 +1033,7 @@ function filterSuspect(id, attending) {
     // We asked fb to give all attendees of events where more
     // than 100 are going. But we many not get all the attendee id's
     // Discard events with less attendees
-    if (Object.keys(attendees).length < 90) {
+    if (attending && Object.keys(attendees).length < 90) {
         return;
     }
     // get the even
