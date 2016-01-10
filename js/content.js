@@ -599,9 +599,12 @@ function showLocation(geoResult) {
             return (a > b) ? 1 : -1; 
         });
         var str = `
-            <table><tr><td><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>Back</td>
-            <td><h5 style="padding-left:20px;">Address: ${geoResult.formatted_address}</h5></td>
-            </tr>
+            <table><tr><td>
+            <button type="button" class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back
+            </button>
+            </td>
+            <td><h5 style="padding-left:20px;">Address: ${geoResult.formatted_address}</h5></td></tr>
             </table>
             <table class="table table-condensed">
             <thead>
