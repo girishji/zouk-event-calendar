@@ -273,8 +273,9 @@ var eventsCallback = function(response) {
     if (batchCmd.length > 0) {
         FB.api('/', 'POST', { batch: batchCmd }, eventsCallback);
     } else {
-        // We are done, do further filtering
+        // We are done, check pages
         console.log('total events ' + events.length);
+        getPages();
     }
 };
 
@@ -422,7 +423,6 @@ function getBatchCmdFromPages() {
     }
     return batchCmd;
 }
-
 
 /************************************************************/
 function getMajorLegitEventAttendees() {
@@ -1033,6 +1033,12 @@ function getEventFromName(name, events) {
 
 /************************************************************/
 function filterSuspect(id, attending) {
+    // We asked fb to give all attendees of events where more
+    // than 100 are going. But we many not get all the attendee id's
+    // Discard events with less attendees
+    if (Object.keys(attendees).length < 90) {
+        return;
+    }
     // get the even
     var evIdx = 0;
     for (; evIdx < events.length; evIdx++) {
