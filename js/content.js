@@ -294,7 +294,7 @@ function getMajorLegitEventAttendees() {
     // get api links
     var batchCmd = [];
     for (var i = 0; i < knownEvents.length; i++) {
-        var ev = getEventFromName(knownEvents[i]);
+        var ev = getEventFromName(knownEvents[i], events);
         if (ev) {
             batchCmd.push( { method: 'GET',
                              relative_url: ev.id + '/attending?' + 'access_token=' + accessToken } );
