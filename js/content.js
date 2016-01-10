@@ -599,8 +599,8 @@ function showLocation(geoResult) {
             return (a > b) ? 1 : -1; 
         });
         var str = `
-            <table><tr><td>
-            <button type="button" class="btn btn-default btn-sm">
+            <table style="margin-top: 10px;"><tr><td>
+            <button type="button" class="btn btn-default btn-sm" onclick="showEventsByTimeInner();">
             <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back
             </button>
             </td>
