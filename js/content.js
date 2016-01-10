@@ -837,7 +837,7 @@ function filterSuspect(id, attending) {
         }
     }
     var ratio = 100.0 * intersection / attendees.length
-    console.log('ratio ' + ratio);
+    //console.log('ratio ' + ratio);
     if (ratio < 5) {
         // remove event
         var event = events.splice(evIdx, 1); // returns array of 1
