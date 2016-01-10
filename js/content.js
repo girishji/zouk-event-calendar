@@ -55,8 +55,13 @@ $(document).ready(function() {
                 showLocation(results[0].geometry.location.lat(), results[0].geometry.location.lng());
                 //alert("location : " + results[0].geometry.location.lat() + " " +results[0].geometry.location.lng()); 
             } else {
-                alert('not found');
-                //$('#locationAlert').show();
+                str = `
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    <span class="sr-only">Error:</span>
+                    Enter a valid address
+                `;
+                $('#locationInput').val(str);
+                //alert('not found');
             }
         });
     });
@@ -239,9 +244,6 @@ var eventsCallback = function(response) {
             if (body.hasOwnProperty('data') && body.data) {
                 var data = body.data;
                 for (var j = 0; j < data.length; j++) {
-                    if (data[j].id == '1632572110336516') {
-                        console.log('found event....');
-                    }
                     if (preFilter(data[j])) {
                         if (events.length < 9000) { // Can store about 10000 in sessionStorage
                             // remove description as this will eat up sessionStorage
