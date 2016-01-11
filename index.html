@@ -125,7 +125,9 @@
       <!-- Welcome banner -->
       <div id="bannerMsg" style="display: none;">
         <p>Welcome to World Zouk Calendar - Every Zouk event on earth! This app searches Facebook and displays every scheduled Brazilian Zouk Lambada dance event. You will be able to filter based on location, start time, and size of the events. Facebook requires you to login before you can search their graph. Regarding privacy, this app will not be able to access your personal or private information.</p>
-        <button type="button" class="btn btn-primary btn-lg" onclick="loginToFacebook();" style="margin-top: 20px;">Enter</button>
+        <div class="fb-login-button" data-max-rows="1" data-size="medium" data-show-faces="false" data-auto-logout-link="false" onlogin="loginToFacebook();">
+        </div>
+        <br>
       </div>
       <!-- progress bars -->
       <div id="searchProgressBarDiv" style="display: none;">
