@@ -1113,6 +1113,7 @@ function getRelativeUrl(url) {
 function distance(lat1, lon1, lat2, lon2, unit) {
     var p1 = new LatLon(lat1, lon1);
     var p2 = new LatLon(lat2, lon2);
-    return p1.distanceTo(p2); // d: 969954.166
+    var d = p1.distanceTo(p2); // in meters, d: 969954.166
+    return (d * 0.000621371); // miles
 }
 
