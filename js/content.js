@@ -765,14 +765,16 @@ function showLocation(geoResult) {
             var b = parseInt(bt.attending_count);
             return (a > b) ? 1 : -1; 
         });
+        // <table style="margin-top: 10px;"><tr><td>
+        // <button type="button" class="btn btn-default btn-sm" onclick="showEventsByTimeInner();">
+        // <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back
+        // </button>
+        // </td>
+        // <td><h5 style="padding-left:20px;">Address: ${geoResult.formatted_address}</h5></td></tr>
+        // </table>
+
         var str = `
-            <table style="margin-top: 10px;"><tr><td>
-            <button type="button" class="btn btn-default btn-sm" onclick="showEventsByTimeInner();">
-            <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back
-            </button>
-            </td>
-            <td><h5 style="padding-left:20px;">Address: ${geoResult.formatted_address}</h5></td></tr>
-            </table>
+            <h5 style="margin: 10px 20px 0px 10px;">Address: ${geoResult.formatted_address}</h5>
             <table class="table table-condensed">
             <thead>
             <th>Date</th>
