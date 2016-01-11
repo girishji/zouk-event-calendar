@@ -697,14 +697,15 @@ function showFiltered() {
         if (data !== undefined && data) {
             var events = JSON.parse(data);
             if (events.length > 0) {
+                // <button type="button" class="btn btn-default btn-sm" onclick="showEventsByTimeInner();" style="margin-top:10px; margin-bottom: 5px;">
+                // <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back
+                // </button>
+
                 var str = `
-                    <button type="button" class="btn btn-default btn-sm" onclick="showEventsByTimeInner();" style="margin-top:10px; margin-bottom: 5px;">
-                    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back
-                    </button>
                     <table class="table table-condensed">
                     <thead>
                     <th>Date</th>
-                    <th>Unrelated Events</th>
+                    <th>Event</th>
                     <th>Attending</th>
                     <tr>
                     </tr>
@@ -763,14 +764,16 @@ function showLocation(geoResult) {
             var b = parseInt(bt.attending_count);
             return (a > b) ? 1 : -1; 
         });
+        //            <table style="margin-top: 10px;"><tr><td>
+        //            <button type="button" class="btn btn-default btn-sm" onclick="showEventsByTimeInner();">
+        //            <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back
+        //            </button>
+        //            </td>
+        //            <td><h5 style="padding-left:20px;">Address: ${geoResult.formatted_address}</h5></td></tr>
+        //            </table>
+
         var str = `
-            <table style="margin-top: 10px;"><tr><td>
-            <button type="button" class="btn btn-default btn-sm" onclick="showEventsByTimeInner();">
-            <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back
-            </button>
-            </td>
-            <td><h5 style="padding-left:20px;">Address: ${geoResult.formatted_address}</h5></td></tr>
-            </table>
+            <h5 style="margin: 20px 10px 0px 10px">Address: ${geoResult.formatted_address}</h5>
             <table class="table table-condensed">
             <thead>
             <th>Date</th>
@@ -815,13 +818,14 @@ function showMap() {
         }
     }
     if (selected.length > 0) { 
-        var str = `
-            <button type="button" class="btn btn-default btn-sm" onclick="showEventsByTimeInner();" style="margin: 10px 0px 10px 0px;">
-            <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back
-            </button>
-            `;
+        //var str = `
+        //    <button type="button" class="btn btn-default btn-sm" onclick="showEventsByTimeInner();" style="margin: 10px 0px 10px 0px;">
+        //    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back
+        //    </button>
+        //    `;
         $('#evTableHeader').hide();
-        $("#evTableContent").hide().html(str).fadeIn('fast');
+        $("#evTableContent").hide();
+        //$("#evTableContent").hide().html(str).fadeIn('fast');
         $('#mainContent').show();
         $('#map').show();
 
