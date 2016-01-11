@@ -103,10 +103,13 @@ jQuery
 debug: https://www.youtube.com/watch?v=aQb2-RIst0Q
 
 ====
-
-
 XXX remove facebook debug js
 XXX remove popup blocker on website
+====
+
+godaddy
+go to manage domains->forwarding. add forwarding (with masking) to zouk-event-calendar.appspot.com
+Not sure about https.
 ====
 
     <!--
