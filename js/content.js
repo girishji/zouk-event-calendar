@@ -774,7 +774,7 @@ function showLocation(geoResult) {
         // </table>
 
         var str = `
-            <h5 style="margin: 10px 20px 0px 10px;">Address: ${geoResult.formatted_address}</h5>
+            <h5 style="margin: 20px 0px 0px 5px;">Address: ${geoResult.formatted_address}</h5>
             <table class="table table-condensed">
             <thead>
             <th>Date</th>
