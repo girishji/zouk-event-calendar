@@ -191,18 +191,22 @@ function loginAndDo(doFunct) {
             doFunct();
         } else {
             $('#bannerMsg').show();
-            FB.login(function(response) {
-                if (response.authResponse) {
-                    if (response.status === 'connected') {
-                        //console.log('Welcome!  Fetching information.... ');
-                        accessToken = response.authResponse.accessToken;
-                        $('#bannerMsg').hide();
-                        doFunct();
-                    }
-                } else {
-                    console.log('User cancelled login or did not fully authorize.');
-                }
-            });
+        }
+    });
+}
+
+/************************************************************/           
+function loginToFacebook() {
+    FB.login(function(response) {
+        if (response.authResponse) {
+            if (response.status === 'connected') {
+                //console.log('Welcome!  Fetching information.... ');
+                accessToken = response.authResponse.accessToken;
+                $('#bannerMsg').hide();
+                buildContent();
+            }
+        } else {
+            console.log('User cancelled login or did not fully authorize.');
         }
     });
 }

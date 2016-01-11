@@ -55,7 +55,7 @@
           </ul>
         </nav>
         <!-- XXX change link below -->
-        <a href="https://zouksanfrancisco.com"><h3 class="text-muted">World Zouk Calendar</h3></a>
+        <a href="https://zouksanfrancisco.com"><h3 class="text-muted">World Zouk Calendar <small>Every Zouk event on earth!</small></h3></a>
       </div>
 
       <!-- modals -->
@@ -68,21 +68,18 @@
             </div>
             <div class="modal-body">
               <p>
-                Welcome to World Zouk Calendar! This app searches Facebook graph for Brazilian Zouk dance events
-                around the world.
-                You will be able to filter by location, start time and popularity of events. 
-                You get real time information about Zouk events happening in any place at any time. On the top right
-                corner, this app displays the total number of scheduled 
+                Welcome to World Zouk Calendar! This app searches Facebook for Brazilian Zouk dance events
+                around the world. It will present a real time view of every scheduled event searchable in Facebook.
+                You can filter events based on location, start time, and popularity. 
+                It also displays the total number of scheduled 
                 events, and a count of unique profiles (individuals)
-                attending at least one of the well known festivals (the 'scene').
+                attending at least one of the well known festivals.
               </p>
-              <p>Effort has been made to filter out events not related to Brazilian Zouk, especially Caribbean Zouk
-                events, based on attendance 
-                patterns. All the filtered events are displayed in a separate tab. Also, the distances
-                displayed after an address search are only approximate (to keep things fast).
+              <p>Effort has been made to filter out events not related to Brazilian Zouk (Caribbean Zouk for instance), based on attendance 
+                patterns. All the filtered events are displayed in a separate tab. 
               </p>
-              <p>Facebook requires that you login in order to search. Please disable any popup blocker. Regarding privacy, 
-                this app will not have access to your personal information on Facebook, only to your public profile.
+              <p>Facebook requires that you login to their system before you can search. Regarding privacy, 
+                this app will not be able to access your personal information.
                 <br> -biggieg
               </p>
             </div>
@@ -127,7 +124,8 @@
 
       <!-- Welcome banner -->
       <div id="bannerMsg" style="display: none;">
-        Welcome to World Zouk Calendar! This app searches Facebook graph for Brazilian Zouk dance events. You will be able to filter by location, start time and popularity of events. Facebook requires that you login in order to search. Please disable your popup blocker. Regarding privacy, this app will not have access to your personal information on Facebook, only to your public profile.
+        Welcome to World Zouk Calendar - Every Zouk event on earth! You may be asked to login to Facebook in the next step. This app searches Facebook and displays every scheduled Brazilian Zouk Lambada dance event. You will be able to filter based on location, start time, and size of the events. Facebook requires you to login before you can search their graph. Regarding privacy, this app will not be able to access your personal or private information.
+<button type="button" class="btn btn-primary btn-lg" onclick="loginToFacebook();">Enter</button>
       </div>
       <!-- progress bars -->
       <div id="searchProgressBarDiv" style="display: none;">
