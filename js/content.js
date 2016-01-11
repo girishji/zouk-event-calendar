@@ -698,7 +698,7 @@ function showFiltered() {
                     <table class="table table-condensed">
                     <thead>
                     <th>Date</th>
-                    <th>Filtered Event</th>
+                    <th>Discarded Event</th>
                     <th>Attending</th>
                     <tr>
                     </tr>
