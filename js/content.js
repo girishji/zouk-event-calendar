@@ -195,7 +195,9 @@ function loginAndDo(doFunct) {
     });
 }
 
-/************************************************************/           
+/************************************************************/
+// Use explicit button to login, otherwise popup blockers will 
+// prevent login window from opening.         
 function loginToFacebook() {
     FB.login(function(response) {
         if (response.authResponse) {
