@@ -852,13 +852,13 @@ function showMap() {
 function display(events) {
     //console.log('total: ' + events.length);
     var msg = '';
-    if (typeof(Storage) !== "undefined") {
-        var data = sessionStorage.getItem('zoukattendees');
-        if (data !== undefined && data) {
-            msg += '&nbsp; &nbsp; ' + '<span class="badge">' + data + '</span>' 
-                + ' attending <a href="#" data-toggle="modal" data-target="#festivalsModal">major festivals</a>';
-        }
-    }
+    //if (typeof(Storage) !== "undefined") {
+    //    var data = sessionStorage.getItem('zoukattendees');
+    //    if (data !== undefined && data) {
+    //        msg += '&nbsp; &nbsp; ' + '<span class="badge">' + data + '</span>' 
+    //            + ' attending <a href="#" data-toggle="modal" data-target="#festivalsModal">major festivals</a>';
+    //    }
+    //}
     var str = `
         <table class="table table-condensed">
         `;
