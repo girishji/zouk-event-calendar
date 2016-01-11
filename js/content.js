@@ -750,8 +750,8 @@ function showLocation(geoResult) {
                 var location = place.location;  
                 if ((location.hasOwnProperty('latitude') && location.latitude) && 
                     (location.hasOwnProperty('longitude') && location.longitude)) {
-                    var dist = distHaversine(lat, lng, location.latitude, location.longitude); // in meters
-                    dist = dist * 0.000621371; // miles
+                    var dist = distHaversine(lat, lng, location.latitude, location.longitude); 
+                    //dist = dist * 0.000621371; // miles
                     events[i].attending_count = Math.round(dist); // kludge alert: replace attening_count with dist
                     selected.push(events[i]);
                 }
