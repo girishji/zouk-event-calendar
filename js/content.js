@@ -702,7 +702,7 @@ function showFiltered() {
                 // </button>
 
                 var str = `
-                    <table class="table table-condensed">
+                    <table class="table table-condensed" style="margin-top: 20px;">
                     <thead>
                     <th>Date</th>
                     <th>Event</th>
@@ -750,8 +750,9 @@ function showLocation(geoResult) {
                 var location = place.location;  
                 if ((location.hasOwnProperty('latitude') && location.latitude) && 
                     (location.hasOwnProperty('longitude') && location.longitude)) {
-                    var dist = distHaversine(lat, lng, location.latitude, location.longitude); 
-                    //dist = dist * 0.000621371; // miles
+                    //var dist = distHaversine(lat, lng, location.latitude, location.longitude); 
+                    var dist = distVincenty(lat, lng, location.latitude, location.longitude)
+                        * 0.000621371; // miles
                     events[i].attending_count = Math.round(dist); // kludge alert: replace attening_count with dist
                     selected.push(events[i]);
                 }
@@ -764,16 +765,14 @@ function showLocation(geoResult) {
             var b = parseInt(bt.attending_count);
             return (a > b) ? 1 : -1; 
         });
-        //            <table style="margin-top: 10px;"><tr><td>
-        //            <button type="button" class="btn btn-default btn-sm" onclick="showEventsByTimeInner();">
-        //            <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back
-        //            </button>
-        //            </td>
-        //            <td><h5 style="padding-left:20px;">Address: ${geoResult.formatted_address}</h5></td></tr>
-        //            </table>
-
         var str = `
-            <h5 style="margin: 20px 10px 0px 10px">Address: ${geoResult.formatted_address}</h5>
+            <table style="margin-top: 10px;"><tr><td>
+            <button type="button" class="btn btn-default btn-sm" onclick="showEventsByTimeInner();">
+            <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back
+            </button>
+            </td>
+            <td><h5 style="padding-left:20px;">Address: ${geoResult.formatted_address}</h5></td></tr>
+            </table>
             <table class="table table-condensed">
             <thead>
             <th>Date</th>
