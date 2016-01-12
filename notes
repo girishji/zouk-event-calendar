@@ -104,14 +104,22 @@ debug: https://www.youtube.com/watch?v=aQb2-RIst0Q
 
 ====
 XXX remove facebook debug js
-XXX remove popup blocker on website
-====
+XXX remove popup blocker on website (update: not necessary, created a login button to click)
 
+====
 godaddy
 go to manage domains->forwarding. add forwarding (with masking) to zouk-event-calendar.appspot.com
 Not sure about https.
-====
 
+====
+dashboard
+- well known festivals
+- # of attendees to above
+- get country code and divide continent
+- # of festivals with more than 200 attendees (and events), # of attendees in continent
+- fanatics: people going to many many festivals, avg. festival a person goes to
+
+====
     <!--
       FB first makes a request to server with a signed-request. This has access-token in it.
       So server side should already have correct FB app-id. Then server sends this index.php
