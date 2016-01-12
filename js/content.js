@@ -178,6 +178,7 @@ var MAX_PAGE_ITERATIONS = 20;
 var pageIterationCount = 0;
 // pages set using an object
 var pages = {};
+//
 
 /************************************************************/
 function loginAndDo(doFunct) {
@@ -256,6 +257,8 @@ var eventsCallback = function(response) {
                             if (data[j].hasOwnProperty('description') && data[j].description) {
                                 data[j].description = null;
                             }
+                            // add continent
+                            addContinent(data[j]);
                             events.push(data[j]);
                         }
                     }
@@ -379,6 +382,7 @@ var pageEventsCallback = function(response) {
                             if (data[j].hasOwnProperty('description') && data[j].description) {
                                 data[j].description = null;
                             }
+                            addContinent(data[j]);
                             events.push(data[j]);
                         }
                     }
@@ -1096,6 +1100,20 @@ function getRelativeUrl(url) {
     var before = splitted[0].split('/');
     var len = before.length;
     return before[len - 2] + '/' + before[len - 1] + '?' + splitted[1];
+}
+
+/************************************************************/
+function addContinent(event) {
+    var continent = null;
+    if (event.hasOwnProperty('place') && event.place) {
+        if (event.place.hasOwnProperty('location') && event.place.location) {
+            var location = event.place.location;
+            if (location.hasOwnProperty('country')) {
+                var continent = getContinent(location.country);
+            }
+        }
+    }
+    event.continent = continent;
 }
 
 /************************************************************/
