@@ -255,7 +255,7 @@ function getCountryName(countryCode) {
 }
 
 function getCountryCode(cname) {
-    var ccodes = Object.keys(isoCountries).keys();
+    var ccodes = Object.keys(isoCountries);
     for (var i = 0; i < ccodes.length; i++) {
         var c = isoCountries[ccodes[i]];
         console.log("comapring " + c);
