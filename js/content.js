@@ -856,8 +856,8 @@ function showDashboard() {
     }
 
     var str = `
-    <table class="table table-striped">
-        <thead><th>N. America</th><th>S. America</th><th>Europe</th><th>Australia</th><th>Asia</th></thead>
+        <table class="table table-striped" style="margin:20px 0px 10px 0px">
+        <thead><th>Distribution</th><th>N. America</th><th>S. America</th><th>Europe</th><th>Australia</th><th>Asia</th></thead>
         <tbody><tr>
         <td># of events</td>
         <td>${distribution['North America']}</td>
@@ -866,7 +866,7 @@ function showDashboard() {
         <td>${distribution['Australia']}</td>
         <td>${distribution['Asia']}</td>
         </tr><tr>
-        <td># of events with >200 attending</td>
+        <td># of events (over 200 attending)</td>
         <td>${distributionOfBig['North America']}</td>
         <td>${distributionOfBig['South America']}</td>
         <td>${distributionOfBig['Europe']}</td>
