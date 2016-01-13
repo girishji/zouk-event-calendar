@@ -693,6 +693,7 @@ function showFiltered() {
                 $('#searchProgressBarDiv').hide();
                 $('#filterProgressBarDiv').hide();
                 $('#evTableHeader').hide();
+                $("#dashboard").hide();
                 $('#map').hide();
                 $("#evTableContent").hide().html(str).fadeIn('fast');
                 $('#mainContent').show();
@@ -765,6 +766,7 @@ function showLocation(geoResult) {
         str += '</table>';
         $('#map').hide();
         $('#evTableHeader').hide();
+        $("#dashboard").hide();
         $("#evTableContent").hide().html(str).fadeIn('fast');
         $('#mainContent').show();
     }
@@ -803,6 +805,7 @@ function showMap() {
         //    `;
         $('#evTableHeader').hide();
         $("#evTableContent").hide();
+        $("#dashboard").hide();
         //$("#evTableContent").hide().html(str).fadeIn('fast');
         $('#mainContent').show();
         $('#map').show();
@@ -856,17 +859,17 @@ function showDashboard() {
     }
 
     var str = `
-        <table class="table table-striped" style="margin:20px 0px 0px 0px">
-        <thead><th>Distribution*</th><th>N. America</th><th>S. America</th><th>Europe</th><th>Australia</th><th>Asia</th></thead>
+        <table class="table table-bordered" style="margin:20px 0px 0px 0px">
+        <thead><th>#</th><th>N. America</th><th>S. America</th><th>Europe</th><th>Australia</th><th>Asia</th></thead>
         <tbody><tr>
-        <td>Number of events</td>
+        <th scope="row">Events</th>
         <td>${distribution['North America']}</td>
         <td>${distribution['South America']}</td>
         <td>${distribution['Europe']}</td>
         <td>${distribution['Australia']}</td>
         <td>${distribution['Asia']}</td>
         </tr><tr>
-        <td>Events w/ over 100 attending</td>
+        <th scope="row">Events w/ over 100 attending</th>
         <td>${distributionOfBig['North America']}</td>
         <td>${distributionOfBig['South America']}</td>
         <td>${distributionOfBig['Europe']}</td>
@@ -874,8 +877,8 @@ function showDashboard() {
         <td>${distributionOfBig['Asia']}</td>
         </tr></tbody>
     </table>
-        <!-- <h7>* some events are kizomba/bachata events that include Zouk</h7> -->
     `;
+    //<!-- <h7>* some events are kizomba/bachata events that include Zouk</h7> -->
 
     // Major festivals
     var selected = [];
@@ -885,16 +888,25 @@ function showDashboard() {
             selected.push(ev);
         }
     }
+
     if (selected.length > 0) {
         str += `
-            <h4 style="margin-top:25px">Major Festivals</h4>
+            <h4 style="margin:25px 0px 0px 10px">Major Festivals</h4>
+            `;
+        if (typeof(Storage) !== "undefined") {
+            var data = sessionStorage.getItem('zoukattendees');
+            if (data !== undefined && data) {
+                str += `<div style="float: right"><span class="badge">${data}</span> attending</div>`;
+            }
+        }
+        str += `
             <table class="table table-condensed" style="margin-top:5px">
             <thead><th>Date</th><th>Event</th><th>Attending</th><tr></tr></thead>
             `;
         str += getTableBody(selected);
         str += '</table>';
         //$("#mainContent").html(str);
-        $("#mainContent").hide().html(str).fadeIn('fast');
+        $("#dashboard").hide().html(str).fadeIn('fast');
     }
 }
 
@@ -902,13 +914,6 @@ function showDashboard() {
 function display(events) {
     //console.log('total: ' + events.length);
     var msg = '';
-    //if (typeof(Storage) !== "undefined") {
-    //    var data = sessionStorage.getItem('zoukattendees');
-    //    if (data !== undefined && data) {
-    //        msg += '&nbsp; &nbsp; ' + '<span class="badge">' + data + '</span>' 
-    //            + ' attending <a href="#" data-toggle="modal" data-target="#festivalsModal">major festivals</a>';
-    //    }
-    //}
     var str = `
         <table class="table table-condensed">
         `;
@@ -916,6 +921,7 @@ function display(events) {
     str += '</table>';
     $('#searchProgressBarDiv').hide();
     $('#filterProgressBarDiv').hide();
+    $("#dashboard").hide();
     $('#map').hide();
     $('#contentNav').show();
     $('#evTableHeader').show();
