@@ -874,7 +874,7 @@ function showDashboard() {
         <td>${distributionOfBig['Asia']}</td>
         </tr></tbody>
     </table>
-        <h7>* some events are kizomba/bachata events that include Zouk</h7>
+        <!-- <h7>* some events are kizomba/bachata events that include Zouk</h7> -->
     `;
 
     // Major festivals
