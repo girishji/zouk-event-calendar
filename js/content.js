@@ -896,7 +896,7 @@ function showDashboard() {
         if (typeof(Storage) !== "undefined") {
             var data = sessionStorage.getItem('zoukattendees');
             if (data !== undefined && data) {
-                str += `<div style="margin: 10px 0px 10px 5px"><span class="badge">${data}</span> attending</div>`;
+                str += `<div style="margin: 10px 0px 10px 5px"><span class="badge">${data}</span> attending (unique)</div>`;
             }
         }
         str += `
@@ -909,6 +909,7 @@ function showDashboard() {
         $("#evTableContent").hide();
         $('#map').hide();
         $("#dashboard").hide().html(str).fadeIn('fast');
+        $('#mainContent').show();
     }
 }
 
