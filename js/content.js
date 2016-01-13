@@ -1171,6 +1171,14 @@ function addContinent(event) {
     event.continent = continent;
 }
 
+
+/************************************************************/
+function sendMessage() {
+    console.log($('#message-subject').val());
+    console.log($('#message-text').val());
+
+}
+
 /************************************************************/
 // Haversine formula, in miles
 function distHaversine(lat1, lon1, lat2, lon2, unit) {
