@@ -849,7 +849,7 @@ function showDashboard() {
     for (var i = 0; i < events.length; i++) {
         if (events[i].hasOwnProperty('continent') && events[i].continent) {
             distribution[events[i].continent]++;
-            if (events[i].attending_count > 200) {
+            if (events[i].attending_count >= 100) {
                 distributionOfBig[events[i].continent]++;
             }
         }
@@ -859,14 +859,14 @@ function showDashboard() {
         <table class="table table-striped" style="margin:20px 0px 0px 0px">
         <thead><th>Distribution*</th><th>N. America</th><th>S. America</th><th>Europe</th><th>Australia</th><th>Asia</th></thead>
         <tbody><tr>
-        <td># of events</td>
+        <td>Number of events</td>
         <td>${distribution['North America']}</td>
         <td>${distribution['South America']}</td>
         <td>${distribution['Europe']}</td>
         <td>${distribution['Australia']}</td>
         <td>${distribution['Asia']}</td>
         </tr><tr>
-        <td># of events (over 200 attending)</td>
+        <td>Events w/ over 100 attending</td>
         <td>${distributionOfBig['North America']}</td>
         <td>${distributionOfBig['South America']}</td>
         <td>${distributionOfBig['Europe']}</td>
@@ -874,7 +874,7 @@ function showDashboard() {
         <td>${distributionOfBig['Asia']}</td>
         </tr></tbody>
     </table>
-        <h6>* some events are other dance events that include Zouk</h6>
+        <h7>* some events are kizomba/bachata events that include Zouk</h7>
     `;
 
     // Major festivals
@@ -887,7 +887,7 @@ function showDashboard() {
     }
     if (selected.length > 0) {
         str += `
-            <h4 style="margin-top:10px">Major Festivals</h4>
+            <h4 style="margin-top:25px">Major Festivals</h4>
             <table class="table table-condensed" style="margin-top:5px">
             <thead><th>Date</th><th>Event</th><th>Attending</th><tr></tr></thead>
             `;
