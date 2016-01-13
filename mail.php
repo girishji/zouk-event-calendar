@@ -18,6 +18,7 @@ try {
         echo $er;
     }
 }
+echo $response;
 echo 'done';
 //
 ?>
