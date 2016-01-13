@@ -1187,6 +1187,9 @@ function sendMessage() {
         type: "GET",
         // The type of data we expect back
         dataType : "text",
+        success: function( data ) {
+            console.log(data);
+        },
         error: function( xhr, status, errorThrown ) {
             alert( "Sorry, there was a problem!" );
             console.log( "Error: " + errorThrown );

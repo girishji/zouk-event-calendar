@@ -5,7 +5,7 @@ $sendgrid = new SendGrid('app45746838@heroku.com', 'o5tymy0g1404');
 
 $message = new SendGrid\Email();
 $message->addTo('girishji@gmail.com')->
-    setFrom('zouk-calendar@heroku.com')->
+    setFrom('app45746838@heroku.com')->
     setSubject((string) $_GET["message-subject"])->
     setText((string) $_GET["message-text"])->
     setHtml('<strong>Hello World!</strong>');
