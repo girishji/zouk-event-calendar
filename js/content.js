@@ -860,18 +860,18 @@ function showDashboard() {
         <thead><th>N. America</th><th>S. America</th><th>Europe</th><th>Australia</th><th>Asia</th></thead>
         <tbody><tr>
         <td># of events</td>
-        <td>distribution['North America']</td>
-        <td>distribution['South America']</td>
-        <td>distribution['Europe']</td>
-        <td>distribution['Australia']</td>
-        <td>distribution['Asia']</td>
+        <td>${distribution['North America']}</td>
+        <td>${distribution['South America']}</td>
+        <td>${distribution['Europe']}</td>
+        <td>${distribution['Australia']}</td>
+        <td>${distribution['Asia']}</td>
         </tr><tr>
         <td># of events with >200 attending</td>
-        <td>distributionOfBig['North America']</td>
-        <td>distributionOfBig['South America']</td>
-        <td>distributionOfBig['Europe']</td>
-        <td>distributionOfBig['Australia']</td>
-        <td>distributionOfBig['Asia']</td>
+        <td>${distributionOfBig['North America']}</td>
+        <td>${distributionOfBig['South America']}</td>
+        <td>${distributionOfBig['Europe']}</td>
+        <td>${distributionOfBig['Australia']}</td>
+        <td>${distributionOfBig['Asia']}</td>
         </tr></tbody>
     </table>
     `;
