@@ -147,6 +147,7 @@ var knownEvents = [ 'zouk\\s+libre.*festival',
                     'dutch.+international.+zouk.+congr',
                     'berg.*congres',
                     'i\'m\\s*zouk',
+                    'russian\\s+zouk\\s+congress',
                     'canada.*zouk' ];
 
 var knownSuspectPlaces = [ { latitude: '48.812053039547',  longitude: '2.4038419249911' }, 
