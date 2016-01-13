@@ -1177,7 +1177,7 @@ function sendMessage() {
     $('#contactModal').modal('hide');
     var sub = $('#message-subject').val();
     if (!sub || (sub == '')) {
-        sub = 'from worldzoukcalendar';
+        sub = 'no subject';
     }
     var msg = $('#message-text').val();
     if (!msg || (msg == '')) {
