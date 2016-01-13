@@ -18,7 +18,7 @@ try {
         echo $er;
     }
 }
-echo $response;
+echo "$response";
 echo 'done';
 //
 ?>
