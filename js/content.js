@@ -1174,10 +1174,7 @@ function addContinent(event) {
 
 /************************************************************/
 function sendMessage() {
-    console.log(
     $('#contactModal').modal('hide');
-
-
     $.ajax({
         // The URL for the request
         url: "mail.php",
