@@ -1174,9 +1174,29 @@ function addContinent(event) {
 
 /************************************************************/
 function sendMessage() {
-    console.log($('#message-subject').val());
-    console.log($('#message-text').val());
+    console.log(
+    $('#contactModal').modal('hide');
 
+
+    $.ajax({
+        // The URL for the request
+        url: "mail.php",
+        // The data to send (will be converted to a query string)
+        data: {
+            subject: $('#message-subject').val(),
+            message: $('#message-text').val()
+        },
+        // Whether this is a POST or GET request
+        type: "GET",
+        // The type of data we expect back
+        dataType : "text",
+        error: function( xhr, status, errorThrown ) {
+            alert( "Sorry, there was a problem!" );
+            console.log( "Error: " + errorThrown );
+            console.log( "Status: " + status );
+            console.dir( xhr );
+        }
+    });
 }
 
 /************************************************************/
