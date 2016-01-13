@@ -896,7 +896,7 @@ function showDashboard() {
         if (typeof(Storage) !== "undefined") {
             var data = sessionStorage.getItem('zoukattendees');
             if (data !== undefined && data) {
-                str += `<div style="float: right"><span class="badge">${data}</span> attending</div>`;
+                str += `<div style="margin: 5px 0px 10px 10px"><span class="badge">${data}</span> attending</div>`;
             }
         }
         str += `
