@@ -9,6 +9,6 @@ $message->addTo('girishji@gmail.com')->
     setSubject((string) $_GET["message-subject"])->
     setText((string) $_GET["message-text"]);
 $response = $sendgrid->send($message);
-
+echo 'done';
 //->    setHtml('<strong>Hello World!</strong>');
 ?>
