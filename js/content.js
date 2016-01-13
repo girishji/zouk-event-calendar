@@ -905,7 +905,9 @@ function showDashboard() {
             `;
         str += getTableBody(selected);
         str += '</table>';
-        //$("#mainContent").html(str);
+        $('#evTableHeader').hide();
+        $("#evTableContent").hide();
+        $('#map').hide();
         $("#dashboard").hide().html(str).fadeIn('fast');
     }
 }
