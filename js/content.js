@@ -1175,13 +1175,22 @@ function addContinent(event) {
 /************************************************************/
 function sendMessage() {
     $('#contactModal').modal('hide');
+    var sub = $('#message-subject').val();
+    if (!sub || (sub == '')) {
+        sub = 'from worldzoukcalendar';
+    }
+    var msg = $('#message-text').val();
+    if (!msg || (msg == '')) {
+        msg = 'from worldzoukcalendar';
+    }
+
     $.ajax({
         // The URL for the request
         url: "mail.php",
         // The data to send (will be converted to a query string)
         data: {
-            subject: $('#message-subject').val(),
-            message: $('#message-text').val()
+            subject: sub,
+            message: msg
         },
         // Whether this is a POST or GET request
         type: "GET",
