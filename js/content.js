@@ -22,7 +22,7 @@ window.fbAsyncInit = function() {
     // FB.Canvas.setSize({ width: 640, height: 4000 });
 
     // Check if logged in, and search for events
-    loginAndDo(buildContent);
+    //loginAndDo(buildContent);
 };
 // load the facebook SDK async
 (function(d, s, id){
