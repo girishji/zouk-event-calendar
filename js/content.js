@@ -891,12 +891,12 @@ function showDashboard() {
 
     if (selected.length > 0) {
         str += `
-            <h4 style="margin:25px 0px 0px 10px">Some Major Festivals</h4>
+            <h4 style="margin:30px 0px 0px 5px">Some Major Festivals</h4>
             `;
         if (typeof(Storage) !== "undefined") {
             var data = sessionStorage.getItem('zoukattendees');
             if (data !== undefined && data) {
-                str += `<div style="margin: 5px 0px 10px 10px"><span class="badge">${data}</span> attending</div>`;
+                str += `<div style="margin: 10px 0px 10px 5px"><span class="badge">${data}</span> attending</div>`;
             }
         }
         str += `
