@@ -2,8 +2,8 @@ git add .
 git commit -m "message"
 
 # GAE
-git push google master
-appcfg.py -A zouk-event-calendar update app.yaml
+//git push google master
+//appcfg.py -A zouk-event-calendar update app.yaml
 
 # github
 git push origin master
