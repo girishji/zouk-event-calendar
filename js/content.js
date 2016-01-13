@@ -876,8 +876,7 @@ function showDashboard() {
     </table>
     `;
 
-    // Modal for top festivals
-
+    // Major festivals
     var selected = [];
     for (var i = 0; i < knownEvents.length; i++) {
         var ev = getEventFromName(knownEvents[i], events);
@@ -886,7 +885,7 @@ function showDashboard() {
         }
     }
     if (selected.length > 0) {
-        str = `
+        str += `
             <table class="table table-condensed">
             <thead><th>Date</th><th>Event</th><th>Attending</th><tr></tr></thead>
             `;
