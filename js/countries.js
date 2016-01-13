@@ -258,8 +258,8 @@ function getCountryCode(cname) {
     var ccodes = Object.keys(isoCountries);
     for (var i = 0; i < ccodes.length; i++) {
         var c = isoCountries[ccodes[i]];
-        var re = RegExp(c, 'i');
-        if (re.test(cname)) {
+        var re = RegExp(cname, 'i');
+        if (re.test(c)) {
             return ccodes[i];
         }
     }
