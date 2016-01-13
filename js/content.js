@@ -887,7 +887,7 @@ function showDashboard() {
     }
     if (selected.length > 0) {
         str += `
-            <h4>Major Festivals</h4>
+            <h4 style="margin-top:10px">Major Festivals</h4>
             <table class="table table-condensed" style="margin-top:5px">
             <thead><th>Date</th><th>Event</th><th>Attending</th><tr></tr></thead>
             `;
