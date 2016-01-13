@@ -173,7 +173,8 @@ function loginAndDo(doFunct) {
 // Use explicit button to login, otherwise popup blockers will 
 // prevent login window from opening.         
 function loginToFacebook() {
-    FB.login(function(response) {
+    FB.getLoginStatus(function(response) {
+    //FB.login(function(response) {
         if (response.authResponse) {
             if (response.status === 'connected') {
                 //console.log('Welcome!  Fetching information.... ');
