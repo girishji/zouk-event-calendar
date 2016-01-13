@@ -891,7 +891,7 @@ function showDashboard() {
 
     if (selected.length > 0) {
         str += `
-            <h4 style="margin:25px 0px 0px 10px">Major Festivals</h4>
+            <h4 style="margin:25px 0px 0px 10px">Some Major Festivals</h4>
             `;
         if (typeof(Storage) !== "undefined") {
             var data = sessionStorage.getItem('zoukattendees');
