@@ -18,7 +18,7 @@ try {
         echo $er;
     }
 }
-echo "$response";
+var_dump($response);
 echo 'done';
 //
 ?>
