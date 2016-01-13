@@ -19,7 +19,7 @@ try {
         echo $er;
     }
 }
-var_dump($response); // appears on chrome console
+//var_dump($response); // appears on chrome console
 echo 'done';
 //
 ?>
