@@ -856,7 +856,7 @@ function showDashboard() {
     }
 
     var str = `
-    <table>
+    <table class="table table-striped">
         <thead><th>N. America</th><th>S. America</th><th>Europe</th><th>Australia</th><th>Asia</th></thead>
         <tbody><tr>
         <td># of events</td>
