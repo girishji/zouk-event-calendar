@@ -60,34 +60,6 @@ $(document).ready(function() {
             }
         });
     });
-
-    // Modal for top festivals
-    $('#festivalsModal').on('show.bs.modal', function (event) {
-        if (typeof(Storage) !== "undefined") {
-            var data = sessionStorage.getItem('zoukevents');
-            if (data !== undefined && data) {
-                var events = JSON.parse(data);
-                if (events.length > 0) {
-                    var selected = [];
-                    for (var i = 0; i < knownEvents.length; i++) {
-                        var ev = getEventFromName(knownEvents[i], events);
-                        if (ev) {
-                            selected.push(ev);
-                        }
-                    }
-                    if (selected.length > 0) {
-                        var str = `
-                            <table class="table table-condensed">
-                            <thead><th>Date</th><th>Event</th><th>Attending</th><tr></tr></thead>
-                            `;
-                        str += getTableBody(selected);
-                        str += '</table>';
-                        $("#selectedFestivalsTable").html(str);
-                    }
-                }
-            }
-        }
-    });
 });
 
 
@@ -850,6 +822,78 @@ function showMap() {
                 title: selected[i].name
             });
         }
+    }
+}
+
+/************************************************************/
+function showDashboard() {
+    if (typeof(Storage) === "undefined") {
+        alert('Your browser does not support this operation');
+        return;
+    }
+    var data = sessionStorage.getItem('zoukevents');
+    if (data === undefined || (! data)) {
+        console.log('No events in showEventsByAttendingInner');
+    }
+    events = JSON.parse(data);
+    var selected = [];
+    var distribution = {
+        'North America': 0,
+        'South America': 0,
+        'Europe': 0,
+        'Australia': 0,
+        'Asia': 0
+    };
+    var distributionOfBig = Object.assign({}, distribution); // copy object
+
+    for (var i = 0; i < events.length; i++) {
+        if (events[i].hasOwnProperty('continent') && events[i].continent) {
+            distribution[events[i].continent]++;
+            if (events[i].attending_count > 200) {
+                distributionOfBig[events[i].continent]++;
+            }
+        }
+    }
+
+    var str = `
+    <table>
+        <thead><th>N. America</th><th>S. America</th><th>Europe</th><th>Australia</th><th>Asia</th></thead>
+        <tbody><tr>
+        <td># of events</td>
+        <td>distribution['North America']</td>
+        <td>distribution['South America']</td>
+        <td>distribution['Europe']</td>
+        <td>distribution['Australia']</td>
+        <td>distribution['Asia']</td>
+        </tr><tr>
+        <td># of events with >200 attending</td>
+        <td>distributionOfBig['North America']</td>
+        <td>distributionOfBig['South America']</td>
+        <td>distributionOfBig['Europe']</td>
+        <td>distributionOfBig['Australia']</td>
+        <td>distributionOfBig['Asia']</td>
+        </tr></tbody>
+    </table>
+    `;
+
+    // Modal for top festivals
+
+    var selected = [];
+    for (var i = 0; i < knownEvents.length; i++) {
+        var ev = getEventFromName(knownEvents[i], events);
+        if (ev) {
+            selected.push(ev);
+        }
+    }
+    if (selected.length > 0) {
+        str = `
+            <table class="table table-condensed">
+            <thead><th>Date</th><th>Event</th><th>Attending</th><tr></tr></thead>
+            `;
+        str += getTableBody(selected);
+        str += '</table>';
+        //$("#mainContent").html(str);
+        $("#mainContent").hide().html(str).fadeIn('fast');
     }
 }
 
