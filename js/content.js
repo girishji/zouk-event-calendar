@@ -94,6 +94,7 @@ var searcheStrings = [
     'brazouka',
     'zoukdevils',
     'zouk+fever',
+    'zouka',
     'brasileiro+zouk',
     'zouk+fusion',
     'zouk+flow',
