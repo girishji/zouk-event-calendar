@@ -104,6 +104,7 @@ var searcheStrings = [
     'oman+zouk',
     'international+zouk',
     'zouk+bachata',
+    'zouk+katowice',
     'carioca+zouk'
 ];
 
@@ -148,7 +149,7 @@ var BATCH_MAX = 45; // don't use const as it may not be supported in earlier bro
 // Each query comes back with 25 results (even if you set higher limit). For deciding
 // on suspicious events, get max 1000 attendees and compare to known zouk attendees
 //var MAX_PAGE_ITERATIONS = 40; // 40x25=1000
-var MAX_PAGE_ITERATIONS = 20;
+var MAX_PAGE_ITERATIONS = 10;
 var pageIterationCount = 0;
 // pages set using an object
 var pages = {};
