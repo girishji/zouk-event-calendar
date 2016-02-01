@@ -1,0 +1,21 @@
+
+Zouk Calendar
+Facebook Web Address
+www.facebook.com/WorldZoukCalendar
+Start Date
+Enter your start date
+Short Description
+Real time calendar of Brazilian Zouk dance events worldwide. This app searches Facebook graph.
+Impressum
+Welcome to Zouk Calendar! Click on the tab next to "About" tab that says "Zouk Calendar" to use the app. This app searches F... See More
+Long Description
+Welcome to Zouk Calendar! Click on the tab next to "About" tab that says "Zouk Calendar" to use the app. This app searches F... See More
+Website
+http://zoukcalendar.com
+Official Page
+Enter the official brand, celebrity or organization your Page is about
+Facebook Page ID
+207701262907920
+
+
+Welcome to Zouk Calendar! Click on the tab above that says "Zouk Calendar", next to "About" tab (see picture below). This app searches Facebook for Brazilian Zouk dance events. You will be able to filter based on location, start time and popularity. There is also a map. Facebook requires that you login to the app before you can search. Regarding privacy, this app will not have access to your personal or private information. -biggieg/girish

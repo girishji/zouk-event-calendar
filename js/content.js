@@ -70,41 +70,154 @@ var searcheStrings = [
     'zouk+carnival',
     'zouk+time',
     'zouk+night',
-    'f.i.e.l+official',
-    'lambazouk',
-    'zouk+lambada',
     'brazilian+zouk',
     'zouk+festival',
-    'zouk+marathon',
     'zouk+family',
     'zouk+fest',
     'zouk+congress',
     'zouk+weekend',
-    'zouk+salsa',
-    'zouk+samba',
     'zouk+beach',
     'zouk+holiday',
-    'bachaturo',
-    'zouk+kizomba',
     'zouk+dance',
     'zouk+sea',
-    'fall+zouk',
-    'зук',
-    'berg+zouk',
-    'brazouka',
-    'zoukdevils',
+    'zouk+snow',
     'zouk+fever',
-    'zouka',
-    'zouku',
-    'brasileiro+zouk',
     'zouk+fusion',
     'zouk+flow',
     'zouk+day',
     'zouk+jam',
+    'zouk+salsa',
+    'zouk+samba',
+    'zouk+kizomba',
+    'zouk+bachata',
+
     'zouk+danse',
+
+    'zouk+karneval',
+    'zouk+čas',
+    'zouk+noc',
+    'brazilský zouk',
+    'zouk+festival',
+    'zouk+rodina',
+    'zouk+fest',
+    'zouk+kongres',
+    'zouk+víkend',
+    'zouk+pláž',
+    'zouk+dovolená',
+    'zouk+tanec',
+    'zouk+moře',
+    'zouk+sníh',
+    'zouk+horečka',
+    'zouk+tok',
+    'zouk+den',
+    'zouk+džem',
+
+    'zouk+karnawał'
+    'zouk+czas',
+    'zouk+noc',
+    'zouk brazylijski',
+    'zouk+festiwal',
+    'zouk+rodzina',
+    'zouk+kongres',
+    'zouk+Weekend',
+    'zouk+plaża',
+    'zouk+wakacje',
+    'zouk+taniec',
+    'zouk+morze',
+    'zouk+śnieg',
+    'zouk+gorączka',
+    'zouk+fuzja',
+    'zouk+dzień',
+    'zouk+dżem',
+    
+    'зук',
+    'зук+карнавал',
+    'зук+время',
+    'зук+ночь',
+    'бразильский зук',
+    'зук+фестиваль',
+    'зук+семья',
+    'зук+фест',
+    'зук+конгресс',
+    'зук+выходные',
+    'зук+пляж ',
+    'зук+праздничный',
+    'зук+танец',
+    'зук+море',
+    'зук+снег',
+    'зук+лихорадка',
+    'зук+фьюжн',
+    'зук+поток',
+    'зук+День',
+    'зук+джем',
+    
+    'зук+час',
+    'зук+ніч',
+    'зук+сім',
+    'зук+конгрес',
+    'зук+вихідні',
+    'зук+святковий',
+    'зук+сніг',
+    'зук+лихоманка',
+    'зук+фьюжн',
+    'зук+потік',
+
+    'zouk+carnaval',
+    'zouk+tempo',
+    'zouk+noite',
+    'zouk brasileiro',
+    'zouk+família',
+    'zouk+congresso',
+    'zouk fim de semana',
+    'zouk+praia',
+    'zouk+férias',
+    'zouk+dança',
+    'zouk+mar',
+    'zouk+neve',
+    'zouk+febre',
+    'zouk+fusão',
+    'zouk+fluxo',
+    'zouk+dia',
+
+    'zouka',
+    'zouku',
+    'zoukb',
+    'zoukc',
+    'zoukd',
+    'zouke',
+    'zoukf',
+    'zoukg',
+    'zoukh',
+    'zouki',
+    'zoukj',
+    'zoukk',
+    'zoukl',
+    'zoukm',
+    'zoukn',
+    'zouko',
+    'zoukp',
+    'zoukq',
+    'zoukr',
+    'zouks',
+    'zoukt',
+    'zoukv',
+    'zoukx',
+    'zouky',
+    'zoukz',
+
+
+    'bachaturo',
+    'zouk+marathon',
+    'fall+zouk',
+    'berg+zouk',
+    'brazouka',
+    'zoukdevils',
+    'f.i.e.l+official',
+    'lambazouk',
+    'zouk+lambada', 
+    'brasileiro+zouk',
     'oman+zouk',
     'international+zouk',
-    'zouk+bachata',
     'zouk+katowice',
     'carioca+zouk'
 ];
@@ -154,6 +267,8 @@ var MAX_PAGE_ITERATIONS = 10;
 var pageIterationCount = 0;
 // pages set using an object
 var pages = {};
+// cursor for search strings to indicate how far we have searched
+var searchStringsCursor = 0;
 //
 
 /************************************************************/
@@ -194,14 +309,23 @@ function loginToFacebook() {
 /************************************************************/
 // Search FB
 function buildContent() {
+    searchStringsCursor = 0;
+    nextBatchSearch(searchStringsCursor);
+}
+
+/************************************************************/
+function nextBatchSearch(cursor) {
+    console.log('nextBatchSearch');
     var batchCmd = [];
-    for (var i = 0; i < searcheStrings.length; i++) {
+
+    for (var i = cursor, count = 0; i < searcheStrings.length && count < BATCH_MAX; i++, count++) {
         batchCmd.push( { method: 'GET', 
                          relative_url: 'search?q=' + searcheStrings[i] 
                          + '&type=event&fields=id,name,start_time,place,attending_count,cover,description&access_token='
                          + accessToken }
                      );
     }
+    searchStringsCursor += count;
 
     $('#searchProgressBarDiv').show();
     FB.api('/', 'POST', { batch: batchCmd }, eventsCallback);
@@ -261,22 +385,34 @@ var eventsCallback = function(response) {
     if (batchCmd.length > 0) {
         FB.api('/', 'POST', { batch: batchCmd }, eventsCallback);
     } else {
-        // We are done, check pages and their events
-        console.log('total events ' + events.length);
-        getPages();
+        if (searchStringsCursor < searchStrings.length) {
+            nextBatchSearch(searchStringsCursor);
+        } else {
+            // We are done, check pages and their events
+            console.log('total events ' + events.length);
+            getPages();
+        }
     }
 };
 
 /************************************************************/
 function getPages() {
+    searchStringsCursor = 0;
+    nextBatchPagesSearch(searchStringsCursor);
+}
+
+/************************************************************/
+function nextBatchPagesSearch(cursor) {
+    console.log('nextBatchPagesSearch');
     var batchCmd = [];
-    for (var i = 0; i < searcheStrings.length; i++) {
+    for (var i = cursor, count = 0; i < searcheStrings.length && count < BATCH_MAX; i++, count++) {
         batchCmd.push( { method: 'GET', 
                          relative_url: 'search?q=' + searcheStrings[i] 
                          + '&type=page&fields=id&access_token='
                          + accessToken }
                      );
     }
+    searchStringsCursor += count;
     FB.api('/', 'POST', { batch: batchCmd }, pagesCallback);
 }
 
@@ -321,10 +457,13 @@ var pagesCallback = function(response) {
     if (batchCmd.length > 0) {
         FB.api('/', 'POST', { batch: batchCmd }, pagesCallback);
     } else {
-        // We are done, do further filtering
-        console.log('total pages ' + Object.keys(pages).length);
-        getEventsFromPages();
-        //
+        if (searchStringsCursor < searchStrings.length) {
+            nextBatchPagesSearch(searchStringsCursor);
+        } else {
+            // We are done, do further filtering
+            console.log('total pages ' + Object.keys(pages).length);
+            getEventsFromPages();
+        }
     }
 };
 
