@@ -315,7 +315,7 @@ function buildContent() {
 
 /************************************************************/
 function nextBatchSearch(cursor) {
-    console.log('nextBatchSearch');
+    //console.log('nextBatchSearch');
     var batchCmd = [];
 
     for (var i = cursor, count = 0; i < searchStrings.length && count < BATCH_MAX; i++, count++) {
@@ -403,7 +403,7 @@ function getPages() {
 
 /************************************************************/
 function nextBatchPagesSearch(cursor) {
-    console.log('nextBatchPagesSearch');
+    //console.log('nextBatchPagesSearch');
     var batchCmd = [];
     for (var i = cursor, count = 0; i < searchStrings.length && count < BATCH_MAX; i++, count++) {
         batchCmd.push( { method: 'GET', 

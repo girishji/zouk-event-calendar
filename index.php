@@ -206,7 +206,7 @@
       </div>
 
       <footer class="footer">
-        <p>&copy; 2016 biggieg zouk</p>
+        <p>&copy; 2016 girish (biggieg zouk)</p>
       </footer>
 
     </div> <!-- /container -->
