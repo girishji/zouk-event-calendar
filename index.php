@@ -52,7 +52,7 @@
           <ul class="nav nav-pills pull-right">
             <!-- <li role="presentation" class="active"><a href="#">Home</a></li> -->
             <li role="presentation"><a href="#" data-toggle="modal" data-target="#aboutModal">About</a></li>
-            <li role="presentation"><a href="#" data-toggle="modal" data-target="#contactModal">Contact</a></li>
+            <!-- <li role="presentation"><a href="#" data-toggle="modal" data-target="#contactModal">Contact</a></li> -->
           </ul>
         </nav>
         <a href="http://zoukcalendar.com">
@@ -73,8 +73,7 @@
                 Welcome to the Zouk Calendar! This app
                 searches Facebook and displays a list of scheduled Brazilian Zouk events around the world.
                 You will be able to filter events based on location, start time, and size. In spite of the comprehensive search
-                a few events may get left out. These are mostly events written in foreign language (Polish, Czech, Russian, for instance).
-                If you find a missing event, please contact using the contact form.
+                a few events may get left out.
               </p>
               <p>Effort has been made to remove events not related to Brazilian Zouk based on attendance 
                 patterns. All the filtered events are displayed in a separate tab. 
