@@ -6,7 +6,8 @@ try {
     $message = new Message();
     $message->setSender("zouk-events@appspot.gserviceaccount.com");
     $message->setSubject((string) $_GET["subject"]);
-    $message->setText((string) $_GET["message"]);
+    //$message->setText((string) $_GET["message"]);
+    $message->setTextBody((string) $_GET["message"]);
     //$message->setTextBody("Hello, world!");
     $message->addTo("girishji@gmail.com");
     $message->send();
