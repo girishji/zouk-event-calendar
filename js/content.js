@@ -35,7 +35,7 @@ window.fbAsyncInit = function() {
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 
-// for fb like button
+// for fb like button (appId is embedded)
 (function(d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];
     if (d.getElementById(id)) return;
@@ -307,7 +307,7 @@ function loginToFacebook() {
                 //console.log('Welcome!  Fetching information.... ');
                 accessToken = response.authResponse.accessToken;
                 $('#bannerMsg').hide();
-                buildContent();
+                //buildContent();
             }
         } else {
             console.log('User cancelled login or did not fully authorize.');
