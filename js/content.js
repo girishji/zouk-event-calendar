@@ -112,8 +112,8 @@ var searcheStrings = [
     'zouk+den',
     'zouk+džem',
 
-    'zouk+karnawał'
-    'zouk+czas',
+    'zouk+karnawał',
+    "zouk+czas",
     'zouk+noc',
     'zouk brazylijski',
     'zouk+festiwal',
