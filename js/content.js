@@ -65,7 +65,7 @@ $(document).ready(function() {
 
 // Global
 // Batch request maximum is 50
-var searcheStrings = [
+var searchStrings = [
     'zouk',
     'zouk+carnival',
     'zouk+time',
@@ -318,9 +318,9 @@ function nextBatchSearch(cursor) {
     console.log('nextBatchSearch');
     var batchCmd = [];
 
-    for (var i = cursor, count = 0; i < searcheStrings.length && count < BATCH_MAX; i++, count++) {
+    for (var i = cursor, count = 0; i < searchStrings.length && count < BATCH_MAX; i++, count++) {
         batchCmd.push( { method: 'GET', 
-                         relative_url: 'search?q=' + searcheStrings[i] 
+                         relative_url: 'search?q=' + searchStrings[i] 
                          + '&type=event&fields=id,name,start_time,place,attending_count,cover,description&access_token='
                          + accessToken }
                      );
@@ -405,9 +405,9 @@ function getPages() {
 function nextBatchPagesSearch(cursor) {
     console.log('nextBatchPagesSearch');
     var batchCmd = [];
-    for (var i = cursor, count = 0; i < searcheStrings.length && count < BATCH_MAX; i++, count++) {
+    for (var i = cursor, count = 0; i < searchStrings.length && count < BATCH_MAX; i++, count++) {
         batchCmd.push( { method: 'GET', 
-                         relative_url: 'search?q=' + searcheStrings[i] 
+                         relative_url: 'search?q=' + searchStrings[i] 
                          + '&type=page&fields=id&access_token='
                          + accessToken }
                      );
