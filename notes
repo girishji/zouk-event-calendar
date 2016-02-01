@@ -137,3 +137,6 @@ dashboard
      -->
 
 ====
+to add app to a page:
+http://www.facebook.com/dialog/pagetab?app_id=YOUR_APP_ID&redirect_uri=http://www.facebook.com
+====
