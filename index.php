@@ -102,7 +102,7 @@
               <h4 class="modal-title">Contact</h4>
             </div>
             <div class="modal-body">
-              Please post your feedback on <a href="https://www.facebook.com/WorldZoukCalendar/">Zouk Calendar Facebook page</a>.
+              Please post your feedback on <a href="https://www.facebook.com/WorldZoukCalendar/" target="_blank">Zouk Calendar Facebook page</a>.
               <!--
               <form>
                 <div class="form-group">
