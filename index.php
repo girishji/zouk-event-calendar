@@ -87,6 +87,11 @@
               <p>Facebook requires you to login to their system before you can search. Regarding privacy, rest
                 assured that this app will not be able to access your personal information.
               </p>
+              <p>Finally, this app may miss a few Zouk events, especially those not written in English. This app is only
+                localized in a few languages, but more languages will be included soon. Secondly, Facebook 
+                occasionally throws an error because of server overload -- click ignore, and if it persists, please take a break
+                and reload the page after 5-10 minutes.
+              </p>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
