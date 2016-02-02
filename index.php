@@ -77,20 +77,19 @@
             <div class="modal-body">
               <p>
                 Welcome to the Zouk Calendar! This app
-                searches Facebook and displays a list of scheduled Brazilian Zouk events around the world.
-                You will be able to filter events based on location, start time, and size. In spite of the comprehensive search
-                a few events may get left out.
+                searches Facebook and displays a list of Brazilian Zouk events around the world.
+                You will be able to filter events based on location, start time, and size.
               </p>
               <p>Effort has been made to remove events not related to Brazilian Zouk based on attendance 
-                patterns. All the filtered events are displayed in a separate tab. 
+                patterns. All removed events are displayed in a separate tab. 
               </p>
               <p>Facebook requires you to login to their system before you can search. Regarding privacy, rest
                 assured that this app will not be able to access your personal information.
               </p>
-              <p>Finally, this app may miss a few Zouk events, especially those not written in English. This app is only
-                localized in a few languages, but more languages will be included soon. Secondly, Facebook 
-                occasionally throws an error because of server overload -- click ignore, and if it persists, please take a break
-                and reload the page after 5-10 minutes.
+              <p>Finally, this app may miss a few Zouk events, especially those not written in English. Only a
+                select few languages are included in the search, but more languages will follow. Secondly, Facebook 
+                occasionally throws an error because of server overload -- please click ignore, and if it persists, 
+                give a break and reload the page after 5-10 minutes.
               </p>
             </div>
             <div class="modal-footer">
