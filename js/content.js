@@ -319,7 +319,7 @@ function loginToFacebook() {
 // Search FB
 function buildContent() {
     searchStringsCursor = 0;
-    //nextBatchSearch(searchStringsCursor);
+    nextBatchSearch(searchStringsCursor);
 }
 
 /************************************************************/
