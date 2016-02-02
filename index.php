@@ -54,7 +54,7 @@
             <li role="presentation"><a href="#" data-toggle="modal" data-target="#aboutModal">About</a></li>
             <li role="presentation"><a href="#" data-toggle="modal" data-target="#contactModal">Contact</a></li>
             <li>
-              <div style="padding-top: 10px;">
+              <div style="padding: 10px 0px 0px 10px;">
                 <div class="fb-like" data-href="https://www.facebook.com/WorldZoukCalendar/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div>
               </div>
             </li>
