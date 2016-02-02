@@ -52,7 +52,7 @@
           <ul class="nav nav-pills pull-right">
             <!-- <li role="presentation" class="active"><a href="#">Home</a></li> -->
             <li role="presentation"><a href="#" data-toggle="modal" data-target="#aboutModal">About</a></li>
-            <!-- <li role="presentation"><a href="#" data-toggle="modal" data-target="#contactModal">Contact</a></li> -->
+            <li role="presentation"><a href="#" data-toggle="modal" data-target="#contactModal">Contact</a></li>
             <li>
               <div style="padding-top: 10px;">
                 <div class="fb-like" data-href="https://www.facebook.com/WorldZoukCalendar/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div>
@@ -98,9 +98,12 @@
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title">New message</h4>
+              <!-- <h4 class="modal-title">New message</h4> -->
+              <h4 class="modal-title">Contact</h4>
             </div>
             <div class="modal-body">
+              Please post your feedback on <a href="https://www.facebook.com/WorldZoukCalendar/">Zouk Calendar Facebook page</a>.
+              <!--
               <form>
                 <div class="form-group">
                   <label for="subject" class="control-label">Subject:</label>
@@ -111,6 +114,7 @@
                   <textarea class="form-control" id="message-text"></textarea>
                 </div>
               </form>
+              -->
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
