@@ -61,7 +61,8 @@
           </ul>
         </nav>
         <a href="http://zoukcalendar.com">
-          <h3 class="text-muted">Zouk Calendar<small>&nbsp; Search Facebook for Zouk events!</small></h3>
+          <!-- <h3 class="text-muted">Zouk Calendar<small>&nbsp; Search Facebook for Zouk events!</small></h3> -->
+          <h3 class="text-muted">Zouk Calendar</h3>
         </a>
       </div>
 
