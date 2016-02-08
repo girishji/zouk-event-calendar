@@ -71,16 +71,12 @@ try
     $postbody = array( 
         'name' => $file_name, 
         'data' => $file_content,
-        // 'uploadType' => "media"
+        'uploadType' => "media"
     );
     $gsso = new Google_Service_Storage_StorageObject();
     $gsso->setName($file_name);
     $result = $storage->objects->insert($bucket, $gsso, $postbody);
     print_r($result);
-
-    echo "Printing object";
-    $object = $storage->objects->get($bucket, $file_name);
-    print_r($object);
 
 } catch (Exception $e) {
     print $e->getMessage();
@@ -90,19 +86,19 @@ try
 /***
  * Read file from Google Storage
  */
-// try 
-// {
-//     $object = $storage->objects->get($bucket, $file_name);
-// 
-//     $httpClient = $client->authorize();
-//     //$request = new GuzzleHttp\Psr7\Request('GET', $object['mediaLink']);
-//     $request = $httpClient->createRequest('GET', $object['mediaLink']);
-//     $response = $httpClient->send($request);
-//     echo $response;
-//     syslog(LOG_INFO, $response);
-// }      
-// catch (Exception $e)
-// {
-//     print $e->getMessage();
-// }
+try 
+{
+    $object = $storage->objects->get($bucket, $file_name);
+
+    $httpClient = $client->getHttpClient();
+    //$request = new GuzzleHttp\Psr7\Request('GET', $object['mediaLink']);
+    $request = $httpClient->createRequest('GET', $object['mediaLink']);
+    $response = $httpClient->send($request);
+    echo $response;
+    syslog(LOG_INFO, $response);
+}      
+catch (Exception $e)
+{
+    print $e->getMessage();
+}
 ?>
