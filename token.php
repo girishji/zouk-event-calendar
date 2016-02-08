@@ -86,19 +86,19 @@ try
 /***
  * Read file from Google Storage
  */
-try 
-{
-    $object = $storage->objects->get($bucket, $file_name);
-
-    $httpClient = $client->authorize();
-    //$request = new GuzzleHttp\Psr7\Request('GET', $object['mediaLink']);
-    $request = $httpClient->createRequest('GET', $object['mediaLink']);
-    //$response = $httpClient->send($request);
-    echo $response;
-    syslog(LOG_INFO, $response);
-}      
-catch (Exception $e)
-{
-    print $e->getMessage();
-}
+// try 
+// {
+//     $object = $storage->objects->get($bucket, $file_name);
+// 
+//     $httpClient = $client->authorize();
+//     //$request = new GuzzleHttp\Psr7\Request('GET', $object['mediaLink']);
+//     $request = $httpClient->createRequest('GET', $object['mediaLink']);
+//     $response = $httpClient->send($request);
+//     echo $response;
+//     syslog(LOG_INFO, $response);
+// }      
+// catch (Exception $e)
+// {
+//     print $e->getMessage();
+// }
 ?>
