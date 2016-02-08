@@ -21,7 +21,8 @@ $appSecret = '4bba3be85ec4ca2542d9357ead478330';
 $fb = new Facebook\Facebook([
     'app_id' => $appId,
     'app_secret' => $appSecret,
-    'http_client_handler' => 'stream', // dont' let it use guzzle from google-api
+    'http_client_handler' => 'stream', // XXX: this does not need to be set, but if not set -
+    // it used 'guzzle' http client from google-php-api (see composer.json); so set handler explicitely here
     'default_graph_version' => 'v2.2',
 ]);
 
@@ -34,6 +35,8 @@ $longLivedAccessToken = $oAuth2Client->getLongLivedAccessToken($accessToken);
 
 echo $longLivedAccessToken;
 
+/** store stuff **/
+
 // Use Google Cloud Storage (not Cloud DataStore, which is a DB). GCS is unstructured data.
 // Use this to create buckets and manage: https://console.cloud.google.com/storage/browser?project=zouk-event-calendar
 
@@ -42,7 +45,7 @@ $projectId = 'zouk-event-calendar';
 // Authenticate your API Client
 $client = new Google_Client();
 $client->useApplicationDefaultCredentials();  // no need to aquire special credentials
-$client->addScope(Google_Service_Storage::DEVSTORAGE_FULL_CONTROL);
+$client->addScope(Google_Service_Storage::DEVSTORAGE_FULL_CONTROL); // see ~/sandbox/zouk-event-calendar/vendor/google/apiclient/src/Google/Service/Storage.php
 
 $storage = new Google_Service_Storage($client);
 
@@ -56,5 +59,44 @@ foreach ($buckets['items'] as $bucket) {
     syslog(LOG_INFO, $bucket->getName());
 }
 
+/***
+ * Write file to Google Storage
+ */
 
+$bucket = 'zouk-events';
+$file_name = 'tokenfile';
+$file_content = $longLivedAccessToken;
+try 
+{
+    $postbody = array( 
+        'name' => $file_name, 
+        'data' => $file_content,
+        'uploadType' => "media"
+    );
+    $gsso = new Google_Service_Storage_StorageObject();
+    $gsso->setName($file_name);
+    $result = $storage->objects->insert($bucket, $gsso, $postbody);
+    print_r($result);
+    
+} catch (Exception $e) {
+    print $e->getMessage();
+}
+
+
+/***
+ * Read file from Google Storage
+ */
+try 
+{
+    $object = $storage->objects->get($bucket, $file_name);
+    $request = new Google_Http_Request($object['mediaLink'], 'GET');
+    $signed_request = $client->getAuth()->sign($request);
+    $http_request = $client->getIo()->makeRequest($signed_request);
+    echo $http_request->getResponseBody();
+    syslog(LOG_INFO, $http_request->getResponseBody());
+}      
+catch (Exception $e)
+{
+    print $e->getMessage();
+}
 ?>

@@ -3,6 +3,7 @@ git commit -m "message"
 
 # GAE
 git push google master
+composer update
 appcfg.py -A zouk-event-calendar update app.yaml
 appcfg.py -A zouk-event-calendar update_cron .
 
