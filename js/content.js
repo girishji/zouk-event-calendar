@@ -324,9 +324,7 @@ function loginToFacebook() {
 /************************************************************/
 // Get events from DB
 function getContent() {
-    console.log('getContent');
     sendToken();
-
 }
 
 /************************************************************/
