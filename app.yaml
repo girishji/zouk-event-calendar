@@ -21,6 +21,10 @@ handlers:
   script: search.php
   login: admin
 
+# for ajax calls from client; if it asks for x.php then give it x.php and not index.html
+- url: /token.php
+  script: token.php
+
 # these are executed in order, so put this last
 - url: /.*
   script: index.html
