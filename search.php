@@ -8,7 +8,7 @@ try {
     $message->addTo("girishji@gmail.com");
     $message->setSubject("Example email");
     $message->setTextBody("Hello, world!");
-    $message->send();
+    //$message->send();
 } catch (InvalidArgumentException $e) {
     syslog(LOG_WARNING, "Email send failed: " . $e);
 }
