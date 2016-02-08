@@ -23,6 +23,7 @@ window.fbAsyncInit = function() {
 
     // Check if logged in, and search for events
     loginAndDo(buildContent);
+
 };
 // load the facebook SDK async
 (function(d, s, id){

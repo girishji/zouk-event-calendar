@@ -12,7 +12,7 @@ try {
     $message->addTo("girishji@gmail.com");
     $message->send();
 } catch (InvalidArgumentException $e) {
-    echo $e;
+    syslog(LOG_WARNING, "Email send failed: " . $e);
 }
 
 

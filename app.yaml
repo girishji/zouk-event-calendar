@@ -16,9 +16,14 @@ handlers:
 - url: /js
   static_dir: js
 
+# for cron (login: admin, to prevent users from running the script)
+- url: /tasks/searchfb
+  script: search.php
+  login: admin
+
 # these are executed in order, so put this last
 - url: /.*
-  script: index.php
+  script: index.html
 
 # facebook app id
 # XXX just encode it directly in js file

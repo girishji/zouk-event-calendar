@@ -9,6 +9,6 @@ appcfg.py -A zouk-event-calendar update app.yaml
 git push origin master
 
 # heroku
-git push heroku master
+# git push heroku master
 
 

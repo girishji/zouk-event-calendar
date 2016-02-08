@@ -1,0 +1,20 @@
+cron:
+- description: regular searchbot job
+  url: /tasks/searchfb
+  schedule: every 1 minutes synchronized
+
+#  schedule: every 1 hours synchronized
+
+# - description: monday morning mailout
+#   url: /mail/weekly
+#   schedule: every monday 09:00
+#   timezone: Australia/NSW
+# - description: new daily summary job
+#   url: /tasks/summary
+#   schedule: every 24 hours
+#   target: beta
+
+# https://cloud.google.com/appengine/docs/python/config/cron?hl=en#Python_app_yaml_Securing_URLs_for_cron
+# To delete all cron jobs, change the cron.yaml file to just contain:
+# cron:
+
