@@ -4,7 +4,7 @@
 $accessToken = (string) $_GET["token"];
 
 // send back
-echo $accessToken;
+echo "$accessToken";
 
 // log
 syslog(LOG_INFO, "FB token: " . $accessToken);
