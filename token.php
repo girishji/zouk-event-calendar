@@ -33,6 +33,27 @@ $longLivedAccessToken = $oAuth2Client->getLongLivedAccessToken($accessToken);
 
 echo $longLivedAccessToken;
 
-// for database: https://developers.google.com/api-client-library/php/guide/aaa_overview
+// Use Google Cloud Storage (not Cloud DataStore, which is a DB). GCS is unstructured data.
+// Use this to create buckets and manage: https://console.cloud.google.com/storage/browser?project=zouk-event-calendar
+
+$projectId = 'zouk-event-calendar';
+
+// Authenticate your API Client
+$client = new Google_Client();
+$client->useApplicationDefaultCredentials();  // no need to aquire special credentials
+$client->addScope(Google_Service_Storage::DEVSTORAGE_FULL_CONTROL);
+
+$storage = new Google_Service_Storage($client);
+
+/**
+ * Google Cloud Storage API request to retrieve the list of buckets in your project.
+ */
+$buckets = $storage->buckets->listBuckets($projectId);
+
+foreach ($buckets['items'] as $bucket) {
+    printf("%s\n", $bucket->getName());
+    syslog(LOG_INFO, $bucket->getName());
+}
+
 
 ?>
