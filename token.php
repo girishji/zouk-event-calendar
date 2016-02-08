@@ -77,7 +77,11 @@ try
     $gsso->setName($file_name);
     $result = $storage->objects->insert($bucket, $gsso, $postbody);
     print_r($result);
-    
+
+    echo "Printing object";
+    $object = $storage->objects->get($bucket, $file_name);
+    print_r($object);
+
 } catch (Exception $e) {
     print $e->getMessage();
 }
