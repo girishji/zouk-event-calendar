@@ -25,6 +25,10 @@ handlers:
 - url: /token.php
   script: token.php
 
+# like above
+- url: /mail.php
+  script: mail.php
+
 # these are executed in order, so put this last
 - url: /.*
   script: index.html
