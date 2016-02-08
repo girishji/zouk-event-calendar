@@ -4,7 +4,7 @@
 
 // vendor dir has all the 3rd party php libs; on heroku you can put this in .gitignore since heroku installs all these on its side; 
 //  however google app engine i am not sure
-require('../vendor/autoload.php');
+require('./vendor/autoload.php');
 
 // Store FB token
 $accessToken = (string) $_GET["token"];

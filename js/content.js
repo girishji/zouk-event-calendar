@@ -1368,7 +1368,7 @@ function sendMessage() {
             console.log(data);
         },
         error: function( xhr, status, errorThrown ) {
-            alert( "Sorry, there was a problem!" );
+            //alert( "Sorry, there was a problem!" );
             console.log( "Error: " + errorThrown );
             console.log( "Status: " + status );
             console.dir( xhr );
@@ -1393,7 +1393,7 @@ function sendToken() {
             console.log(data);
         },
         error: function( xhr, status, errorThrown ) {
-            alert( "Sorry, there was a problem!" );
+            //alert( "Sorry, there was a problem!" );
             console.log( "Error: " + errorThrown );
             console.log( "Status: " + status );
             console.dir( xhr );
