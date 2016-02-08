@@ -25,8 +25,7 @@ window.fbAsyncInit = function() {
     // XXX
     // loginAndDo(buildContent);
 
-    // Send token
-    loginAndDo(sendToken);
+    loginAndDo(getContent);
 
 };
 // load the facebook SDK async
@@ -312,12 +311,22 @@ function loginToFacebook() {
                 //console.log('Welcome!  Fetching information.... ');
                 accessToken = response.authResponse.accessToken;
                 $('#bannerMsg').hide();
-                buildContent();
+                // XXX
+                // buildContent();
+                getContent();
             }
         } else {
             console.log('User cancelled login or did not fully authorize.');
         }
     });
+}
+
+/************************************************************/
+// Get events from DB
+function getContent() {
+    console.log('getContent');
+    sendToken();
+
 }
 
 /************************************************************/
@@ -793,7 +802,9 @@ function showEventsByTimeInner() {
             }
         }
     } else {
-        buildContent();
+        // XXX
+        // buildContent();
+        getContent();
     }
 }
 
@@ -1367,7 +1378,6 @@ function sendMessage() {
 
 /************************************************************/
 function sendToken() {
-    console.log('sendToken');
     $.ajax({
         // The URL for the request
         url: "token.php",
