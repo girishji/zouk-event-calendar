@@ -40,7 +40,7 @@ $projectId = 'zouk-event-calendar';
 
 // Authenticate your API Client
 $client = new Google_Client();
-//$client->useApplicationDefaultCredentials();  // no need to aquire special credentials
+$client->useApplicationDefaultCredentials();  // no need to aquire special credentials
 $client->addScope(Google_Service_Storage::DEVSTORAGE_FULL_CONTROL);
 
 $storage = new Google_Service_Storage($client);
