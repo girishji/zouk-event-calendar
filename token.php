@@ -33,5 +33,6 @@ $longLivedAccessToken = $oAuth2Client->getLongLivedAccessToken($accessToken);
 
 echo $longLivedAccessToken;
 
+// for database: https://developers.google.com/api-client-library/php/guide/aaa_overview
 
 ?>
