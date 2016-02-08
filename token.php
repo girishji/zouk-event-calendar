@@ -36,7 +36,7 @@ if (! $_SESSION['facebook_access_token']) {
 $oAuth2Client = $fb->getOAuth2Client();
 
 // Exchanges a short-lived access token for a long-lived one
-$longLivedAccessToken = $oAuth2Client->getLongLivedAccessToken('{access-token}');
+$longLivedAccessToken = $oAuth2Client->getLongLivedAccessToken($accessToken);
 
 
 ?>
