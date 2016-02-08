@@ -91,8 +91,8 @@ try
     $object = $storage->objects->get($bucket, $file_name);
 
     $httpClient = $client->authorize();
-
-    $request = $httpClient->createRequest('GET', $object['mediaLink']);
+    $request = new GuzzleHttp\Psr7\Request('GET', $object['mediaLink']);
+    //$request = $httpClient->createRequest('GET', $object['mediaLink']);
     $response = $httpClient->send($request);
     echo $response;
     syslog(LOG_INFO, $response);
