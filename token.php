@@ -90,9 +90,7 @@ try
 {
     $object = $storage->objects->get($bucket, $file_name);
 
-
-    $httpClient = new GuzzleHttp\Client();
-    $client->authorize($httpClient);
+    $httpClient = $client->authorize();
 
     $request = $httpClient->createRequest('GET', $object['mediaLink']);
     $response = $httpClient->send($request);
