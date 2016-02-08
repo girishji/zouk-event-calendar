@@ -71,7 +71,7 @@ try
     $postbody = array( 
         'name' => $file_name, 
         'data' => $file_content,
-        'uploadType' => "media"
+        // 'uploadType' => "media"
     );
     $gsso = new Google_Service_Storage_StorageObject();
     $gsso->setName($file_name);
