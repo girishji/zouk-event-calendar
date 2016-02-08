@@ -18,25 +18,25 @@ syslog(LOG_INFO, "FB token: " . $accessToken);
 $appId = '1261883747160137';
 $appSecret = '4bba3be85ec4ca2542d9357ead478330';
 
-use Facebook\FacebookSession;
+$fb = new Facebook\Facebook([
+    'app_id' => $appID,
+    'app_secret' => $appSecret,
+    'default_graph_version' => 'v2.2',
+]);
 
-FacebookSession::setDefaultApplication($appId, $appSecret);
-
-// If you already have a valid access token:
-$session = new FacebookSession($accessToken);
-
-// To validate the session:
-try {
-    $session->validate();
-} catch (FacebookRequestException $ex) {
-    // Session not valid, Graph API returned an exception with the reason.
-    echo $ex->getMessage();
-} catch (\Exception $ex) {
-    // Graph API returned info, but it may mismatch the current app or have expired.
-    echo $ex->getMessage();
+if (! $_SESSION['facebook_access_token']) {
+    // User has approved this app through fb login prior to coming here. Get access token from GET
+    // request of ajax
+    // caution: can't use getJavaScriptHelper since this is server side.
+    $_SESSION['facebook_access_token'] = $accessToken;
 }
 
-$session2 = $session->getLongLivedSession($appId, $appSecret);
-$longLivedToken = $session2->getToken();
+//To extend an access token, you can make use of the OAuth2Client.
+// OAuth 2.0 client handler
+$oAuth2Client = $fb->getOAuth2Client();
+
+// Exchanges a short-lived access token for a long-lived one
+$longLivedAccessToken = $oAuth2Client->getLongLivedAccessToken('{access-token}');
+
 
 ?>
