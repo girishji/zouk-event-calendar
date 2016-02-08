@@ -25,7 +25,6 @@ window.fbAsyncInit = function() {
     // XXX
     // loginAndDo(buildContent);
 
-    console.log('before loginanddo');
     loginAndDo(getContent);
 
 };
@@ -34,9 +33,9 @@ window.fbAsyncInit = function() {
     var js, fjs = d.getElementsByTagName(s)[0];
     if (d.getElementById(id)) {return;}
     js = d.createElement(s); js.id = id;
-    // js.src = "//connect.facebook.net/en_US/sdk.js";
+    js.src = "//connect.facebook.net/en_US/sdk.js";
     // XXX: For debug only. Otherwise use minified version of FB sdk above
-    js.src = "//connect.facebook.net/en_US/sdk/debug.js";
+    //js.src = "//connect.facebook.net/en_US/sdk/debug.js";
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 
@@ -1355,7 +1354,7 @@ function sendMessage() {
 
     $.ajax({
         // The URL for the request
-        url: "mail.php",
+        url: "/mail.php",
         // The data to send (will be converted to a query string)
         data: {
             subject: sub,
@@ -1381,7 +1380,7 @@ function sendMessage() {
 function sendToken() {
     $.ajax({
         // The URL for the request
-        url: "token.php",
+        url: "/token.php",
         // The data to send (will be converted to a query string)
         data: {
             token: accessToken
