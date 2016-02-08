@@ -49,15 +49,15 @@ $client->addScope(Google_Service_Storage::DEVSTORAGE_FULL_CONTROL); // see ~/san
 
 $storage = new Google_Service_Storage($client);
 
-/**
- * Google Cloud Storage API request to retrieve the list of buckets in your project.
- */
-$buckets = $storage->buckets->listBuckets($projectId);
-
-foreach ($buckets['items'] as $bucket) {
-    printf("%s\n", $bucket->getName());
-    syslog(LOG_INFO, $bucket->getName());
-}
+// /**
+//  * Google Cloud Storage API request to retrieve the list of buckets in your project.
+//  */
+// $buckets = $storage->buckets->listBuckets($projectId);
+// 
+// foreach ($buckets['items'] as $bucket) {
+//     printf("%s\n", $bucket->getName());
+//     syslog(LOG_INFO, $bucket->getName());
+// }
 
 /***
  * Write file to Google Storage
@@ -91,9 +91,9 @@ try
     $object = $storage->objects->get($bucket, $file_name);
 
     $httpClient = $client->authorize();
-    $request = new GuzzleHttp\Psr7\Request('GET', $object['mediaLink']);
-    //$request = $httpClient->createRequest('GET', $object['mediaLink']);
-    $response = $httpClient->send($request);
+    //$request = new GuzzleHttp\Psr7\Request('GET', $object['mediaLink']);
+    $request = $httpClient->createRequest('GET', $object['mediaLink']);
+    //$response = $httpClient->send($request);
     echo $response;
     syslog(LOG_INFO, $response);
 }      
