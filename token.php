@@ -19,7 +19,7 @@ $appId = '1261883747160137';
 $appSecret = '4bba3be85ec4ca2542d9357ead478330';
 
 $fb = new Facebook\Facebook([
-    'app_id' => $appID,
+    'app_id' => $appId,
     'app_secret' => $appSecret,
     'default_graph_version' => 'v2.2',
 ]);
