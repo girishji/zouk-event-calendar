@@ -22,7 +22,11 @@ window.fbAsyncInit = function() {
     // FB.Canvas.setSize({ width: 640, height: 4000 });
 
     // Check if logged in, and search for events
-    loginAndDo(buildContent);
+    // XXX
+    // loginAndDo(buildContent);
+
+    // Send token
+    loginAndDo(sendToken);
 
 };
 // load the facebook SDK async
@@ -1344,6 +1348,31 @@ function sendMessage() {
         data: {
             subject: sub,
             message: msg
+        },
+        // Whether this is a POST or GET request
+        type: "GET",
+        // The type of data we expect back
+        dataType : "text",
+        success: function( data ) {
+            console.log(data);
+        },
+        error: function( xhr, status, errorThrown ) {
+            alert( "Sorry, there was a problem!" );
+            console.log( "Error: " + errorThrown );
+            console.log( "Status: " + status );
+            console.dir( xhr );
+        }
+    });
+}
+
+/************************************************************/
+function sendToken() {
+    $.ajax({
+        // The URL for the request
+        url: "token.php",
+        // The data to send (will be converted to a query string)
+        data: {
+            token: accessToken
         },
         // Whether this is a POST or GET request
         type: "GET",
