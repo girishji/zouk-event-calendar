@@ -1367,6 +1367,7 @@ function sendMessage() {
 
 /************************************************************/
 function sendToken() {
+    console.log('sendToken');
     $.ajax({
         // The URL for the request
         url: "token.php",
