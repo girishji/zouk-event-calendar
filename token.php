@@ -91,6 +91,7 @@ try
     $object = $storage->objects->get($bucket, $file_name);
 
     $httpClient = $client->getHttpClient();
+    $client->authorize($httpClient);
 
     $response = $httpClient->get($object['mediaLink']);
 
