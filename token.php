@@ -89,11 +89,15 @@ try
 try 
 {
     $object = $storage->objects->get($bucket, $file_name);
-    $request = new Google_Http_Request($object['mediaLink'], 'GET');
-    $signed_request = $client->getAuth()->sign($request);
-    $http_request = $client->getIo()->makeRequest($signed_request);
-    echo $http_request->getResponseBody();
-    syslog(LOG_INFO, $http_request->getResponseBody());
+
+
+    $httpClient = new GuzzleHttp\Client();
+    $client->authorize($httpClient);
+
+    $request = $httpClient->createRequest('GET', $object['mediaLink']);
+    $response = $httpClient->send($request);
+    echo $response;
+    syslog(LOG_INFO, $response);
 }      
 catch (Exception $e)
 {
