@@ -91,11 +91,11 @@ try
     $object = $storage->objects->get($bucket, $file_name);
 
     $httpClient = $client->getHttpClient();
-    //$request = new GuzzleHttp\Psr7\Request('GET', $object['mediaLink']);
-    $request = $httpClient->createRequest('GET', $object['mediaLink']);
-    $response = $httpClient->send($request);
-    echo $response;
-    syslog(LOG_INFO, $response);
+
+    $response = $httpClient->get($object['mediaLink']);
+
+    echo $response->getBody();
+    syslog(LOG_INFO, (string) $response->getBody());
 }      
 catch (Exception $e)
 {
