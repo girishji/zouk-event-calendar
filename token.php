@@ -21,7 +21,7 @@ $appSecret = '4bba3be85ec4ca2542d9357ead478330';
 $fb = new Facebook\Facebook([
     'app_id' => $appId,
     'app_secret' => $appSecret,
-    'http_client_handler' => 'curl', // dont' let it use guzzle from google-api
+    'http_client_handler' => 'stream', // dont' let it use guzzle from google-api
     'default_graph_version' => 'v2.2',
 ]);
 
