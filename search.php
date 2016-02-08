@@ -12,4 +12,7 @@ try {
 } catch (InvalidArgumentException $e) {
     syslog(LOG_WARNING, "Email send failed: " . $e);
 }
+
+// cron job calles GET on this. Following will be sent to cron.
+echo "done"
 ?>
