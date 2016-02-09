@@ -29,7 +29,7 @@ function getStorageService(&$client) {
 }
 
 /************************************************************/
-funtion getTokens(&$client, &$storage, $bucket, $tokenFile) {
+function getTokens(&$client, &$storage, $bucket, $tokenFile) {
     /** Get tokens already stored **/
     // Read file from Google Storage
     try {
