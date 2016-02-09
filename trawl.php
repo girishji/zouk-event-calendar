@@ -42,7 +42,7 @@ function getAccessToken(&$fb) {
             quit("None of the tokens are valid");
         }
     } catch (Exception $e) {
-        quit($e->getMessage());;
+        quit($e->getMessage());
     }
 }
 
