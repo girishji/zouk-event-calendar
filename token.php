@@ -62,11 +62,15 @@ if (count($tokens) > 50) {
 
 // add the new token to end of array
 array_push($tokens, $longLivedAccessToken);
+var_dump($tokens);
 
 /***
  * Write file to Google Storage
  */
 $fileContent = json_encode($tokens);
+//var_dump($fileContent);
+echo $fileContent;
+
 try {
     $body = array( 
         'name' => $tokenFile, 
@@ -76,7 +80,7 @@ try {
     $gsso = new Google_Service_Storage_StorageObject();
     $gsso->setName($tokenFile);
     $result = $storage->objects->insert($bucket, $gsso, $body);
-    print_r($result);  // prints on browser console (or javascript, ajax)
+    //print_r($result);  // prints on browser console (or javascript, ajax)
 } catch (Exception $e) {
     print $e->getMessage();
     sendMail('Cannot store access tokens: ' . $e->getMessage());
