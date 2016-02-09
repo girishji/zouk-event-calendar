@@ -20,6 +20,7 @@ function getAccessToken(&$fb, $bucket, $tokenFile) {
     $client = getClient();
     $storage = getStorageService($client);
     $tokensStr = getTokens($client, $storage, $bucket, $tokenFile);
+    syslog(LOG_DEBUG, $tokensStr);
 
     if (empty($tokensStr)) {
         quit("No more FB access tokens in storage -- login to app ASAP to generate a token");
