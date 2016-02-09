@@ -28,7 +28,9 @@ function getAccessToken(&$fb, $bucket, $tokenFile) {
         // Validate the token before use. User may have logged off facebook, or deauthorized this app.
         // shuffle the array to get random order of iteration
         shuffle($tokens);
+        var_dump($tokens);
         foreach ($tokens as $token) {
+            syslog(LOG_DEBUG, $token);
             $response = $fb->get('/me', $token);
             if (! $response->isError()) {
                 // access_token is valid token 
