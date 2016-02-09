@@ -29,9 +29,9 @@ function getAccessToken(&$fb, $bucket, $tokenFile) {
         // shuffle the array to get random order of iteration
         shuffle($tokens);
         foreach ($tokens as $token) {
-            $facebook->setAccessToken($token);
-            if (($userId = $facebook->getUser())) {
-                // access_token is valid token for user id $userId
+            $response = $fb->get('/me', $token);
+            if (! $response->isError()) {
+                // access_token is valid token 
                 return $token;
             }
         }

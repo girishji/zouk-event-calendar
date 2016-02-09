@@ -76,7 +76,7 @@ try {
     $gsso = new Google_Service_Storage_StorageObject();
     $gsso->setName($tokenFile);
     $result = $storage->objects->insert($bucket, $gsso, $body);
-    print_r($result);
+    print_r($result);  // prints on browser console (or javascript, ajax)
 } catch (Exception $e) {
     print $e->getMessage();
     sendMail('Cannot store access tokens: ' . $e->getMessage());
