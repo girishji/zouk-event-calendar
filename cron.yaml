@@ -1,7 +1,7 @@
 cron:
-#- description: regular searchbot job
-#  url: /tasks/searchfb
-#  schedule: every 12 hours synchronized
+- description: regular searchbot job
+  url: /tasks/searchfb
+  schedule: every 12 hours synchronized
 
 #  schedule: every 1 hours synchronized
 
