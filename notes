@@ -140,3 +140,13 @@ dashboard
 to add app to a page:
 http://www.facebook.com/dialog/pagetab?app_id=YOUR_APP_ID&redirect_uri=http://www.facebook.com
 ====
+Use Google Cloud Storage (not Cloud DataStore, which is a DB). GCS is unstructured data.
+https://cloud.google.com/docs/storing-your-data
+Google cloud storage:
+Use this to create buckets and manage: https://console.cloud.google.com/storage/browser?project=zouk-event-calendar
+Code below is generally out of date with documentation. See source in vendor/google/... for correct usage
+I created 1 bucket through web interface (can also be created programmatically). Inside this bucket will be many files.
+====
+php variable scope is strange:
+http://stackoverflow.com/questions/16959576/reference-what-is-variable-scope-which-variables-are-accessible-from-where-and
+====
