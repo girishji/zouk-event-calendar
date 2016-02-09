@@ -70,7 +70,7 @@ try {
     syslog(LOG_EMERG, $e->getMessage());
     sendMail('Cannot get access tokens: ' . $e->getMessage());
     echo 'Cannot get access tokens: ' . $e->getMessage();
-    exit('Cannot get access tokens: ' . $e->getMessage());
+    //exit('Cannot get access tokens: ' . $e->getMessage());
 }
 
 if (empty($tokensStr)) {
