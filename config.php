@@ -5,7 +5,7 @@ $appSecret = '4bba3be85ec4ca2542d9357ead478330';
 
 // google cloud storage
 $bucket = 'zouk-bucket';
-$tokenFile = 'fb_access_tokens.d';
+$tokenFile = 'fb_access_tokens.data';
 
 $searchStrings = [
     'zouk',
