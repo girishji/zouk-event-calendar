@@ -47,6 +47,7 @@ $fb = getFacebook($appId, $appSecret);
 $accessToken = getAccessToken($fb, $bucket, $tokenFile);
 $fb->setDefaultAccessToken($accessToken);
 
+syslog(LOG_DEBUG, $accessToken);
 
 // cron job calles GET on this. Any output (like 'echo') will be sent to cron.
 // echo "done"
