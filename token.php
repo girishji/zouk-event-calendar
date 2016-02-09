@@ -6,6 +6,7 @@
 //  same thing happens on google app engine
 require('./vendor/autoload.php');
 require('./config.php');
+require('./common.php');
 
 $accessToken = (string) $_GET["token"];
 
@@ -14,13 +15,7 @@ $accessToken = (string) $_GET["token"];
 
 // syslog(LOG_INFO, "FB token: " . $accessToken);
 
-$fb = new Facebook\Facebook([
-    'app_id' => $appId,
-    'app_secret' => $appSecret,
-    'http_client_handler' => 'stream', // XXX: this does not need to be set, but if not set -
-    // it used 'guzzle' http client from google-php-api (see composer.json); so set handler explicitely here
-    'default_graph_version' => 'v2.2',
-]);
+$fb = getFacebook($appId, $appSecret);
 
 // To extend an access token, you can make use of the OAuth2Client.
 // OAuth 2.0 client handler
@@ -38,12 +33,8 @@ $longLivedAccessToken = $oAuth2Client->getLongLivedAccessToken($accessToken);
 // Code below is generally out of date with documentation. See source in vendor/google/... for correct usage
 // I created 1 bucket through web interface (can also be created programmatically). Inside this bucket will be many files.
 
-// Authenticate your API Client
-$client = new Google_Client();
-$client->useApplicationDefaultCredentials();  // no need to acquire special credentials
-$client->addScope(Google_Service_Storage::DEVSTORAGE_FULL_CONTROL); // see ~/sandbox/zouk-event-calendar/vendor/google/apiclient/src/Google/Service/Storage.php
-
-$storage = new Google_Service_Storage($client);
+$client = getClient();
+$storage = getStorageService($client);
 
 // /**
 //  * Google Cloud Storage API request to retrieve the list of buckets in your project.
@@ -57,22 +48,7 @@ $storage = new Google_Service_Storage($client);
 // }
 
 /** Get tokens already stored **/
-// Read file from Google Storage
-try {
-    // get the url for our file
-    $object = $storage->objects->get($bucket, $tokenFile); // use print_r($object) or var_dump to see the contents
-    $url = $object['mediaLink'];
-    $httpClient = $client->authorize(); // creates guzzle http client and authorizes it
-    $response = $httpClient->get($url); // see guzzle docs for this
-    echo $response->getBody();
-    $tokensStr = (string) $response->getBody(); // local scope
-} catch (Exception $e) {
-    syslog(LOG_EMERG, $e->getMessage());
-    sendMail('Cannot get access tokens: ' . $e->getMessage());
-    echo 'Cannot get access tokens: ' . $e->getMessage();
-    //exit('Cannot get access tokens: ' . $e->getMessage());
-}
-
+$tokensStr = getTokens($client, $storage, $bucket, $tokenFile);
 if (empty($tokensStr)) {
     $tokens = array();
 } else {

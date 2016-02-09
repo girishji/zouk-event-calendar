@@ -164,20 +164,5 @@ $searchStrings = [
     'carioca+zouk'
 ];
 
-/************************************************************/
-use \google\appengine\api\mail\Message;
-function sendMail($msg) {
-    try {
-        $message = new Message();
-        $message->setSender("girshji-cron@zouk-event-calendar.appspotmail.com");
-        //$message->setSender("zouk-events@appspot.gserviceaccount.com");
-        $message->addTo("girishji@gmail.com");
-        $message->setSubject("zouk-calendar app - trawl");
-        $message->setTextBody($msg);
-        $message->send();
-    } catch (InvalidArgumentException $e) {
-        syslog(LOG_ERR, "Email send failed: " . $e);
-    }
-}
 
 ?>
