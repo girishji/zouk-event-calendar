@@ -87,13 +87,20 @@ function gatherEvents(&$events, &$fb, $remainingSearch) {
                 //echo "Response: " . $response->getBody() . "\n";
                 // turn nodes into edges for pagination and iteration
                 $feedEdge = $response->getGraphEdge();
-                syslog(LOG_DEBUG, print_r($feedEdge, TRUE));
+                //syslog(LOG_DEBUG, print_r($feedEdge, TRUE));
                 foreach ($feedEdge as $graphNode) {
                     //syslog(LOG_DEBUG, print_r($graphNode, TRUE));
                 }
             }
+            // add next page request to batch
+            $request = $response->getRequestForNextPage();
+            syslog(LOG_DEBUG, print_r($request, TRUE));
+            if (! is_null($request)) {
+                array_push($batch, $request);
+            }  
         }
-        $batch = nextFullBatch($fb, $batch, $remainingSearch);
+
+        //$batch = nextFullBatch($fb, $batch, $remainingSearch);
     } // while
 }
 
