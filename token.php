@@ -62,14 +62,14 @@ if (count($tokens) > 50) {
 
 // add the new token to end of array
 array_push($tokens, $longLivedAccessToken);
-var_dump($tokens);
+//var_dump($tokens);
 
 /***
  * Write file to Google Storage
  */
 $fileContent = json_encode($tokens);
 //var_dump($fileContent);
-echo $fileContent;
+//echo $fileContent;
 
 try {
     $body = array( 

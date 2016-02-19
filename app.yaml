@@ -18,7 +18,7 @@ handlers:
 
 # for cron (login: admin, to prevent users from running the script)
 - url: /tasks/searchfb
-  script: trawl.php
+  script: cronjob.php
   login: admin
 
 # for ajax calls from client; if it asks for x.php then give it x.php and not index.html

@@ -57,7 +57,7 @@ function sendMail($msg) {
         $message->setSender("girshji-cron@zouk-event-calendar.appspotmail.com");
         //$message->setSender("zouk-events@appspot.gserviceaccount.com");
         $message->addTo("girishji@gmail.com");
-        $message->setSubject("zouk-calendar app - trawl");
+        $message->setSubject("zouk-calendar app");
         $message->setTextBody($msg);
         $message->send();
     } catch (InvalidArgumentException $e) {

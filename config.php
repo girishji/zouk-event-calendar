@@ -147,7 +147,6 @@ $searchStrings = [
     'zouky',
     'zoukz',
 
-
     'bachaturo',
     'zouk+marathon',
     'fall+zouk',
@@ -164,5 +163,29 @@ $searchStrings = [
     'carioca+zouk'
 ];
 
+
+// These are known festivals to compare against
+$knownMajorEvents = [ 
+    'zouk\\s+libre.*festival',
+    'prague.*zouk.*congress',
+    'prague\\s+zouk\\s+marathon',
+    'rio.*zouk.*congress',
+    'f.i.e.l',
+    'zoukmx\\s',
+    '\\s*zoukfest\\s',
+    'l.*a.*Zouk.*congress',
+    '[^t]zouktime!\|^zouktime!\\s',
+    'dutch.+international.+zouk.+congr',
+    'berg.*congres',
+    'i\'m\\s*zouk',
+    'russian\\s+zouk\\s+congress',
+    'canada.*zouk' ];
+
+$knownUnrelatedPlaces = [
+    { latitude: '48.812053039547',  longitude: '2.4038419249911' },
+    { latitude: '-22.882511415042', longitude: '-48.452376032727' },
+    { latitude: '46.01244',         longitude: '-0.28403' },
+    { latitude: '-22.9937382',      longitude: '-44.2409439' }
+];
 
 ?>
