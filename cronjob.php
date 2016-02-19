@@ -87,8 +87,9 @@ function gatherEvents(&$events, &$fb, $remainingSearch) {
                 //echo "Response: " . $response->getBody() . "\n";
                 // turn nodes into edges for pagination and iteration
                 $feedEdge = $response->getGraphEdge();
+                syslog(LOG_DEBUG, print_r($feedEdge, TRUE));
                 foreach ($feedEdge as $graphNode) {
-                    syslog(LOG_DEBUG, print_r($graphNode, TRUE));
+                    //syslog(LOG_DEBUG, print_r($graphNode, TRUE));
                 }
             }
         }
