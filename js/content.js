@@ -345,9 +345,11 @@ function storeJSON(urlVal, dataVal, fileName) {
                     data: dataVal };
     $.ajax({
         url: urlVal,
-        data: JSON.stringify(content),
+        // data: JSON.stringify(content),
+        // contentType: 'application/json',
+        data: content,
+        dataType: 'json',
         type: 'POST',
-        contentType: 'application/json',
         success: function(data) {
             console.log(data);
         },
