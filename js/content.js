@@ -585,7 +585,7 @@ var pageEventsCallback = function(response) {
     var batchCmd = getBatchCmdFromPages();
     // Only get first page of events, usually latest events show up first
     if (batchCmd.length > 0) {
-        //FB.api('/', 'POST', { batch: batchCmd }, pageEventsCallback);
+        FB.api('/', 'POST', { batch: batchCmd }, pageEventsCallback);
     } else {
         // We are done, do further filtering
         //console.log(events);
