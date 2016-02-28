@@ -30,6 +30,8 @@ function getStorageService(&$client) {
 
 /************************************************************/
 function storeGCS(&$content, $bucket, $file) {
+    $client = getClient();
+    $storage = getStorageService($client);
     try {
         $body = array( 
             'name' => $file, 
