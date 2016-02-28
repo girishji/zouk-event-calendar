@@ -4,7 +4,9 @@ require('./config.php');
 require('./common.php');
 
 $file = (string) $_GET["file"];
-$data = (string) $_GET["data"];
+$data = (string) $_GET["content"];
+echo $file;
+echo $data;
 syslog(LOG_DEBUG, print_r($data, TRUE));
 syslog(LOG_DEBUG, print_r($file, TRUE));
 // storeGCS($data, $bucket, $file);
