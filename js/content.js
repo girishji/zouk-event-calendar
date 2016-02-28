@@ -350,7 +350,7 @@ function storeJSON(urlVal, dataVal, fileName) {
         url: urlVal,
         data: content,
         contentType: 'application/json',
-        dataType: 'json',
+        //dataType: 'json',
         type: 'POST',
         success: function(data) {
             console.log(data);
