@@ -1349,6 +1349,10 @@ function sendMessage() {
     if (!msg || (msg == '')) {
         msg = 'no message';
     }
+    var email = $('#message-email').val();
+    if (!email || (email == '')) {
+        email = 'no email';
+    }
 
     $.ajax({
         // The URL for the request
@@ -1356,6 +1360,7 @@ function sendMessage() {
         // The data to send (will be converted to a query string)
         data: {
             subject: sub,
+            email: email,
             message: msg
         },
         // Whether this is a POST or GET request

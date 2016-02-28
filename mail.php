@@ -6,7 +6,8 @@ try {
     $message = new Message();
     $message->setSender("gae-zouk-calendar@zouk-event-calendar.appspotmail.com");
     $message->setSubject((string) $_GET["subject"]);
-    $message->setTextBody((string) $_GET["message"]);
+    $text = (string) $_GET["message"] . "\n" . (string) $_GET["email"];
+    $message->setTextBody($text);
     $message->addTo("girishji@gmail.com");
     $message->send();
 } catch (InvalidArgumentException $e) {
