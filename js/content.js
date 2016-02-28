@@ -284,6 +284,10 @@ var pages = {};
 // cursor for search strings to indicate how far we have searched
 var searchStringsCursor = 0;
 //
+var eventsFile = "fb_events.data";
+var firstPassEventsFile = "fb_first_pass_events.data";
+var pagesFile = "fb_pages.data";
+var pagesEventsFile = "fb_pages_events.data";
 
 /************************************************************/
 function loginAndDo(doFunct) {
@@ -312,8 +316,6 @@ function loginToFacebook() {
                 //console.log('Welcome!  Fetching information.... ');
                 accessToken = response.authResponse.accessToken;
                 $('#bannerMsg').hide();
-                // XXX
-                // buildContent();
                 getContent();
             }
         } else {
@@ -328,9 +330,19 @@ function getContent() {
     // sendToken(); // on the server side it exchanges for long lived token
     // XXX
     //retrieveEvents();
-    var ev = [ 'a1', 'a2', 'a3'];
-    storeJSON("/store.php", ev, "fb_events.data");
+    //storeJSON("/store.php", ev, "fb_events.data");
+    retrieveJSON(eventsFile, 60, retrieveEventsCallback);
 }
+
+/************************************************************/
+var retrieveEventsCallback = function (data) {
+    console.log(data);
+//    if (!data.error) {
+//
+//    } else {
+//        
+//    }
+};
 
 /************************************************************/
 // Search FB
@@ -375,18 +387,22 @@ function storeJSON(urlVal, dataVal, fileName) {
 }
 
 /************************************************************/
-function retrieveJSON() {
+function retrieveJSON(fileName, intervalVal, callback) {
     $.ajax({
         // The URL for the request
-        url: "/retrieve_events.php",
-        // The data to send (will be converted to a query string)
-        data: null,
+        url: "/retrieve.php",
+        // The data to send (has to be key value pairs, will be converted to a query string)
+        data: {
+            file: fileName,
+            interval: intervalVal // in seconds
+        },
         // Whether this is a POST or GET request
         type: 'GET',
         // The type of data we expect back
         dataType : 'json',
         success: function( data ) {
             console.log(data);
+            callback(data);
         },
         error: function( xhr, status, errorThrown ) {
             //alert( "Sorry, there was a problem!" );

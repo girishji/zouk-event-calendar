@@ -29,6 +29,22 @@ function getStorageService(&$client) {
 }
 
 /************************************************************/
+// https://cloud.google.com/appengine/docs/php/googlestorage/
+// https://cloud.google.com/appengine/docs/php/googlestorage/advanced#php_filesystem_functions_support_on_google_cloud_storage
+function lastModifiedTime($bucket, $file) {
+    $path = "gs://" . $bucket . "/" . $file;
+    return filemtime($path); // returns int
+}
+
+/************************************************************/
+// https://cloud.google.com/appengine/docs/php/googlestorage/
+// https://cloud.google.com/appengine/docs/php/googlestorage/advanced#php_filesystem_functions_support_on_google_cloud_storage
+function fileExists($bucket, $file) {
+    $path = "gs://" . $bucket . "/" . $file;
+    return file_exists($path); // returns bool
+}
+
+/************************************************************/
 function storeGCS(&$content, $bucket, $file) {
     $client = getClient();
     $storage = getStorageService($client);

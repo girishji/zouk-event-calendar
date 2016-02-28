@@ -10,9 +10,8 @@ $file = $data->{'file'};
 $content = json_encode($data->{'content'});
 
 storeGCS($content, $bucket, $file);
-echo $post;
-echo $content;
-echo $file;
+//echo $post;
+//echo $content;
 //var_dump($post);
 //echo 'done'; // sent back to ajax caller
 ?>
