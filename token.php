@@ -32,9 +32,6 @@ $longLivedAccessToken = $oAuth2Client->getLongLivedAccessToken($accessToken)->ge
 // Code below is generally out of date with documentation. See source in vendor/google/... for correct usage
 // I created 1 bucket through web interface (can also be created programmatically). Inside this bucket will be many files.
 
-$client = getClient();
-$storage = getStorageService($client);
-
 // /**
 //  * Google Cloud Storage API request to retrieve the list of buckets in your project.
 //  */
@@ -47,7 +44,7 @@ $storage = getStorageService($client);
 // }
 
 /** Get tokens already stored **/
-$tokensStr = getTokens($client, $storage, $bucket, $tokenFile);
+$tokensStr = retrieveGCS($bucket, $tokenFile);
 if (empty($tokensStr)) {
     $tokens = array();
 } else {

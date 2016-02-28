@@ -29,35 +29,70 @@ function getStorageService(&$client) {
 }
 
 /************************************************************/
-function getTokens(&$client, &$storage, $bucket, $tokenFile) {
-    /** Get tokens already stored **/
-    // Read file from Google Storage
+function storeGCS(&$content, $bucket, $file) {
     try {
-        // get the url for our file
-        $object = $storage->objects->get($bucket, $tokenFile); // use print_r($object) or var_dump to see the contents
-        $url = $object['mediaLink'];
-        $httpClient = $client->authorize(); // creates guzzle http client and authorizes it
-        $response = $httpClient->get($url); // see guzzle docs for this
-        echo $response->getBody();
-        $tokensStr = (string) $response->getBody(); // local scope
-        return $tokensStr;
+        $body = array( 
+            'name' => $file, 
+            'data' => $content,
+            'uploadType' => "media"
+        );
+        $gsso = new Google_Service_Storage_StorageObject();
+        $gsso->setName($file);
+        $result = $storage->objects->insert($bucket, $gsso, $body);
+        //print_r($result);  // prints on browser console (or javascript, ajax)
     } catch (Exception $e) {
-        syslog(LOG_EMERG, $e->getMessage());
-        sendMail('Cannot get access tokens: ' . $e->getMessage());
-        echo 'Cannot get access tokens: ' . $e->getMessage();
-        //exit('Cannot get access tokens: ' . $e->getMessage());
+        print $e->getMessage();
+        sendMail('Cannot store data in GCS: ' . $e->getMessage());
     }
 }
 
 /************************************************************/
+// /**
+//  * Google Cloud Storage API request to retrieve the list of buckets in your project.
+//  */
+// $projectId = 'zouk-event-calendar';
+// $buckets = $storage->buckets->listBuckets($projectId);
+// 
+// foreach ($buckets['items'] as $bucket) {
+//     printf("%s\n", $bucket->getName());
+//     syslog(LOG_INFO, $bucket->getName());
+// }
+
+/************************************************************/
+function retrieveGCS($bucket, $file) {
+    // Use Google Cloud Storage (not Cloud DataStore, which is a DB). GCS is unstructured data.
+    // Use this to create buckets and manage: https://console.cloud.google.com/storage/browser?project=zouk-event-calendar
+    // Code below is generally out of date with documentation. See source in vendor/google/... for correct usage
+    // I created 1 bucket through web interface (can also be created programmatically). Inside this bucket will be many files.
+    $client = getClient();
+    $storage = getStorageService($client);
+    try {
+        // get the url for our file
+        $object = $storage->objects->get($bucket, $file); // use print_r($object) or var_dump to see the contents
+        $url = $object['mediaLink'];
+        $httpClient = $client->authorize(); // creates guzzle http client and authorizes it
+        $response = $httpClient->get($url); // see guzzle docs for this
+        echo $response->getBody();
+        $str = (string) $response->getBody(); // local scope
+        return $str;
+    } catch (Exception $e) {
+        syslog(LOG_EMERG, $e->getMessage());
+        sendMail('Cannot get data from GCS: ' . $e->getMessage());
+        echo 'Cannot get data: ' . $e->getMessage();
+        //exit('Cannot get access tokens: ' . $e->getMessage());
+    }
+    return NULL;
+}
+
+/************************************************************/
 use \google\appengine\api\mail\Message;
-function sendMail($msg) {
+function sendMail($msg, $sub = "zouk-calendar app") {
     try {
         $message = new Message();
-        $message->setSender("girshji-cron@zouk-event-calendar.appspotmail.com");
+        $message->setSender("gae-zouk-calendar@zouk-event-calendar.appspotmail.com");
         //$message->setSender("zouk-events@appspot.gserviceaccount.com");
         $message->addTo("girishji@gmail.com");
-        $message->setSubject("zouk-calendar app");
+        $message->setSubject($sub);
         $message->setTextBody($msg);
         $message->send();
     } catch (InvalidArgumentException $e) {

@@ -327,15 +327,62 @@ function loginToFacebook() {
 function getContent() {
     // sendToken(); // on the server side it exchanges for long lived token
     // XXX
-    //buildContent();
-    getPages();
+    //retrieveEvents();
+    var ev = [ 'a1', 'a2', 'a3'];
+    storeJSON("/store_events.php", ev);
 }
 
 /************************************************************/
 // Search FB
-function buildContent() {
+function buildContent() {    
     searchStringsCursor = 0;
     startBatchSearch(searchStringsCursor);
+}
+
+/************************************************************/
+function storeJSON(urlVal, dataVal) {
+    $.ajax({
+        // The URL for the request
+        url: urlVal,
+        // The data to send (will be converted to a query string)
+        data: dataVal,
+        // Whether this is a POST or GET request
+        type: 'POST',
+        // The type of data we send / expect back
+        dataType : 'json',
+        success: function( data ) {
+            console.log(data);
+        },
+        error: function(xhr, status, errorThrown) {
+            //alert( "Sorry, there was a problem!" );
+            console.log( "Error: " + errorThrown );
+            console.log( "Status: " + status );
+            console.dir( xhr );
+        }
+    });
+}
+
+/************************************************************/
+function retrieveJSON() {
+    $.ajax({
+        // The URL for the request
+        url: "/retrieve_events.php",
+        // The data to send (will be converted to a query string)
+        data: null,
+        // Whether this is a POST or GET request
+        type: 'GET',
+        // The type of data we send / expect back
+        dataType : 'json',
+        success: function( data ) {
+            console.log(data);
+        },
+        error: function( xhr, status, errorThrown ) {
+            //alert( "Sorry, there was a problem!" );
+            console.log( "Error: " + errorThrown );
+            console.log( "Status: " + status );
+            console.dir( xhr );
+        }
+    });
 }
 
 /************************************************************/
