@@ -597,7 +597,7 @@ var pageEventsCallback = function(response) {
         $('#searchProgressBar').css('width', '100%').attr('aria-valuenow', 100);
         $('#filterProgressBarDiv').show();
         progress = 0; // for next progress bar
-        getMajorLegitEventAttendees();
+        //getMajorLegitEventAttendees();
     }
 };
 
