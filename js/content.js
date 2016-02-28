@@ -340,6 +340,13 @@ function buildContent() {
 }
 
 /************************************************************/
+// Note: there are 2 ways to send data in POST: as a query string
+// in url itself (?x=y;j=u etc). For this to work data: should be
+// key value pairs, and processData should be true (default).
+// Another way is to send data in body (DOM). For this data: should
+// be a string (use JSON.stringify any object or array), and processData
+// should be false. On the server side php you use $_POST for former
+// and file_get_contents() for latter
 function storeJSON(urlVal, dataVal, fileName) {
     var content = {
         file: fileName,
@@ -347,7 +354,6 @@ function storeJSON(urlVal, dataVal, fileName) {
     };
     console.log(content);
     console.log(JSON.stringify(content));
-    // in POST contents are sent in body, not in url string
     // JSON is a string representation of javascript object
     $.ajax({
         url: urlVal,
@@ -356,6 +362,7 @@ function storeJSON(urlVal, dataVal, fileName) {
         type: 'POST',
         processData: false,
         success: function(data) {
+            // expect nothing back
             console.log(data);
         },
         error: function(xhr, status, errorThrown) {
