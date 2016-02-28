@@ -19,8 +19,8 @@ if (fileExists($bucket, $file)) {
 }
 
 if (!$found) {
-    // file not valid, send bool false
-    echo "false";
+    // file not valid, send nothing
+    echo "";
 }
 
 

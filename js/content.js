@@ -337,11 +337,11 @@ function getContent() {
 /************************************************************/
 var retrieveEventsCallback = function (data) {
     console.log(data);
-//    if (!data.error) {
-//
-//    } else {
-//        
-//    }
+    if (!data) {
+        console.log("got nothing");
+    } else {
+        
+    }
 };
 
 /************************************************************/
