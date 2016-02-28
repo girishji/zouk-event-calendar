@@ -525,7 +525,7 @@ function getCmdFromPages() {
         + accessToken;
     // remove page
     delete pages[pid];
-    
+    console.log('pages length: ' + ids.length);
     return url;
 }
 
@@ -545,7 +545,7 @@ function getBatchCmdFromPages() {
 function getEventsFromPages() {
     var batchCmd = getBatchCmdFromPages();
     // Only get first page of events, usually latest events show up first
-    if (batchCmd) {
+    if (batchCmd.length > 0) {
         FB.api('/', 'POST', { batch: batchCmd }, pageEventsCallback);
     }
 }
@@ -558,7 +558,6 @@ var pageEventsCallback = function(response) {
         console.log(response);
         return;
     }
-    var batchCmd = [];
     for (var i = 0; i < response.length; i++) {
         if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
             var body = JSON.parse(response[i].body);
@@ -589,8 +588,8 @@ var pageEventsCallback = function(response) {
     // Recurse
     var batchCmd = getBatchCmdFromPages();
     // Only get first page of events, usually latest events show up first
-    if (batchCmd) {
-        FB.api('/', 'POST', { batch: batchCmd }, pageEventsCallback);
+    if (batchCmd.length > 0) {
+        //FB.api('/', 'POST', { batch: batchCmd }, pageEventsCallback);
     } else {
         // We are done, do further filtering
         //console.log(events);
