@@ -351,7 +351,6 @@ function storeJSON(urlVal, dataVal, fileName) {
         url: urlVal,
         data: JSON.stringify(content),
         contentType: 'application/json',
-        //dataType: 'json',
         type: 'POST',
         processData: false,
         success: function(data) {
@@ -375,7 +374,7 @@ function retrieveJSON() {
         data: null,
         // Whether this is a POST or GET request
         type: 'GET',
-        // The type of data we send / expect back
+        // The type of data we expect back
         dataType : 'json',
         success: function( data ) {
             console.log(data);
