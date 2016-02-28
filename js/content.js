@@ -325,18 +325,20 @@ function loginToFacebook() {
 // Get events from DB
 function getContent() {
     sendToken();
+    // XXX
+    buildContent();
 }
 
 /************************************************************/
 // Search FB
 function buildContent() {
     searchStringsCursor = 0;
-    nextBatchSearch(searchStringsCursor);
+    startBatchSearch(searchStringsCursor);
 }
 
 /************************************************************/
-function nextBatchSearch(cursor) {
-    //console.log('nextBatchSearch');
+function startBatchSearch(cursor) {
+    //console.log('startBatchSearch');
     var batchCmd = [];
 
     for (var i = cursor, count = 0; i < searchStrings.length && count < BATCH_MAX; i++, count++) {
@@ -368,7 +370,9 @@ var eventsCallback = function(response) {
     for (var i = 0; i < response.length; i++) {
         if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
             var body = JSON.parse(response[i].body);
-            checkError(body);
+            if (isError(body)) {
+                return;
+            }
             // console.log('properties ' + Object.getOwnPropertyNames(body));                           
             if (body.hasOwnProperty('data') && body.data) {
                 var data = body.data;
@@ -387,6 +391,7 @@ var eventsCallback = function(response) {
                 }
             }
             // next paging link
+            var nextPageFound = false;
             if (body.hasOwnProperty('paging') && body.paging) {
                 var paging = body.paging;
                 if (paging.hasOwnProperty('next') && paging.next) {
@@ -394,6 +399,17 @@ var eventsCallback = function(response) {
                     var rel_url = 'search?' + splitted[1];
                     //console.log('rel url of event ' + rel_url);
                     batchCmd.push( { method: 'GET', relative_url: rel_url } );
+                    nextPageFound = true;
+                }
+            }
+            if (! nextPageFound) {
+                if (searchStringsCursor < searchStrings.length) {
+                    batchCmd.push( { method: 'GET', 
+                                     relative_url: 'search?q=' + searchStrings[searchStringsCursor] 
+                                     + '&type=event&fields=id,name,start_time,place,attending_count,cover,description&access_token='
+                                     + accessToken }
+                                 );
+                    searchStringsCursor += 1;
                 }
             }
         } 
@@ -406,13 +422,9 @@ var eventsCallback = function(response) {
     if (batchCmd.length > 0) {
         FB.api('/', 'POST', { batch: batchCmd }, eventsCallback);
     } else {
-        if (searchStringsCursor < searchStrings.length) {
-            nextBatchSearch(searchStringsCursor);
-        } else {
-            // We are done, check pages and their events
-            console.log('total events ' + events.length);
-            getPages();
-        }
+        // We are done, check pages and their events
+        console.log('total events ' + events.length);
+        //getPages();
     }
 };
 
@@ -450,7 +462,9 @@ var pagesCallback = function(response) {
     for (var i = 0; i < response.length; i++) {
         if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
             var body = JSON.parse(response[i].body);
-            checkError(body);
+            if (Error(body)) {
+                return;
+            }
             // console.log('properties ' + Object.getOwnPropertyNames(body));                           
             if (body.hasOwnProperty('data') && body.data) {
                 var data = body.data;
@@ -509,7 +523,9 @@ var pageEventsCallback = function(response) {
     for (var i = 0; i < response.length; i++) {
         if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
             var body = JSON.parse(response[i].body);
-            checkError(body);
+            if (isError(body)) {
+                return;
+            }
             if (body.hasOwnProperty('data') && body.data) {
                 var data = body.data;
                 for (var j = 0; j < data.length; j++) {
@@ -608,7 +624,9 @@ var legitAttendeesCallback = function(response) {
     for (var i = 0; i < response.length; i++) {
         if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
             var body = JSON.parse(response[i].body);
-            checkError(body);
+            if (isError(body)) {
+                return;
+            }
             //console.log(body);                
             if (body.hasOwnProperty('data') && body.data) {
                 var data = body.data;
@@ -687,7 +705,9 @@ var suspectEventAttendeesCallback = function(response) {
     for (var i = 0; i < response.length; i++) {
         if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
             var body = JSON.parse(response[i].body);
-            checkError(body);
+            if (isError(body)) {
+                return;
+            }
             // responses correspond with requests sent in batch command
             if (body.hasOwnProperty('data') && body.data) {
                 var data = body.data;
@@ -776,10 +796,12 @@ var suspectEventAttendeesCallback = function(response) {
 };
 
 /************************************************************/
-function checkError(body) {
+function isError(body) {
     if (body.hasOwnProperty('error') && body.error) {
         alert('Facebook is temporarily down, try later (error: ' + body.error.code + ')');
+        return true;
     }
+    return false;
 }
 
 /************************************************************/
