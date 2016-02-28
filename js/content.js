@@ -346,6 +346,7 @@ function storeJSON(urlVal, dataVal, fileName) {
         content: dataVal
     };
     console.log(content);
+    console.log(JSON.stringify(content));
     // in POST contents are sent in body, not in url string
     $.ajax({
         url: urlVal,
