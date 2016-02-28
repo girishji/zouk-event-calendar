@@ -235,6 +235,7 @@ var searchStrings = [
     'carioca+zouk'
 ];
 
+
 // These are known festivals to compare against
 var knownEvents = [ 'zouk\\s+libre.*festival',
                     'prague.*zouk.*congress',
@@ -431,11 +432,11 @@ var eventsCallback = function(response) {
 /************************************************************/
 function getPages() {
     searchStringsCursor = 0;
-    nextBatchPagesSearch(searchStringsCursor);
+    firstBatchPagesSearch(searchStringsCursor);
 }
 
 /************************************************************/
-function nextBatchPagesSearch(cursor) {
+function firstBatchPagesSearch(cursor) {
     //console.log('nextBatchPagesSearch');
     var batchCmd = [];
     for (var i = cursor, count = 0; i < searchStrings.length && count < BATCH_MAX; i++, count++) {
@@ -473,6 +474,7 @@ var pagesCallback = function(response) {
                 }
             }
             // next paging link
+            var foundNextPage = false;
             if (body.hasOwnProperty('paging') && body.paging) {
                 var paging = body.paging;
                 if (paging.hasOwnProperty('next') && paging.next) {
@@ -480,6 +482,17 @@ var pagesCallback = function(response) {
                     var rel_url = 'search?' + splitted[1];
                     //console.log('rel url of event ' + rel_url);
                     batchCmd.push( { method: 'GET', relative_url: rel_url } );
+                    foundNextPage = true;
+                }
+            }
+            if (! foundNextPage) {
+                if (searchStringsCursor < searchStrings.length) {
+                    batchCmd.push( { method: 'GET', 
+                                     relative_url: 'search?q=' + searchStrings[searchStringsCursor] 
+                                     + '&type=page&fields=id&access_token='
+                                     + accessToken }
+                                 );
+                    searchStringsCursor++;
                 }
             }
         } 
@@ -492,15 +505,40 @@ var pagesCallback = function(response) {
     if (batchCmd.length > 0) {
         FB.api('/', 'POST', { batch: batchCmd }, pagesCallback);
     } else {
-        if (searchStringsCursor < searchStrings.length) {
-            nextBatchPagesSearch(searchStringsCursor);
-        } else {
-            // We are done, do further filtering
-            console.log('total pages ' + Object.keys(pages).length);
-            getEventsFromPages();
-        }
+        // We are done, do further filtering
+        console.log('total pages ' + Object.keys(pages).length);
+        getEventsFromPages();
     }
 };
+
+
+/************************************************************/
+function getCmdFromPages() {
+    var ids = Object.keys(pages);
+    if (ids.length <= 0) {
+        return null;
+    }
+    var pid = ids[0]; // page id
+    var url = pid + '/events?fields=id,name,start_time,place,'
+        + 'attending_count,cover,description&access_token='
+        + accessToken;
+    // remove page
+    delete pages[pid];
+    
+    return url;
+}
+
+/************************************************************/
+function getBatchCmdFromPages() {
+    var batchCmd = [];
+    for (var i = 0; i < BATCH_MAX; i++) {
+        var url = getCmdFromPages();
+        if (url) {
+            batchCmd.push( { method: 'GET', relative_url: url } );
+        }
+    }
+    return batchCmd;
+}
 
 /************************************************************/
 function getEventsFromPages() {
@@ -563,30 +601,6 @@ var pageEventsCallback = function(response) {
     }
 };
 
-/************************************************************/
-function getBatchCmdFromPages() {
-    var ids = Object.keys(pages);
-    if (ids.length <= 0) {
-        return null;
-    }
-    var limit = ids.length > BATCH_MAX ? BATCH_MAX : ids.length;
-    var batchCmd = [];
-    for (var i = 0; i < limit; i++) {
-        var pid = ids[i]; // page id
-        var url = pid + '/events?fields=id,name,start_time,place,'
-            + 'attending_count,cover,description&access_token='
-            + accessToken;
-        batchCmd.push( { method: 'GET', 
-                         relative_url: url }
-                     );
-    }
-    // remove pages from top
-    for (var i = 0; i < limit; i++) {
-        var pid = ids[i]; // page id
-        delete pages[pid];
-    }
-    return batchCmd;
-}
 
 /************************************************************/
 function getMajorLegitEventAttendees() {
