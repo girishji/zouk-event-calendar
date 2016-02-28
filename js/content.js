@@ -329,7 +329,7 @@ function getContent() {
     // XXX
     //retrieveEvents();
     var ev = [ 'a1', 'a2', 'a3'];
-    storeJSON("/store_events.php", ev);
+    storeJSON("/store.php", ev, "events.data");
 }
 
 /************************************************************/
@@ -340,12 +340,15 @@ function buildContent() {
 }
 
 /************************************************************/
-function storeJSON(urlVal, dataVal) {
+function storeJSON(urlVal, dataVal, fileName) {
     $.ajax({
         // The URL for the request
         url: urlVal,
         // The data to send (will be converted to a query string)
-        data: dataVal,
+        data: {
+            file: fileName,
+            data: dataVal
+        },
         // Whether this is a POST or GET request
         type: 'POST',
         // The type of data we send / expect back
