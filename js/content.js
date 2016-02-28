@@ -464,7 +464,7 @@ var pagesCallback = function(response) {
     for (var i = 0; i < response.length; i++) {
         if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
             var body = JSON.parse(response[i].body);
-            if (Error(body)) {
+            if (isError(body)) {
                 return;
             }
             // console.log('properties ' + Object.getOwnPropertyNames(body));                           
