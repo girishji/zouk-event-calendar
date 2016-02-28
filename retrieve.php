@@ -4,14 +4,25 @@ require('./config.php');
 require('./common.php');
 
 $file = (string) $_GET['file'];
-$interval = (string) $_GET['interval'];
+$intervalStr = (string) $_GET['interval'];
+$interval = intval($intervalStr);
 
+$found = false;
 if (fileExists($bucket, $file)) {
     $mTime = lastModifiedTime($bucket, $file);
-    echo $mTime;
-} else {
-    echo "file not found";
+    $date = new DateTime();
+    $curTime = $date->getTimestamp();
+    if ($curTime - $mTime < $interval) {
+        echo retrieveGCS($bucket, $file);
+        $found = true;
+    } 
 }
+
+if (!$found) {
+    // file not valid, send bool false
+    echo "false";
+}
+
 
 //$data = json_decode($post); // to object
 //$file = $data->{'file'};
