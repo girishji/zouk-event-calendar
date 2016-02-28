@@ -348,7 +348,7 @@ function storeJSON(urlVal, dataVal, fileName) {
         // data: JSON.stringify(content),
         // contentType: 'application/json',
         data: content,
-        dataType: 'json',
+        dataType: 'text',
         type: 'POST',
         success: function(data) {
             console.log(data);
