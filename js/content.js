@@ -512,31 +512,27 @@ var pagesCallback = function(response) {
     }
 };
 
-
 /************************************************************/
-function getCmdFromPages() {
+function getBatchCmdFromPages() {
     var ids = Object.keys(pages);
     if (ids.length <= 0) {
         return null;
     }
-    var pid = ids[0]; // page id
-    var url = pid + '/events?fields=id,name,start_time,place,'
-        + 'attending_count,cover,description&access_token='
-        + accessToken;
-    // remove page
-    delete pages[pid];
-    console.log('pages length: ' + ids.length);
-    return url;
-}
-
-/************************************************************/
-function getBatchCmdFromPages() {
+    var limit = ids.length > BATCH_MAX ? BATCH_MAX : ids.length;
     var batchCmd = [];
-    for (var i = 0; i < BATCH_MAX; i++) {
-        var url = getCmdFromPages();
-        if (url) {
-            batchCmd.push( { method: 'GET', relative_url: url } );
-        }
+    for (var i = 0; i < limit; i++) {
+        var pid = ids[i]; // page id
+        var url = pid + '/events?fields=id,name,start_time,place,'
+            + 'attending_count,cover,description&access_token='
+            + accessToken;
+        batchCmd.push( { method: 'GET',
+                         relative_url: url }
+                     );
+    }
+    // remove pages from top
+    for (var i = 0; i < limit; i++) {
+        var pid = ids[i]; // page id
+        delete pages[pid];
     }
     return batchCmd;
 }
