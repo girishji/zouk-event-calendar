@@ -4,7 +4,7 @@ use \google\appengine\api\mail\Message;
 
 try {
     $message = new Message();
-    $message->setSender("girshji-gae@zouk-event-calendar.appspotmail.com");
+    $message->setSender("girshji-zc@zouk-event-calendar.appspotmail.com");
     $message->setSubject((string) $_GET["subject"]);
     $message->setTextBody((string) $_GET["message"]);
     $message->addTo("girishji@gmail.com");
