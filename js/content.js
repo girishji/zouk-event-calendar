@@ -341,19 +341,14 @@ function buildContent() {
 
 /************************************************************/
 function storeJSON(urlVal, dataVal, fileName) {
+    var contect = { file: fileName,
+                    data: dataVal };
     $.ajax({
-        // The URL for the request
         url: urlVal,
-        // The data to send (will be converted to a query string)
-        data: {
-            file: fileName,
-            data: dataVal
-        },
-        // Whether this is a POST or GET request
+        data: JSON.stringify(content),
         type: 'POST',
-        // The type of data we send / expect back
-        dataType : 'json',
-        success: function( data ) {
+        contentType: 'application/json',
+        success: function(data) {
             console.log(data);
         },
         error: function(xhr, status, errorThrown) {
