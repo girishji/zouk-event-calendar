@@ -20,7 +20,6 @@ $fb = getFacebook($appId, $appSecret);
 // To extend an access token, you can make use of the OAuth2Client.
 // OAuth 2.0 client handler
 $oAuth2Client = $fb->getOAuth2Client();
-
 // Exchanges a short-lived access token for a long-lived one
 $longLivedAccessToken = $oAuth2Client->getLongLivedAccessToken($accessToken)->getValue();
 

@@ -325,7 +325,7 @@ function loginToFacebook() {
 /************************************************************/
 // Get events from DB
 function getContent() {
-    sendToken();
+    // sendToken(); // on the server side it exchanges for long lived token
     // XXX
     buildContent();
 }
