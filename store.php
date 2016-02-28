@@ -3,12 +3,12 @@ require('./vendor/autoload.php');
 require('./config.php');
 require('./common.php');
 
-$file = (string) $_POST["file"];
-$data = (string) $_POST["content"];
-echo $file;
-echo $data;
-syslog(LOG_DEBUG, print_r($data, TRUE));
-syslog(LOG_DEBUG, print_r($file, TRUE));
+// $file = (string) $_POST["file"];
+// $data = (string) $_POST["content"];
+// echo $file;
+// echo $data;
+// syslog(LOG_DEBUG, print_r($data, TRUE));
+// syslog(LOG_DEBUG, print_r($file, TRUE));
 // storeGCS($data, $bucket, $file);
 
 //syslog(LOG_DEBUG, print_r($_POST));
