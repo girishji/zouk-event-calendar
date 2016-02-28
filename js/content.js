@@ -327,7 +327,8 @@ function loginToFacebook() {
 function getContent() {
     // sendToken(); // on the server side it exchanges for long lived token
     // XXX
-    buildContent();
+    //buildContent();
+    getPages();
 }
 
 /************************************************************/
@@ -437,7 +438,7 @@ function getPages() {
 
 /************************************************************/
 function firstBatchPagesSearch(cursor) {
-    //console.log('nextBatchPagesSearch');
+    console.log('firstBatchPagesSearch');
     var batchCmd = [];
     for (var i = cursor, count = 0; i < searchStrings.length && count < BATCH_MAX; i++, count++) {
         batchCmd.push( { method: 'GET', 
