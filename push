@@ -4,7 +4,8 @@ git commit -m "message"
 # GAE
 git push google master
 # composer update # need this only when composer.json is updated
-appcfg.py -A zouk-event-calendar update app.yaml
+#appcfg.py -A zouk-event-calendar update app.yaml
+appcfg.py update app.yaml
 # appcfg.py -A zouk-event-calendar update_cron .
 
 # github
