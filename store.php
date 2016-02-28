@@ -14,5 +14,9 @@ require('./common.php');
 //syslog(LOG_DEBUG, print_r($_POST));
 print_r($_POST);
 var_dump($_POST);
+
+$post = file_get_contents('php://input');
+echo $post;
+var_dump($post);
 //echo 'done'; // sent back to ajax caller
 ?>
