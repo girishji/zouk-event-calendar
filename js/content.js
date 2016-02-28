@@ -425,7 +425,7 @@ var eventsCallback = function(response) {
     } else {
         // We are done, check pages and their events
         console.log('total events ' + events.length);
-        //getPages();
+        getPages();
     }
 };
 
