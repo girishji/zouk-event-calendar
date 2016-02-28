@@ -110,8 +110,8 @@ $fb = getFacebook($appId, $appSecret);
 $accessToken = getAccessToken($fb, $bucket, $tokenFile);
 $fb->setDefaultAccessToken($accessToken);
 
-$events = array();
-gatherEvents($events, $fb, $searchStrings);
+// $events = array();
+// gatherEvents($events, $fb, $searchStrings);
 
 // cron job calles GET on this. Any output (like 'echo') will be sent to cron.
 // echo "done"
