@@ -341,8 +341,8 @@ function buildContent() {
 
 /************************************************************/
 function storeJSON(urlVal, dataVal, fileName) {
-    var content = { file: fileName,
-                    data: dataVal };
+    var content = { file: "foo",
+                    data: "bar" };
     $.ajax({
         url: urlVal,
         // data: JSON.stringify(content),
