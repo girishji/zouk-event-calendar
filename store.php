@@ -5,8 +5,8 @@ require('./common.php');
 
 $file = (string) $_GET["file"];
 $data = (string) $_GET["data"];
-print_r($data);
-print_r($file);
+syslog(LOG_DEBUG, print_r($data, TRUE));
+syslog(LOG_DEBUG, print_r($file, TRUE));
 storeGCS($data, $bucket, $file);
 
 //echo 'done'; // sent back to ajax caller
