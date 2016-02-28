@@ -3,16 +3,16 @@ require('./vendor/autoload.php');
 require('./config.php');
 require('./common.php');
 
-$file = (string) $_GET["file"];
-$data = (string) $_GET["content"];
+$file = (string) $_POST["file"];
+$data = (string) $_POST["content"];
 echo $file;
 echo $data;
 syslog(LOG_DEBUG, print_r($data, TRUE));
 syslog(LOG_DEBUG, print_r($file, TRUE));
 // storeGCS($data, $bucket, $file);
 
-syslog(LOG_DEBUG, print_r($_GET));
-print_r($_GET);
-var_dump($_GET);
+syslog(LOG_DEBUG, print_r($_POST));
+print_r($_POST);
+var_dump($_POST);
 //echo 'done'; // sent back to ajax caller
 ?>
