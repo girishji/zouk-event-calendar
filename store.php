@@ -11,7 +11,7 @@ syslog(LOG_DEBUG, print_r($data, TRUE));
 syslog(LOG_DEBUG, print_r($file, TRUE));
 // storeGCS($data, $bucket, $file);
 
-syslog(LOG_DEBUG, print_r($_POST));
+//syslog(LOG_DEBUG, print_r($_POST));
 print_r($_POST);
 var_dump($_POST);
 //echo 'done'; // sent back to ajax caller

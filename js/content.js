@@ -329,7 +329,7 @@ function getContent() {
     // XXX
     //retrieveEvents();
     var ev = [ 'a1', 'a2', 'a3'];
-    storeJSON("/store.php", ev, "events.data");
+    storeJSON("/store.php", ev, "fb_events.data");
 }
 
 /************************************************************/
@@ -341,15 +341,16 @@ function buildContent() {
 
 /************************************************************/
 function storeJSON(urlVal, dataVal, fileName) {
-    var content = {};
-    content['file'] = fileName;
-    content['content'] = JSON.stringify(dataVal);
+    var content = {
+        file: fileName,
+        content: dataVal
+    };
+    // in POST contents are sent in body, not in url string
     $.ajax({
         url: urlVal,
         data: content,
-        // contentType: 'application/json',
-        // data: content,
-        dataType: 'text',
+        contentType: 'application/json',
+        dataType: 'json',
         type: 'POST',
         success: function(data) {
             console.log(data);
