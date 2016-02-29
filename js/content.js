@@ -402,7 +402,7 @@ function retrieveJSON(fileName, intervalVal, callback) {
         dataType : 'json',
         success: function( data ) {
             console.log(data);
-            callback(data);
+            //callback(data);
         },
         error: function( xhr, status, errorThrown ) {
             //alert( "Sorry, there was a problem!" );
