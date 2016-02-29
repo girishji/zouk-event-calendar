@@ -90,13 +90,11 @@ function retrieveGCS($bucket, $file) {
         $url = $object['mediaLink'];
         $httpClient = $client->authorize(); // creates guzzle http client and authorizes it
         $response = $httpClient->get($url); // see guzzle docs for this
-        echo $response->getBody();
         $str = (string) $response->getBody(); // local scope
         return $str;
     } catch (Exception $e) {
         syslog(LOG_EMERG, $e->getMessage());
         sendMail('Cannot get data from GCS: ' . $e->getMessage());
-        echo 'Cannot get data: ' . $e->getMessage();
         //exit('Cannot get access tokens: ' . $e->getMessage());
     }
     return NULL;

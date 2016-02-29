@@ -13,8 +13,11 @@ if (fileExists($bucket, $file)) {
     $date = new DateTime();
     $curTime = $date->getTimestamp();
     if ($curTime - $mTime < $interval) {
-        echo retrieveGCS($bucket, $file);
-        $found = true;
+        $content = retrieveGCS($bucket, $file);
+        if ($content) {
+            $found = true;
+            echo $content;
+        }
     } 
 }
 
