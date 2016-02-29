@@ -20,7 +20,8 @@ if (fileExists($bucket, $file)) {
 
 if (!$found) {
     // file not valid, send json object as error
-    echo "{ error: 1 }";
+    //echo "{ error: 1 }";
+    echo retrieveGCS($bucket, $file);
 }
 
 
