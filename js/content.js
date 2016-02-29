@@ -338,9 +338,9 @@ function getContent() {
 var retrieveEventsCallback = function (data) {
     console.log(data);
     if (data.hasOwnProperty('error')) {
-        console.log(data.error);
+        console.log("error : " . data.error);
     } else {
-        
+        console.log("no error");
     }
 };
 
