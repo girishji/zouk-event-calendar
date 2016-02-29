@@ -399,13 +399,13 @@ function retrieveJSON(fileName, intervalVal, callback) {
         // Whether this is a POST or GET request
         type: 'GET',
         // The type of data we expect back
-        dataType : 'json',
+        dataType : 'text',
         success: function( data ) {
             console.log(data);
             //callback(data);
         },
         error: function( xhr, status, errorThrown ) {
-            alert( "Sorry, there was a problem!" );
+            // alert( "Sorry, there was a problem!" );
             console.log( "Error: " + errorThrown );
             console.log( "Status: " + status );
             console.dir( xhr );
