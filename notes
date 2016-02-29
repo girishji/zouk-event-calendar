@@ -152,3 +152,5 @@ http://stackoverflow.com/questions/16959576/reference-what-is-variable-scope-whi
 ====
 Added a Chrome extension called LiveReload to reload javascript files
 ====
+open -a safari http://zoukcalendar.com/
+====

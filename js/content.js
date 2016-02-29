@@ -331,7 +331,7 @@ function getContent() {
     // XXX
     //retrieveEvents();
     //storeJSON("/store.php", ev, "fb_events.data");
-    retrieveJSON(eventsFile, 60, retrieveEventsCallback);
+    retrieveJSON(eventsFile, 36000, retrieveEventsCallback); // 1 hr = 3600 sec
 }
 
 /************************************************************/
@@ -340,7 +340,7 @@ var retrieveEventsCallback = function (data) {
     if (data.hasOwnProperty('error')) {
         console.log("error : " + data.error);
     } else {
-        console.log("no error");
+        console.log(data);
     }
 };
 
