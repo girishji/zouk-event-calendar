@@ -150,3 +150,5 @@ I created 1 bucket through web interface (can also be created programmatically).
 php variable scope is strange:
 http://stackoverflow.com/questions/16959576/reference-what-is-variable-scope-which-variables-are-accessible-from-where-and
 ====
+Added a Chrome extension called LiveReload to reload javascript files
+====
