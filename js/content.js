@@ -337,8 +337,8 @@ function getContent() {
 /************************************************************/
 var retrieveEventsCallback = function (data) {
     console.log(data);
-    if (!data) {
-        console.log("got nothing");
+    if (data.hasOwnProperty('error')) {
+        console.log(data.error);
     } else {
         
     }
