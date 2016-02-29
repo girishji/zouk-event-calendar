@@ -404,11 +404,8 @@ function retrieveJSON(fileName, intervalVal, callback) {
             console.log(data);
             //callback(data);
         },
-        error: function( xhr, status, errorThrown ) {
-            //alert( "Sorry, there was a problem!" );
-            console.log( "Error: " + errorThrown );
-            console.log( "Status: " + status );
-            console.dir( xhr );
+        error: function(xhr, error){
+            console.debug(xhr); console.debug(error);
         }
     });
 }
