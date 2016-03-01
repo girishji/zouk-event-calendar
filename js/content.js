@@ -22,7 +22,8 @@ window.fbAsyncInit = function() {
     // FB.Canvas.setSize({ width: 640, height: 4000 });
 
     // Check if logged in, and obtain events
-    loginAndDo(retrieveEvents);
+    //loginAndDo(retrieveEvents);
+    loginAndDo(searchForPages());
 };
 
 // load the facebook SDK async
@@ -379,8 +380,7 @@ function loginToFacebook() {
                 //console.log('Welcome!  Fetching information.... ');
                 accessToken = response.authResponse.accessToken;
                 $('#bannerMsg').hide();
-                //retrieveEvents();
-                searchForPages();
+                retrieveEvents();
             }
         } else {
             console.log('User cancelled login or did not fully authorize.');
@@ -604,12 +604,12 @@ var pagesCallback = function(response) {
 
 /************************************************************/
 function getBatchCmdFromPages() {
+    var batchCmd = [];
     var ids = Object.keys(pages);
     if (ids.length <= 0) {
-        return null;
+        return batchCmd;
     }
     var limit = ids.length > BATCH_MAX ? BATCH_MAX : ids.length;
-    var batchCmd = [];
     for (var i = 0; i < limit; i++) {
         var pid = ids[i]; // page id
         var url = pid + '/events?fields=id,name,start_time,place,'
