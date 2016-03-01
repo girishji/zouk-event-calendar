@@ -379,7 +379,8 @@ function loginToFacebook() {
                 //console.log('Welcome!  Fetching information.... ');
                 accessToken = response.authResponse.accessToken;
                 $('#bannerMsg').hide();
-                retrieveEvents();
+                //retrieveEvents();
+                searchForPages();
             }
         } else {
             console.log('User cancelled login or did not fully authorize.');
