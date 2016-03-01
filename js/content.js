@@ -549,7 +549,7 @@ function searchForPages() {
 
 /************************************************************/
 function firstBatchPageSearch(cursor) {
-    console.log('firstBatchPageSearch');
+    //console.log('firstBatchPageSearch');
     var batchCmd = [];
     for (var i = cursor, count = 0; i < searchStrings.length && count < BATCH_MAX; i++, count++) {
         batchCmd.push( { method: 'GET', 
@@ -564,7 +564,7 @@ function firstBatchPageSearch(cursor) {
 
 /************************************************************/
 var pagesCallback = function(response) {
-    console.log('pagesCallback');
+    //console.log('pagesCallback');
 
     if (!response || response.error) {
         console.log('FB.api: Error occured');
@@ -660,7 +660,7 @@ function getEventsFromPages() {
 
 /************************************************************/
 var pageEventsCallback = function(response) {
-    console.log('pageEventsCallback');
+    //console.log('pageEventsCallback');
     if (!response || response.error) {
         console.log('FB.api: Error occured');
         console.log(response);
