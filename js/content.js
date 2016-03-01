@@ -342,7 +342,7 @@ function retrieveJSON(fileName, intervalVal, callback) {
         // The type of data we expect back
         dataType : 'json',
         success: function( data ) {
-            console.log(data);
+            //console.log(data);
             callback(data);
         },
         error: function( xhr, status, errorThrown ) {
