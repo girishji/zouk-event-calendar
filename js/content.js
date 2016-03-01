@@ -22,8 +22,7 @@ window.fbAsyncInit = function() {
     // FB.Canvas.setSize({ width: 640, height: 4000 });
 
     // Check if logged in, and obtain events
-    //loginAndDo(retrieveEvents);
-    loginAndDo(searchForPages);
+    loginAndDo(retrieveEvents);
 };
 
 // load the facebook SDK async
@@ -285,8 +284,10 @@ var searchStringsCursor = 0;
 //
 var eventsFile = "fb_events.data";
 var eventsInterval = 2 * 3600; // seconds
+var pagesFile = "fb_pages.data";
+var pagesInterval = 23 * 3600;
 var pageEventsFile = "fb_pages_events.data";
-var pageEventsInterval = 24 * 3600;
+var pageEventsInterval = 12 * 3600;
 var discardedEventsFile = "fb_discarded_events.data";
 var discardedEventsInterval = 2 * 24 * 3600;
 
@@ -508,7 +509,7 @@ function retrievePageEvents() {
 /************************************************************/
 var retrievePageEventsCallback = function (data) {
     if (data.hasOwnProperty('error')) {
-        searchForPages();
+        retrievePages();
     } else {
         for (var i = 0; i < data.length; i++) {
             addEvent(data[i]);
@@ -517,6 +518,26 @@ var retrievePageEventsCallback = function (data) {
         $('#searchProgressBar').css('width', progress + '%').attr('aria-valuenow', progress);
         console.log('retrievePageEventsCallback: total events ' + events.length);
         retrieveRejectedEvents();
+    }
+}
+
+/************************************************************/
+function retrievePages() {
+    retrieveJSON(pagesFile, pagesInterval, retrievePagesCallback);
+}
+
+/************************************************************/
+var retrievePagesCallback = function (data) {
+    if (data.hasOwnProperty('error')) {
+        searchForPages();
+    } else {
+        for (var i = 0; i < data.length; i++) {
+           pages[data[i]] = true; // data[i] is page id
+        }
+        progress = 70;
+        $('#searchProgressBar').css('width', progress + '%').attr('aria-valuenow', progress);
+        console.log('retrievePagesCallback: total pages ' + Object.keys(pages).length);
+        getEventsFromPages();
     }
 }
 
@@ -598,6 +619,7 @@ var pagesCallback = function(response) {
     } else {
         // We are done, do further filtering
         console.log('total pages ' + Object.keys(pages).length);
+        storeJSON(pagesFile, Object.keys(pages));
         getEventsFromPages();
     }
 };
