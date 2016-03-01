@@ -517,7 +517,7 @@ var retrievePageEventsCallback = function (data) {
         progress = 60;
         $('#searchProgressBar').css('width', progress + '%').attr('aria-valuenow', progress);
         console.log('retrievePageEventsCallback: total events ' + events.length);
-        retrieveRejectedEvents();
+        retrieveDiscardedEvents();
     }
 }
 
