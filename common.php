@@ -61,7 +61,9 @@ function storeGCS(&$content, $bucket, $file) {
     } catch (Exception $e) {
         print $e->getMessage();
         sendMail('Cannot store data in GCS: ' . $e->getMessage());
+        return 1;    
     }
+    return 0;
 }
 
 /************************************************************/
