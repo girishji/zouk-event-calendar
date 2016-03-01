@@ -21,13 +21,10 @@ window.fbAsyncInit = function() {
     // manually set size (also slow)
     // FB.Canvas.setSize({ width: 640, height: 4000 });
 
-    // Check if logged in, and search for events
-    // XXX
-    // loginAndDo(buildContent);
-
-    loginAndDo(getContent);
-
+    // Check if logged in, and obtain events
+    loginAndDo(retrieveEvents);
 };
+
 // load the facebook SDK async
 (function(d, s, id){
     var js, fjs = d.getElementsByTagName(s)[0];
@@ -262,7 +259,7 @@ var timeNow = new Date();
 // All events
 var events = [];    
 // Suspect events
-var suspects = [];
+var discarded = [];
 // Set of legit attendees; Use an object since objects are ordered pairs in javascript, 
 // like: var obj = {"1":true, "2":true, "3":true, "9":true}
 var legitAttendees = {}; // empty object
@@ -271,13 +268,14 @@ var accessToken;
 // Progress bar
 var progress = 0;
 // undecided suspect list
-var unknownEvents = [];
+var validatableEvents = [];
 // Facebook has 50 commands per batch limit
 var BATCH_MAX = 45; // don't use const as it may not be supported in earlier browsers
 // Each query comes back with 25 results (even if you set higher limit). For deciding
 // on suspicious events, get max 1000 attendees and compare to known zouk attendees
 //var MAX_PAGE_ITERATIONS = 40; // 40x25=1000
 var MAX_PAGE_ITERATIONS = 10;
+var maxAttendeesToConsider = 200;
 var pageIterationCount = 0;
 // pages set using an object
 var pages = {};
@@ -285,71 +283,12 @@ var pages = {};
 var searchStringsCursor = 0;
 //
 var eventsFile = "fb_events.data";
-var firstPassEventsFile = "fb_first_pass_events.data";
-var pagesFile = "fb_pages.data";
-var pagesEventsFile = "fb_pages_events.data";
+var eventsInterval = 2 * 3600; // seconds
+var pageEventsFile = "fb_pages_events.data";
+var pageEventsInterval = 24 * 3600;
+var discardedEventsFile = "fb_discarded_events.data";
+var discardedEventsInterval = 2 * 24 * 3600;
 
-/************************************************************/
-function loginAndDo(doFunct) {
-    // Get access token and use it to do something (async).
-    // accessToken is obtained and set globally only from this function.
-    // FB.api() response does not have accessToken.
-    FB.getLoginStatus(function(response) {
-        if (response.status === 'connected') {
-            // console.log('Logged in.');
-            accessToken = response.authResponse.accessToken;
-            doFunct();
-        } else {
-            $('#bannerMsg').show();
-        }
-    });
-}
-
-/************************************************************/
-// Use explicit button to login, otherwise popup blockers will 
-// prevent login window from opening.         
-function loginToFacebook() {
-    FB.getLoginStatus(function(response) {
-    //FB.login(function(response) {
-        if (response.authResponse) {
-            if (response.status === 'connected') {
-                //console.log('Welcome!  Fetching information.... ');
-                accessToken = response.authResponse.accessToken;
-                $('#bannerMsg').hide();
-                getContent();
-            }
-        } else {
-            console.log('User cancelled login or did not fully authorize.');
-        }
-    });
-}
-
-/************************************************************/
-// Get events from DB
-function getContent() {
-    // sendToken(); // on the server side it exchanges for long lived token
-    // XXX
-    //retrieveEvents();
-    //storeJSON("/store.php", ev, "fb_events.data");
-    retrieveJSON(eventsFile, 36000, retrieveEventsCallback); // 1 hr = 3600 sec
-}
-
-/************************************************************/
-var retrieveEventsCallback = function (data) {
-    console.log(data);
-    if (data.hasOwnProperty('error')) {
-        console.log("error : " + data.error);
-    } else {
-        console.log(data);
-    }
-};
-
-/************************************************************/
-// Search FB
-function buildContent() {    
-    searchStringsCursor = 0;
-    startBatchSearch(searchStringsCursor);
-}
 
 /************************************************************/
 // Note: there are 2 ways to send data in POST: as a query string
@@ -359,16 +298,16 @@ function buildContent() {
 // be a string (use JSON.stringify any object or array), and processData
 // should be false. On the server side php you use $_POST for former
 // and file_get_contents() for latter
-function storeJSON(urlVal, dataVal, fileName) {
+function storeJSON(fileName, dataVal) {
     var content = {
         file: fileName,
         content: dataVal
     };
-    console.log(content);
-    console.log(JSON.stringify(content));
+    //console.log(content);
+    //console.log(JSON.stringify(content));
     // JSON is a string representation of javascript object
     $.ajax({
-        url: urlVal,
+        url: "/store.php",
         data: JSON.stringify(content),
         contentType: 'application/json',
         type: 'POST',
@@ -414,7 +353,72 @@ function retrieveJSON(fileName, intervalVal, callback) {
 }
 
 /************************************************************/
-function startBatchSearch(cursor) {
+function loginAndDo(doFunct) {
+    // Get access token and use it to do something (async).
+    // accessToken is obtained and set globally only from this function.
+    // FB.api() response does not have accessToken.
+    FB.getLoginStatus(function(response) {
+        if (response.status === 'connected') {
+            // console.log('Logged in.');
+            accessToken = response.authResponse.accessToken;
+            doFunct();
+        } else {
+            $('#bannerMsg').show();
+        }
+    });
+}
+
+/************************************************************/
+// Use explicit button to login, otherwise popup blockers will 
+// prevent login window from opening.         
+function loginToFacebook() {
+    FB.getLoginStatus(function(response) {
+    //FB.login(function(response) {
+        if (response.authResponse) {
+            if (response.status === 'connected') {
+                //console.log('Welcome!  Fetching information.... ');
+                accessToken = response.authResponse.accessToken;
+                $('#bannerMsg').hide();
+                retrieveEvents();
+            }
+        } else {
+            console.log('User cancelled login or did not fully authorize.');
+        }
+    });
+}
+
+/************************************************************/
+// Get events from DB
+function retrieveEvents() {
+    $('#searchProgressBarDiv').show();
+    // sendToken(); // on the server side it exchanges for long lived token
+    retrieveJSON(eventsFile, eventsInterval, retrieveEventsCallback); // 1 hr = 3600 sec
+}
+
+/************************************************************/
+var retrieveEventsCallback = function (data) {
+    if (data.hasOwnProperty('error')) {
+        searchForEvents();
+    } else {
+        for (var i = 0; i < data.length; i++) {
+            addEvent(data[i]);
+        }
+        progress = 30;
+        $('#searchProgressBar').css('width', progress + '%').attr('aria-valuenow', progress);
+        console.log('retrieveEventsCallback: total events ' + events.length);
+        retrievePageEvents();
+    }
+};
+
+/************************************************************/
+// Search FB
+function searchForEvents() {    
+    searchStringsCursor = 0;
+    startBatchSearchEvents(searchStringsCursor);
+}
+
+/************************************************************/
+function startBatchSearchEvents(cursor) {
     //console.log('startBatchSearch');
     var batchCmd = [];
 
@@ -427,7 +431,6 @@ function startBatchSearch(cursor) {
     }
     searchStringsCursor += count;
 
-    $('#searchProgressBarDiv').show();
     FB.api('/', 'POST', { batch: batchCmd }, eventsCallback);
     // Response of FB.api is asynchronous, make it resursive from callback
 }
@@ -454,17 +457,7 @@ var eventsCallback = function(response) {
             if (body.hasOwnProperty('data') && body.data) {
                 var data = body.data;
                 for (var j = 0; j < data.length; j++) {
-                    if (preFilter(data[j])) {
-                        if (events.length < 9000) { // Can store about 10000 in sessionStorage
-                            // remove description as this will eat up sessionStorage
-                            if (data[j].hasOwnProperty('description') && data[j].description) {
-                                data[j].description = null;
-                            }
-                            // add continent
-                            addContinent(data[j]);
-                            events.push(data[j]);
-                        }
-                    }
+                    addEvent(data[j]);
                 }
             }
             // next paging link
@@ -492,7 +485,7 @@ var eventsCallback = function(response) {
         } 
     }
     // Update progress bar
-    progress = (progress < 40) ? progress + 5 : progress;
+    progress = (progress < 30) ? progress + 5 : progress;
     $('#searchProgressBar').css('width', progress + '%').attr('aria-valuenow', progress);
 
     // Recurse:
@@ -501,19 +494,40 @@ var eventsCallback = function(response) {
     } else {
         // We are done, check pages and their events
         console.log('total events ' + events.length);
-        getPages();
+        storeJSON(eventsFile, events);
+        retrievePageEvents();
     }
 };
 
 /************************************************************/
-function getPages() {
-    searchStringsCursor = 0;
-    firstBatchPagesSearch(searchStringsCursor);
+function retrievePageEvents() {
+    retrieveJSON(pageEventsFile, pageEventsInterval, retrievePageEventsCallback);
 }
 
 /************************************************************/
-function firstBatchPagesSearch(cursor) {
-    console.log('firstBatchPagesSearch');
+var retrievePageEventsCallback = function (data) {
+    if (data.hasOwnProperty('error')) {
+        searchForPages();
+    } else {
+        for (var i = 0; i < data.length; i++) {
+            addEvent(data[i]);
+        }
+        progress = 60;
+        $('#searchProgressBar').css('width', progress + '%').attr('aria-valuenow', progress);
+        console.log('retrievePageEventsCallback: total events ' + events.length);
+        retrieveRejectedEvents();
+    }
+}
+
+/************************************************************/
+function searchForPages() {
+    searchStringsCursor = 0;
+    firstBatchPageSearch(searchStringsCursor);
+}
+
+/************************************************************/
+function firstBatchPageSearch(cursor) {
+    console.log('firstBatchPageSearch');
     var batchCmd = [];
     for (var i = cursor, count = 0; i < searchStrings.length && count < BATCH_MAX; i++, count++) {
         batchCmd.push( { method: 'GET', 
@@ -574,7 +588,7 @@ var pagesCallback = function(response) {
         } 
     }
     // Update progress bar
-    progress = (progress < 75) ? progress + 5 : progress;
+    progress = (progress < 60) ? progress + 5 : progress;
     $('#searchProgressBar').css('width', progress + '%').attr('aria-valuenow', progress);
 
     // Recurse:
@@ -638,23 +652,14 @@ var pageEventsCallback = function(response) {
             if (body.hasOwnProperty('data') && body.data) {
                 var data = body.data;
                 for (var j = 0; j < data.length; j++) {
-                    if (preFilter(data[j])) {
-                        if (events.length < 9000) { // Can store about 10000 in sessionStorage
-                            // remove description as this will eat up sessionStorage
-                            if (data[j].hasOwnProperty('description') && data[j].description) {
-                                data[j].description = null;
-                            }
-                            addContinent(data[j]);
-                            events.push(data[j]);
-                        }
-                    }
+                    addEvent(data[j]);
                 }
             }
         }
     }
     // we process only one page 
     // Update progress bar
-    progress = (progress < 98) ? progress + 1 : progress;
+    progress = (progress < 70) ? progress + 1 : progress;
     $('#searchProgressBar').css('width', progress + '%').attr('aria-valuenow', progress);
     // Recurse
     var batchCmd = getBatchCmdFromPages();
@@ -665,13 +670,48 @@ var pageEventsCallback = function(response) {
         // We are done, do further filtering
         //console.log(events);
         console.log('total events ' + events.length);
-        $('#searchProgressBar').css('width', '100%').attr('aria-valuenow', 100);
-        $('#filterProgressBarDiv').show();
-        progress = 0; // for next progress bar
-        //getMajorLegitEventAttendees();
+        //$('#searchProgressBar').css('width', '100%').attr('aria-valuenow', 100);
+        //$('#filterProgressBarDiv').show();
+        //progress = 0; // for next progress bar
+        storeJSON(pageEventsFile, events);
+        retrieveDiscardedEvents();
+    }
+};
+    
+/************************************************************/
+function retrieveDiscardedEvents() {
+    retrieveJSON(discardedEventsFile, discardedEventsInterval, retrieveDiscardedEventsCallback);
+}
+
+/************************************************************/
+var retrieveDiscardedEventsCallback = function (data) {
+    if (data.hasOwnProperty('error')) {
+        searchForDiscardedEvents();
+    } else {
+        for (var i = 0; i < data.length; i++) {
+            var event = data[i];
+            if (isCurrent(event)) {
+                discarded.push(event);
+                // get the event index, remove it from list if exists
+                for (var evIdx = 0; evIdx < events.length; evIdx++) {
+                    if (events[evIdx].id == event.id) {
+                        events.splice(evIdx, 1); // returns array of 1
+                        break;
+                    }
+                }
+            }
+        }   
+        progress = 100;
+        $('#searchProgressBar').css('width', progress + '%').attr('aria-valuenow', progress);
+        console.log('retrieveEventsCallback: total events ' + events.length);
+        postProcess();
     }
 };
 
+/************************************************************/
+function searchForDiscardedEvents() {
+    getMajorLegitEventAttendees();
+}
 
 /************************************************************/
 function getMajorLegitEventAttendees() {
@@ -702,8 +742,10 @@ var legitAttendeesCallback = function(response) {
         return;
     }
     // Update progress bar
-    progress = (progress < 10) ? progress + 2 : progress;
-    $('#filterProgressBar').css('width', progress + '%').attr('aria-valuenow', progress);
+    // progress = (progress < 10) ? progress + 2 : progress;
+    // $('#filterProgressBar').css('width', progress + '%').attr('aria-valuenow', progress);
+    progress = (progress < 80) ? progress + 1 : progress;
+    $('#searchProgressBar').css('width', progress + '%').attr('aria-valuenow', progress);
 
     var batchCmd = [];
     for (var i = 0; i < response.length; i++) {
@@ -754,17 +796,18 @@ function getSuspectEventAttendees() {
     for (var i = 0; i < events.length; i++) {
         if (events[i].attending_count > 100) {
             // verify this event's legitimacy
-            unknownEvents.push( { id: events[i].id, attending: {}, done: false } );
+            validatableEvents.push( { id: events[i].id, attending: {}, batched: false } );
         }
     }
-    //console.log('total unknownEvents ' + unknownEvents.length);
+    //console.log('total validatableEvents ' + validatableEvents.length);
     // Pick top BATCH_MAX from the list, batch them, after done remove from list, repeat
     var batchCmd = [];
-    var limit =  unknownEvents.length < BATCH_MAX ? unknownEvents.length : BATCH_MAX;
-    //console.log('batch size of unknownEvents ' + limit);
+    var limit =  validatableEvents.length < BATCH_MAX ? validatableEvents.length : BATCH_MAX;
+    //console.log('batch size of validatableEvents ' + limit);
     for (var i = 0; i < limit; i++) {
         batchCmd.push( { method: 'GET', 
-                         relative_url:  unknownEvents[i].id + '/attending?' + 'access_token=' + accessToken } );
+                         relative_url:  validatableEvents[i].id + '/attending?' + 'access_token=' + accessToken } );
+        validatableEvents[i].batched = true;
     }
     FB.api('/', 'POST', { batch: batchCmd }, suspectEventAttendeesCallback);
 }
@@ -781,10 +824,12 @@ var suspectEventAttendeesCallback = function(response) {
     }
 
     // Update progress bar
-    progress = (progress < 95) ? progress + 2 : progress;
-    $('#filterProgressBar').css('width', progress + '%').attr('aria-valuenow', progress);
-
-    //console.log('response length ' + response.length + ' u-suspects ' + Object.keys(unknownEvents).length);
+    // progress = (progress < 95) ? progress + 2 : progress;
+    // $('#filterProgressBar').css('width', progress + '%').attr('aria-valuenow', progress);
+    progress = (progress < 95) ? progress + 1 : progress;
+    $('#searchProgressBar').css('width', progress + '%').attr('aria-valuenow', progress);
+    
+    //console.log('response length ' + response.length + ' u-discarded ' + Object.keys(validatableEvents).length);
     var batchCmd = [];
 
     for (var i = 0; i < response.length; i++) {
@@ -794,47 +839,51 @@ var suspectEventAttendeesCallback = function(response) {
                 return;
             }
             // responses correspond with requests sent in batch command
-            if (body.hasOwnProperty('data') && body.data) {
-                var data = body.data;
-                for (var j = 0; j < data.length; j++) {
-                    // add id if it is not there
-                    if (! unknownEvents[i].attending.hasOwnProperty(data[j].id)) {
-                        unknownEvents[i].attending[data[j].id] = true;
+            if (body.hasOwnProperty('paging') && body.paging) {
+                var paging = body.paging;
+                var eventId = getEventIdFromUrl(paging.next);
+                // match the request with response
+                var uIdx = -1;
+                for (uIdx = 0; uIdx < validatableEvents.length; uIdx++) {
+                    if (validatableEvents[uIdx].id == eventId) {
+                        break;
+                    }
+                }
+                if (uIdx == -1) {
+                    console.log("Unexpected Error: " + eventId + " not found");
+                } else {
+                    if (body.hasOwnProperty('data') && body.data) {
+                        var data = body.data;
+                        for (var j = 0; j < data.length; j++) {
+                            // add id if it is not there
+                            if (! validatableEvents[uIdx].attending.hasOwnProperty(data[j].id)) {
+                                validatableEvents[uIdx].attending[data[j].id] = true;
+                            }
+                        }
+                    }
+                    // next paging link
+                    var pageRemaining = false;
+                    if (paging.hasOwnProperty('next') && paging.next) {
+                        if (Object.keys(validatableEvents[uIdx].attending).length < maxAttendeesToConsider) {
+                            var relUrl = getRelativeUrl(paging.next);
+                            batchCmd.push( { method: 'GET', relative_url: relUrl } );
+                            pageRemaining = true;
+                        }
+                    }
+                    if (! pageRemaining) {
+                        // add a new entry to batch cmd
+                        for (var x = 0; x < validatableEvents.length; x++) {
+                            if (! validatableEvents[x].batched) {
+                                batchCmd.push( { method: 'GET', 
+                                                 relative_url:  validatableEvents[x].id + '/attending?' + 'access_token=' + accessToken } );
+                                validatableEvents[x].batched = true;
+                                break;
+                            }
+                        }
                     }
                 }
             }
-
-            // next paging link
-            var done = true;
-            if (body.hasOwnProperty('paging') && body.paging) {
-                var paging = body.paging;
-                if (paging.hasOwnProperty('next') && paging.next) {
-                    var relUrl = getRelativeUrl(paging.next);
-                    batchCmd.push( { method: 'GET', relative_url: relUrl } );
-                    done = false;
-                }
-            }
-            unknownEvents[i].done = done;
         } 
-    }
-
-    // check if there are too many iterations (big events with thousands of attendees)
-    if (pageIterationCount >= MAX_PAGE_ITERATIONS) {
-        // mark batch done
-        //console.log('MAX_PAGE_ITERATIONS reached');
-        for (var i = 0; i < response.length; i++) {
-            unknownEvents[i].done = true;
-        }
-        pageIterationCount = 0;
-        batchCmd.length = 0; // remove batch commands
-    }
-    // filter and remove finished events, do this outside above loop so as not to affect array indexes
-    for (var i = 0; i < unknownEvents.length; i++) {
-        if (unknownEvents[i].done) {
-            filterSuspect(unknownEvents[i].id, unknownEvents[i].attending);
-            // remove
-            unknownEvents.splice(i, 1);
-        }
     }
 
     // Recurse:
@@ -842,43 +891,40 @@ var suspectEventAttendeesCallback = function(response) {
         //console.log('request length of batch ' + batchCmd.length);
         FB.api('/', 'POST', { batch: batchCmd }, suspectEventAttendeesCallback);
     } else {
-        // We are done with this batch, process next
-        var batchCmd = []; // reinitialize (recreate) batchCmd, old one has stuff in it
-        var limit = unknownEvents.length < BATCH_MAX ? unknownEvents.length : BATCH_MAX;
-        if (limit > 0) {
-            for (var i = 0; i < limit; i++) {
-                batchCmd.push( { method: 'GET', 
-                                 relative_url:  unknownEvents[i].id + '/attending?' + 'access_token=' + accessToken } );
-            }
-            //console.log('new batch size of unknownEvents ' + batchCmd.length);
-            FB.api('/', 'POST', { batch: batchCmd }, suspectEventAttendeesCallback);
-        } else {
-            // we are done, no more unknownEvents 
-            // sort and display
-            $('#filterProgressBar').css('width', '100%').attr('aria-valuenow', 100);
-
-            if (events.length > 0) {
-                // post process, filter out more events
-                var sortTime = function(at, bt) {
-                    var a = parseTime(at.start_time);
-                    var b = parseTime(bt.start_time);
-                    return (a > b) ? 1 : -1;
-                };
-                events.sort(sortTime);
-                suspects.sort(sortTime);
-                // wait for some millisec so progress bar shows completion
-                setTimeout(function() { display(events, accessToken); }, 700); 
-                // cookies have 4k limit - so can't be used to store events. It siliently fails. Use
-                // localStorage / sessionStorage. They have 5MB limit
-                if(typeof(Storage) !== "undefined") { // This browser supports sessionStorage and localStorage
-                    // Save data to sessionStorage
-                    sessionStorage.setItem('zoukevents', JSON.stringify(events));
-                    sessionStorage.setItem('suspectevents', JSON.stringify(suspects));
-                } 
-            }
+        // we are done, filter finished events
+        for (var i = 0; i < validatableEvents.length; i++) {
+            filterValidatableEvent(validatableEvents[i].id, validatableEvents[i].attending);
         }
+        // sort and display
+        // $('#filterProgressBar').css('width', '100%').attr('aria-valuenow', 100);
+        $('#searchProgressBar').css('width', '100%').attr('aria-valuenow', 100);
+        postProcess();
     }
 };
+    
+/************************************************************/
+function postProcess() {        
+    if (events.length > 0) {
+        // post process, filter out more events
+        var sortTime = function(at, bt) {
+            var a = parseTime(at.start_time);
+            var b = parseTime(bt.start_time);
+            return (a > b) ? 1 : -1;
+        };
+        events.sort(sortTime);
+        discarded.sort(sortTime);
+        // wait for some millisec so progress bar shows completion
+        setTimeout(function() { display(events, accessToken); }, 700); 
+        // cookies have 4k limit - so can't be used to store events. It siliently fails. Use
+        // localStorage / sessionStorage. They have 5MB limit
+        if (typeof(Storage) !== "undefined") { // This browser supports sessionStorage and localStorage
+            // Save data to sessionStorage
+            sessionStorage.setItem('zoukevents', JSON.stringify(events));
+            sessionStorage.setItem('discardedevents', JSON.stringify(discarded));
+        }
+        storeJSON(discardedEventsFile, discarded);
+    }
+}
 
 /************************************************************/
 function isError(body) {
@@ -910,7 +956,6 @@ function showEventsByTimeInner() {
     } else {
         // XXX
         // buildContent();
-        getContent();
     }
 }
 
@@ -942,9 +987,9 @@ function showEventsByAttendingInner() {
 }
 
 /************************************************************/
-function showFiltered() {
+function showDiscarded() {
     if (typeof(Storage) !== "undefined") {
-        var data = sessionStorage.getItem('suspectevents');
+        var data = sessionStorage.getItem('discardedevents');
         if (data !== undefined && data) {
             var events = JSON.parse(data);
             if (events.length > 0) {
@@ -1110,7 +1155,7 @@ function showDashboard() {
     }
     var data = sessionStorage.getItem('zoukevents');
     if (data === undefined || (! data)) {
-        console.log('No events in showEventsByAttendingInner');
+        console.log('No events in showDashboard');
     }
     events = JSON.parse(data);
     var selected = [];
@@ -1154,37 +1199,38 @@ function showDashboard() {
     `;
     //<!-- <h7>* some events are kizomba/bachata events that include Zouk</h7> -->
 
-    // Major festivals
-    var selected = [];
-    for (var i = 0; i < knownEvents.length; i++) {
-        var ev = getEventFromName(knownEvents[i], events);
-        if (ev) {
-            selected.push(ev);
-        }
-    }
-
-    if (selected.length > 0) {
-        str += `
-            <h4 style="margin:30px 0px 0px 5px">Some Major Festivals</h4>
-            `;
-        if (typeof(Storage) !== "undefined") {
-            var data = sessionStorage.getItem('zoukattendees');
-            if (data !== undefined && data) {
-                str += `<div style="margin: 10px 0px 10px 5px"><span class="badge">${data}</span> attending</div>`;
-            }
-        }
-        str += `
-            <table class="table table-condensed" style="margin-top:5px">
-            <thead><th>Date</th><th>Event</th><th>Attending</th><tr></tr></thead>
-            `;
-        str += getTableBody(selected);
-        str += '</table>';
-        $('#evTableHeader').hide();
-        $("#evTableContent").hide();
-        $('#map').hide();
-        $("#dashboard").hide().html(str).fadeIn('fast');
-        $('#mainContent').show();
-    }
+    // Major festival info not availabe when retrieving from GAE    
+    //  // Major festivals
+    //  var selected = [];
+    //  for (var i = 0; i < knownEvents.length; i++) {
+    //      var ev = getEventFromName(knownEvents[i], events);
+    //      if (ev) {
+    //          selected.push(ev);
+    //      }
+    //  }
+    //  
+    //  if (selected.length > 0) {
+    //      str += `
+    //          <h4 style="margin:30px 0px 0px 5px">Some Major Festivals</h4>
+    //          `;
+    //      if (typeof(Storage) !== "undefined") {
+    //          var data = sessionStorage.getItem('zoukattendees');
+    //          if (data !== undefined && data) {
+    //              str += `<div style="margin: 10px 0px 10px 5px"><span class="badge">${data}</span> attending</div>`;
+    //          }
+    //      }
+    //      str += `
+    //          <table class="table table-condensed" style="margin-top:5px">
+    //          <thead><th>Date</th><th>Event</th><th>Attending</th><tr></tr></thead>
+    //          `;
+    //      str += getTableBody(selected);
+    //      str += '</table>';
+    //   }
+    $('#evTableHeader').hide();
+    $("#evTableContent").hide();
+    $('#map').hide();
+    $("#dashboard").hide().html(str).fadeIn('fast');
+    $('#mainContent').show();
 }
 
 /************************************************************/
@@ -1304,61 +1350,83 @@ function parseTime(str) { // milliseconds since 1970 00:00:00
 }
 
 /************************************************************/
-function preFilter(event) {
+function addEvent(event) {
+    if (preFilter(event)) {
+        if (events.length < 9000) { // Can store about 10000 in sessionStorage
+            // remove description as this will eat up sessionStorage
+            if (event.hasOwnProperty('description') && event.description) {
+                event.description = null;
+            }
+            addContinent(event);
+            events.push(event);
+        }
+    }
+}
+
+/************************************************************/
+function isCurrent(event) {
+    // Parsing does not work in Safari. Recommended that you parse manually (see article below)
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse
+    // Add events even if a day old
     if (event && event.hasOwnProperty('start_time')) {
-        // Parsing does not work in Safari. Recommended that you parse manually (see article below)
-        // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse
-        // Add events even if a day old
         var startTime = parseTime(event.start_time);
         if ((timeNow < startTime) 
             || ((timeNow.getTime() - startTime.getTime()) < (24 * 3600 * 1000))) {
-            // Insert only if unique; Different search strings give same results
-            var found = false;
-            for (var ev = 0; ev < events.length; ev++) {
-                if (event.id == events[ev].id) { // use == not === so str get casted to number
-                    found = true;
-                }
+            return true;
+        }
+    }
+    return false;
+}
+            
+/************************************************************/
+function preFilter(event) {
+    if (isCurrent(event)) {
+        // Insert only if unique; Different search strings give same results
+        var found = false;
+        for (var ev = 0; ev < events.length; ev++) {
+            if (event.id == events[ev].id) { // use == not === so str get casted to number
+                found = true;
             }
-            if (! found) { // not a duplicate
-                // If event location has zouk but name and description don't have it then discard.
-                // Also, if there is just a url with name zouk in description, discard
-                if (event.hasOwnProperty('place') && event.place) {
-                    placeStr = JSON.stringify(event.place);
-                    if (placeStr.search(/zouk/i) !== -1) { // found
-                        if (event.hasOwnProperty('name') && event.name) {
-                            if (event.name.search(/zouk/i) === -1) { // not found
-                                if (event.hasOwnProperty('description') && event.description) {
-                                    var description = event.description;
-                                    // remove http:... or https...
-                                    var desc = description.replace(/(?:https?|ftp):\/\/[\n\S]+/g, '');
-                                    if (desc.search(/zouk/i) === -1) { // not found
-                                        // remove description as this will eat up sessionStorage
-                                        event.description = null;
-                                        suspects.push(event);
-                                        return false;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    // if event is happening in a suspect location, discard
-                    if (event.place.hasOwnProperty('location') && event.place.location) {
-                        var location = event.place.location;
-                        if (location.hasOwnProperty('latitude') && location.hasOwnProperty('longitude')) {
-                            for (var k = 0; k < knownSuspectPlaces.length; k++) {
-                                if ((location.latitude == knownSuspectPlaces[k].latitude) 
-                                    && (location.longitude == knownSuspectPlaces[k].longitude)) {
+        }
+        if (! found) { // not a duplicate
+            // If event location has zouk but name and description don't have it then discard.
+            // Also, if there is just a url with name zouk in description, discard
+            if (event.hasOwnProperty('place') && event.place) {
+                placeStr = JSON.stringify(event.place);
+                if (placeStr.search(/zouk/i) !== -1) { // found
+                    if (event.hasOwnProperty('name') && event.name) {
+                        if (event.name.search(/zouk/i) === -1) { // not found
+                            if (event.hasOwnProperty('description') && event.description) {
+                                var description = event.description;
+                                // remove http:... or https...
+                                var desc = description.replace(/(?:https?|ftp):\/\/[\n\S]+/g, '');
+                                if (desc.search(/zouk/i) === -1) { // not found
                                     // remove description as this will eat up sessionStorage
                                     event.description = null;
-                                    suspects.push(event);
+                                    discarded.push(event);
                                     return false;
                                 }
                             }
                         }
                     }
-                } // place
-                return true;
-            }
+                }
+                // if event is happening in a suspect location, discard
+                if (event.place.hasOwnProperty('location') && event.place.location) {
+                    var location = event.place.location;
+                    if (location.hasOwnProperty('latitude') && location.hasOwnProperty('longitude')) {
+                        for (var k = 0; k < knownSuspectPlaces.length; k++) {
+                            if ((location.latitude == knownSuspectPlaces[k].latitude) 
+                                && (location.longitude == knownSuspectPlaces[k].longitude)) {
+                                // remove description as this will eat up sessionStorage
+                                event.description = null;
+                                discarded.push(event);
+                                return false;
+                            }
+                        }
+                    }
+                }
+            } // place
+            return true;
         }
     }
     return false;
@@ -1386,14 +1454,14 @@ function getEventFromName(name, events) {
 }
 
 /************************************************************/
-function filterSuspect(id, attending) {
+function filterValidatableEvent(id, attending) {
     // We asked fb to give all attendees of events where more
     // than 100 are going. But we many not get all the attendee id's
     // Discard events with less attendees
     if (attending && Object.keys(attending).length < 90) {
         return;
     }
-    // get the even
+    // get the event
     var evIdx = 0;
     for (; evIdx < events.length; evIdx++) {
         if (events[evIdx].id == id) {
@@ -1418,7 +1486,7 @@ function filterSuspect(id, attending) {
     if (ratio < 2) {
         // remove event
         var event = events.splice(evIdx, 1); // returns array of 1
-        suspects.splice(0, 0, event[0]);
+        discarded.splice(0, 0, event[0]);
         //console.log('Removing ' + event[0].name);
     }
 }
@@ -1429,6 +1497,14 @@ function getRelativeUrl(url) {
     var before = splitted[0].split('/');
     var len = before.length;
     return before[len - 2] + '/' + before[len - 1] + '?' + splitted[1];
+}
+
+/************************************************************/
+function getEventIdFromUrl(url) {
+    var splitted = url.split('?');
+    var before = splitted[0].split('/');
+    var len = before.length;
+    return before[len - 2];
 }
 
 /************************************************************/
@@ -1444,7 +1520,6 @@ function addContinent(event) {
     }
     event.continent = continent;
 }
-
 
 /************************************************************/
 function sendMessage() {
