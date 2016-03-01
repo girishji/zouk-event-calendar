@@ -817,7 +817,7 @@ function getSuspectEventAttendees() {
     // Batch requests are chained, after one finishes next one starts.
     // javascript is single threaded so thread safe
     for (var i = 0; i < events.length; i++) {
-        if (events[i].attending_count > 100) {
+        if (events[i].attending_count > 120) {
             // verify this event's legitimacy
             validatableEvents.push( { id: events[i].id, attending: {}, batched: false } );
         }
@@ -864,6 +864,9 @@ var suspectEventAttendeesCallback = function(response) {
             // responses correspond with requests sent in batch command
             if (body.hasOwnProperty('paging') && body.paging) {
                 var paging = body.paging;
+                if (! paging.next) {
+                    continue;
+                }
                 var eventId = getEventIdFromUrl(paging.next);
                 // match the request with response
                 var uIdx = -1;
