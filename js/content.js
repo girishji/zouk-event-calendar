@@ -726,7 +726,7 @@ var retrieveDiscardedEventsCallback = function (data) {
         }   
         progress = 100;
         $('#searchProgressBar').css('width', progress + '%').attr('aria-valuenow', progress);
-        console.log('retrieveEventsCallback: total events ' + events.length);
+        console.log('retrieveDiscardedEventsCallback: total discarded events ' + discarded.length);
         postProcess();
     }
 };
