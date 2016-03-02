@@ -16,7 +16,7 @@ $discardedEventsFile = "fb_discarded_events.data";
 $discardedEventsInterval = 2 * 24 * 3600;
 
 
-$pageSearchStrings = [
+$pageSearchStrings = array(
     'zouk',
     'zouk+carnival',
     'zouk+time',
@@ -169,11 +169,11 @@ $pageSearchStrings = [
     'international+zouk',
     'zouk+katowice',
     'carioca+zouk'
-];
+);
 
 
 // These are known festivals to compare against
-$knownMajorEvents = [ 
+$knownMajorEvents = array(
     'zouk\\s+libre.*festival',
     'prague.*zouk.*congress',
     'prague\\s+zouk\\s+marathon',
@@ -187,13 +187,13 @@ $knownMajorEvents = [
     'berg.*congres',
     'i\'m\\s*zouk',
     'russian\\s+zouk\\s+congress',
-    'canada.*zouk' ];
+    'canada.*zouk' );
 
-$knownUnrelatedPlaces = [
+$knownUnrelatedPlaces = array(
     [ "latitude" => '48.812053039547',  "longitude" => '2.4038419249911' ],
     [ "latitude" => '-22.882511415042', "longitude" => '-48.452376032727' ],
     [ "latitude" => '46.01244',         "longitude" => '-0.28403' ],
     [ "latitude" => '-22.9937382',      "longitude" => '-44.2409439' ]
-];
+);
 
 ?>
