@@ -588,10 +588,10 @@ var pagesCallback = function(response) {
                     var pageName = page.name.toLowerCase();
                     if (pageName.includes('zouk') || pageName.includes('lambada')
                         || pageName.includes('зук')) {
-                        console.log("Including page " + page.name);
+                        //console.log("Including page " + page.name);
                         pages[page.id] = true; // overwrites any previous value (set)
                     } else {
-                        console.log("Discarding page " + page.name);
+                        //console.log("Discarding page " + page.name);
                     }
                 }
             }
