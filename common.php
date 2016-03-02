@@ -97,9 +97,56 @@ function retrieveGCS($bucket, $file) {
     } catch (Exception $e) {
         syslog(LOG_EMERG, $e->getMessage());
         sendMail('Cannot get data from GCS: ' . $e->getMessage());
-        //exit('Cannot get access tokens: ' . $e->getMessage());
     }
     return NULL;
+}
+
+
+/************************************************************/
+function fbBatchSearch(&$resultArray, &$fb, $remainingSearch, $nextBatchCallback, $filterResultCallback) {
+    // $remainingSearch is array copy by value; array is not an object
+    // (aside: when you assign one object to another only reference is copied)
+    $batch = array();
+    $batch = call_user_func($nextBatchCallback, 'fb', 'batch', 'remainingSearch');
+    //$batch = nextFullBatch($fb, $batch, $remainingSearch);
+    while (count($batch) > 0) {
+        try {
+            $responses = $fb->sendBatchRequest($batch);
+        } catch(Facebook\Exceptions\FacebookResponseException $e) {
+            // When Graph returns an error
+            syslog(LOG_ERR, 'Graph returned an error: ' . $e->getMessage());
+            exit;
+        } catch(Facebook\Exceptions\FacebookSDKException $e) {
+            // When validation fails or other local issues
+            syslog(LOG_ERR, 'Facebook SDK returned an error: ' . $e->getMessage());
+            exit;
+        }
+
+        foreach ($responses as $key => $response) {
+            if ($response->isError()) {
+                $e = $response->getThrownException();
+                syslog(LOG_ERR, 'Error! Facebook SDK Said: ' . $e->getMessage());
+                //echo 'Graph Said: ' . "\n\n"; //var_dump($e->getResponse());
+            } else {
+                //echo "Response: " . $response->getBody() . "\n";
+                // turn nodes into edges for pagination and iteration
+                $feedEdge = $response->getGraphEdge();
+                //syslog(LOG_DEBUG, print_r($feedEdge, TRUE));
+                foreach ($feedEdge as $graphNode) {
+                    syslog(LOG_DEBUG, print_r($graphNode, TRUE));
+                    call_user_func($filterResultCallback, 'resultArray', 'graphNode');
+                }
+            }
+            // add next page request to batch
+            $request = $response->getRequestForNextPage();
+            syslog(LOG_DEBUG, print_r($request, TRUE));
+            if (! is_null($request)) {
+                //array_push($batch, $request);
+            }  
+        }
+        //$batch = nextFullBatch($fb, $batch, $remainingSearch);
+        //$batch = call_user_func($nextBatchCallback, 'fb', 'batch', 'remainingSearch');
+    } // while
 }
 
 /************************************************************/

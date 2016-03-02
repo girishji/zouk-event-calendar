@@ -52,7 +52,7 @@ function nextFullBatch(&$fb, &$batch, &$remainingSearch) {
         if (count($remainingSearch) > 0) {
             $str = array_shift($remainingSearch);
             $request = $fb->request('GET', '/search?q=' . $str
-                                    . '&type=event&fields=id,name,start_time,place,attending_count,cover,description');
+                                    . '&type=page&fields=id,name');
             array_push($batch, $request);
         }
     }
@@ -60,48 +60,8 @@ function nextFullBatch(&$fb, &$batch, &$remainingSearch) {
 }
 
 /************************************************************/
-function gatherEvents(&$events, &$fb, $remainingSearch) {
-    // $remainingSearch is array copy by value; array is not an object
-    // (aside: when you assign one object to another only reference is copied)
-    $batch = array();
-    $batch = nextFullBatch($fb, $batch, $remainingSearch);
-    while (count($batch) > 0) {
-        try {
-            $responses = $fb->sendBatchRequest($batch);
-        } catch(Facebook\Exceptions\FacebookResponseException $e) {
-            // When Graph returns an error
-            syslog(LOG_ERR, 'Graph returned an error: ' . $e->getMessage());
-            exit;
-        } catch(Facebook\Exceptions\FacebookSDKException $e) {
-            // When validation fails or other local issues
-            syslog(LOG_ERR, 'Facebook SDK returned an error: ' . $e->getMessage());
-            exit;
-        }
-
-        foreach ($responses as $key => $response) {
-            if ($response->isError()) {
-                $e = $response->getThrownException();
-                syslog(LOG_ERR, 'Error! Facebook SDK Said: ' . $e->getMessage());
-                //echo 'Graph Said: ' . "\n\n"; //var_dump($e->getResponse());
-            } else {
-                //echo "Response: " . $response->getBody() . "\n";
-                // turn nodes into edges for pagination and iteration
-                $feedEdge = $response->getGraphEdge();
-                //syslog(LOG_DEBUG, print_r($feedEdge, TRUE));
-                foreach ($feedEdge as $graphNode) {
-                    //syslog(LOG_DEBUG, print_r($graphNode, TRUE));
-                }
-            }
-            // add next page request to batch
-            $request = $response->getRequestForNextPage();
-            syslog(LOG_DEBUG, print_r($request, TRUE));
-            if (! is_null($request)) {
-                array_push($batch, $request);
-            }  
-        }
-
-        //$batch = nextFullBatch($fb, $batch, $remainingSearch);
-    } // while
+function validatePage(&$pages, $page) {
+    // syslog(LOG_DEBUG, print_r($graphNode, TRUE));
 }
 
 /************************************************************/
@@ -110,14 +70,28 @@ $fb = getFacebook($appId, $appSecret);
 $accessToken = getAccessToken($fb, $bucket, $tokenFile);
 $fb->setDefaultAccessToken($accessToken);
 
-// $events = array();
-// gatherEvents($events, $fb, $searchStrings);
+/* cron job calles GET on this. Any output (like 'echo') will be sent to cron.
+ * echo "done"
+ */
 
-if (!$found) {
-    // file not valid, send json object as error
-    echo "{ \"error\": \"zouk calendar: file not found\" }";
+// FB usually resets search quotas after 1 hr. Do every search at least 1 hr apart.
+$interval = 3600; // 1 hr
+
+$proceed = true;
+if (fileExists($bucket, $eventsFile)) {
+    $mTime = lastModifiedTime($bucket, $eventsFile);
+    $date = new DateTime();
+    $curTime = $date->getTimestamp();
+    if ($curTime - $mTime < $interval) {
+        $proceed = false;
+    } 
+}
+if ($proceed) {
+    $pages = array();
+    gatherPages($pages, $fb, $pagesSearchStrings);
+    fbBatchSearch($pages, $fb, $pagesSearchStrings, 'nextFullBatch', 'validatePage') {
 }
 
-
+//    echo "{ \"error\": \"zouk calendar: file not found\" }";
 
 ?>

@@ -21,6 +21,10 @@ handlers:
   script: cronjob.php
   login: admin
 
+- url: /tasks/searchfbpages
+  script: cronPageEvents.php
+  login: admin
+
 # for ajax calls from client; if it asks for x.php then give it x.php and not index.html
 - url: /token.php
   script: token.php

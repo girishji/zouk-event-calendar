@@ -6,8 +6,17 @@ $appSecret = '4bba3be85ec4ca2542d9357ead478330';
 // google cloud storage
 $bucket = 'zouk-bucket';
 $tokenFile = 'fb_access_tokens.data';
+$eventsFile = 'fb_events.data';
 
-$searchStrings = [
+$pagesFile = "fb_pages.data";
+$pagesInterval = 23 * 3600;
+$pageEventsFile = "fb_pages_events.data";
+$pageEventsInterval = 12 * 3600;
+$discardedEventsFile = "fb_discarded_events.data";
+$discardedEventsInterval = 2 * 24 * 3600;
+
+
+$pageSearchStrings = [
     'zouk',
     'zouk+carnival',
     'zouk+time',
@@ -147,7 +156,6 @@ $searchStrings = [
     'zouky',
     'zoukz',
 
-    'bachaturo',
     'zouk+marathon',
     'fall+zouk',
     'berg+zouk',

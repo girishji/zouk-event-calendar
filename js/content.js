@@ -283,6 +283,7 @@ var pages = {};
 // cursor for search strings to indicate how far we have searched
 var searchStringsCursor = 0;
 //
+var tokenFile = 'fb_access_tokens.data';
 var eventsFile = "fb_events.data";
 var eventsInterval = 2 * 3600; // seconds
 var pagesFile = "fb_pages.data";
@@ -394,7 +395,7 @@ function loginToFacebook() {
 // Get events from DB
 function retrieveEvents() {
     $('#searchProgressBarDiv').show();
-    // sendToken(); // on the server side it exchanges for long lived token
+    sendToken(); // on the server side it exchanges for long lived token
     retrieveJSON(eventsFile, eventsInterval, retrieveEventsCallback); // 1 hr = 3600 sec
 }
 
