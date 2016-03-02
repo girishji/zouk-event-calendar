@@ -65,6 +65,8 @@ function validatePage(&$pages, $page) {
 
 /************************************************************/
 
+syslog(LOG_DEBUG, 'cronPageEvents start');
+
 $fb = getFacebook($appId, $appSecret);
 $accessToken = getAccessToken($fb, $bucket, $tokenFile);
 $fb->setDefaultAccessToken($accessToken);
@@ -87,7 +89,6 @@ if (fileExists($bucket, $eventsFile)) {
 }
 if ($proceed) {
     $pages = array();
-    gatherPages($pages, $fb, $pagesSearchStrings);
     fbBatchSearch($pages, $fb, $pagesSearchStrings, 'nextFullBatch', 'validatePage');
 }
 
