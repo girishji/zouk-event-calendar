@@ -17,9 +17,7 @@ function quit($msg) {
 /************************************************************/
 function getAccessToken(&$fb, $bucket, $tokenFile) {
     // Read file from Google Storage
-    $client = getClient();
-    $storage = getStorageService($client);
-    $tokensStr = getTokens($client, $storage, $bucket, $tokenFile);
+    $tokensStr = retrieveGCS($bucket, $tokenFile);
 
     if (empty($tokensStr)) {
         quit("No more FB access tokens in storage -- login to app ASAP to generate a token");
