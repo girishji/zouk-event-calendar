@@ -108,7 +108,7 @@ function fbBatchSearch(&$resultArray, &$fb, $remainingSearch, $nextBatchCallback
     // $remainingSearch is array copy by value; array is not an object
     // (aside: when you assign one object to another only reference is copied)
     $batch = array();
-    $batch = call_user_func($nextBatchCallback, 'fb', 'batch', 'remainingSearch');
+    $batch = $nextBatchCallback($fb, $batch, $remainingSearch);
     //$batch = nextFullBatch($fb, $batch, $remainingSearch);
     while (count($batch) > 0) {
         try {
