@@ -41,6 +41,7 @@ function getAccessToken(&$fb, $bucket, $tokenFile) {
 /************************************************************/
 // add more requests to the batch if possible
 function nextFullBatch(&$fb, &$batch, &$remainingSearch) {
+    syslog(LOG_DEBUG, 'nextFullBatch');
     $length = count($batch);
     if ($length >= 45) { //FB limit for batch is 50 requests
         return $batch;

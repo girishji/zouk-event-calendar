@@ -104,6 +104,7 @@ function retrieveGCS($bucket, $file) {
 
 /************************************************************/
 function fbBatchSearch(&$resultArray, &$fb, $remainingSearch, $nextBatchCallback, $filterResultCallback) {
+    syslog(LOG_DEBUG, 'fbBatchSearch');
     // $remainingSearch is array copy by value; array is not an object
     // (aside: when you assign one object to another only reference is copied)
     $batch = array();
@@ -111,6 +112,7 @@ function fbBatchSearch(&$resultArray, &$fb, $remainingSearch, $nextBatchCallback
     //$batch = nextFullBatch($fb, $batch, $remainingSearch);
     while (count($batch) > 0) {
         try {
+            syslog(LOG_DEBUG, 'fbBatchSearch: sending batch request');
             $responses = $fb->sendBatchRequest($batch);
         } catch(Facebook\Exceptions\FacebookResponseException $e) {
             // When Graph returns an error
