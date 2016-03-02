@@ -64,7 +64,6 @@ function validatePage(&$pages, $page) {
 }
 
 /************************************************************/
-
 syslog(LOG_DEBUG, 'cronPageEvents start');
 
 $fb = getFacebook($appId, $appSecret);
@@ -87,6 +86,9 @@ if (fileExists($bucket, $eventsFile)) {
         $proceed = false;
     } 
 }
+// XXX
+fbBatchSearch($pages, $fb, $pagesSearchStrings, 'nextFullBatch', 'validatePage');
+
 if ($proceed) {
     $pages = array();
     fbBatchSearch($pages, $fb, $pagesSearchStrings, 'nextFullBatch', 'validatePage');
