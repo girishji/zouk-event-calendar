@@ -136,7 +136,7 @@ function fbBatchSearch(&$resultArray, &$fb, $remainingSearch, $nextBatchCallback
                 //syslog(LOG_DEBUG, print_r($feedEdge, TRUE));
                 foreach ($feedEdge as $graphNode) {
                     syslog(LOG_DEBUG, print_r($graphNode, TRUE));
-                    call_user_func($filterResultCallback, 'resultArray', 'graphNode');
+                    $filterResultCallback($resultArray, $graphNode);
                 }
             }
             // add next page request to batch
