@@ -86,12 +86,13 @@ if (fileExists($bucket, $eventsFile)) {
         $proceed = false;
     } 
 }
+
 // XXX
-fbBatchSearch($pages, $fb, $pagesSearchStrings, 'nextFullBatch', 'validatePage');
+fbBatchSearch($pages, $fb, $pageSearchStrings, 'nextFullBatch', 'validatePage');
 
 if ($proceed) {
     $pages = array();
-    fbBatchSearch($pages, $fb, $pagesSearchStrings, 'nextFullBatch', 'validatePage');
+    fbBatchSearch($pages, $fb, $pageSearchStrings, 'nextFullBatch', 'validatePage');
 }
 
 //    echo "{ \"error\": \"zouk calendar: file not found\" }";
