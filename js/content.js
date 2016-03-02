@@ -75,7 +75,7 @@ $(document).ready(function() {
 
 // Global
 // Batch request maximum is 50
-var searchStrings = [
+var eventSearchStrings = [
     'zouk',
     'zouk+carnival',
     'zouk+time',
@@ -232,6 +232,7 @@ var searchStrings = [
     'carioca+zouk'
 ];
 
+var pageSearchStrings = eventSearchStrings;
 
 // These are known festivals to compare against
 var knownEvents = [ 'zouk\\s+libre.*festival',
@@ -426,7 +427,7 @@ function startBatchSearchEvents(cursor) {
 
     for (var i = cursor, count = 0; i < searchStrings.length && count < BATCH_MAX; i++, count++) {
         batchCmd.push( { method: 'GET', 
-                         relative_url: 'search?q=' + searchStrings[i] 
+                         relative_url: 'search?q=' + eventSearchStrings[i] 
                          + '&type=event&fields=id,name,start_time,place,attending_count,cover,description&access_token='
                          + accessToken }
                      );
@@ -477,7 +478,7 @@ var eventsCallback = function(response) {
             if (! nextPageFound) {
                 if (searchStringsCursor < searchStrings.length) {
                     batchCmd.push( { method: 'GET', 
-                                     relative_url: 'search?q=' + searchStrings[searchStringsCursor] 
+                                     relative_url: 'search?q=' + eventSearchStrings[searchStringsCursor] 
                                      + '&type=event&fields=id,name,start_time,place,attending_count,cover,description&access_token='
                                      + accessToken }
                                  );
@@ -553,8 +554,8 @@ function firstBatchPageSearch(cursor) {
     var batchCmd = [];
     for (var i = cursor, count = 0; i < searchStrings.length && count < BATCH_MAX; i++, count++) {
         batchCmd.push( { method: 'GET', 
-                         relative_url: 'search?q=' + searchStrings[i] 
-                         + '&type=page&fields=id&access_token='
+                         relative_url: 'search?q=' + pageSearchStrings[i] 
+                         + '&type=page&fields=id,name&access_token='
                          + accessToken }
                      );
     }
@@ -564,7 +565,7 @@ function firstBatchPageSearch(cursor) {
 
 /************************************************************/
 var pagesCallback = function(response) {
-    //console.log('pagesCallback');
+    console.log('pagesCallback');
 
     if (!response || response.error) {
         console.log('FB.api: Error occured');
@@ -582,7 +583,13 @@ var pagesCallback = function(response) {
             if (body.hasOwnProperty('data') && body.data) {
                 var data = body.data;
                 for (var j = 0; j < data.length; j++) {
-                    pages[data[j].id] = true; // overwrites any previous value (set)
+                    // Filter out pages that don't have zouk in their name
+                    var page = data[j];
+                    var pageName = page.name.toLowerCase();
+                    if (pageName.includes('zouk') || pageName.includes('lambada')
+                        || pageName.includes('зук')) {
+                        pages[page.id] = true; // overwrites any previous value (set)
+                    }
                 }
             }
             // next paging link
@@ -600,8 +607,8 @@ var pagesCallback = function(response) {
             if (! foundNextPage) {
                 if (searchStringsCursor < searchStrings.length) {
                     batchCmd.push( { method: 'GET', 
-                                     relative_url: 'search?q=' + searchStrings[searchStringsCursor] 
-                                     + '&type=page&fields=id&access_token='
+                                     relative_url: 'search?q=' + pageSearchStrings[searchStringsCursor] 
+                                     + '&type=page&fields=id,name&access_token='
                                      + accessToken }
                                  );
                     searchStringsCursor++;
@@ -660,7 +667,7 @@ function getEventsFromPages() {
 
 /************************************************************/
 var pageEventsCallback = function(response) {
-    //console.log('pageEventsCallback');
+    console.log('pageEventsCallback');
     if (!response || response.error) {
         console.log('FB.api: Error occured');
         console.log(response);
