@@ -103,7 +103,7 @@ function retrieveGCS($bucket, $file) {
 
 
 /************************************************************/
-function fbBatchSearch(&$resultArray, &$fb, $remainingSearch, $nextBatchCallback, $filterResultCallback) {
+function fbBatchSearch(&$resultArray, &$fb, &$remainingSearch, $nextBatchCallback, $filterResultCallback) {
     syslog(LOG_DEBUG, 'fbBatchSearch');
     // $remainingSearch is array copy by value; array is not an object
     // (aside: when you assign one object to another only reference is copied)
