@@ -155,6 +155,8 @@ Added a Chrome extension called LiveReload to reload javascript files
 open -a safari http://zoukcalendar.com/
 ====
 How to list google cloud storage object, remove them, copy them etc.
+https://cloud.google.com/storage/docs/getting-started-gsutil
+
 GIRISHs-Air:~/sandbox/zouk-event-calendar$ gsutil ls
 gs://zouk-bucket/
 GIRISHs-Air:~/sandbox/zouk-event-calendar$ gsutil ls gs://zouk-bucket/
