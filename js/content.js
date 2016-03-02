@@ -425,7 +425,7 @@ function startBatchSearchEvents(cursor) {
     //console.log('startBatchSearch');
     var batchCmd = [];
 
-    for (var i = cursor, count = 0; i < searchStrings.length && count < BATCH_MAX; i++, count++) {
+    for (var i = cursor, count = 0; i < eventSearchStrings.length && count < BATCH_MAX; i++, count++) {
         batchCmd.push( { method: 'GET', 
                          relative_url: 'search?q=' + eventSearchStrings[i] 
                          + '&type=event&fields=id,name,start_time,place,attending_count,cover,description&access_token='
@@ -476,7 +476,7 @@ var eventsCallback = function(response) {
                 }
             }
             if (! nextPageFound) {
-                if (searchStringsCursor < searchStrings.length) {
+                if (searchStringsCursor < eventSearchStrings.length) {
                     batchCmd.push( { method: 'GET', 
                                      relative_url: 'search?q=' + eventSearchStrings[searchStringsCursor] 
                                      + '&type=event&fields=id,name,start_time,place,attending_count,cover,description&access_token='
@@ -552,7 +552,7 @@ function searchForPages() {
 function firstBatchPageSearch(cursor) {
     //console.log('firstBatchPageSearch');
     var batchCmd = [];
-    for (var i = cursor, count = 0; i < searchStrings.length && count < BATCH_MAX; i++, count++) {
+    for (var i = cursor, count = 0; i < pageSearchStrings.length && count < BATCH_MAX; i++, count++) {
         batchCmd.push( { method: 'GET', 
                          relative_url: 'search?q=' + pageSearchStrings[i] 
                          + '&type=page&fields=id,name&access_token='
@@ -605,7 +605,7 @@ var pagesCallback = function(response) {
                 }
             }
             if (! foundNextPage) {
-                if (searchStringsCursor < searchStrings.length) {
+                if (searchStringsCursor < pageSearchStrings.length) {
                     batchCmd.push( { method: 'GET', 
                                      relative_url: 'search?q=' + pageSearchStrings[searchStringsCursor] 
                                      + '&type=page&fields=id,name&access_token='
