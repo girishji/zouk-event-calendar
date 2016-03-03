@@ -109,7 +109,6 @@ function fbBatchSearch(&$resultArray, &$fb, $remainingSearch, $nextBatchCallback
     // (aside: when you assign one object to another only reference is copied)
     $batch = array();
     $batch = $nextBatchCallback($fb, $batch, $remainingSearch);
-    //$batch = nextFullBatch($fb, $batch, $remainingSearch);
     while (count($batch) > 0) {
         try {
             syslog(LOG_DEBUG, 'fbBatchSearch: sending batch request');
@@ -135,7 +134,7 @@ function fbBatchSearch(&$resultArray, &$fb, $remainingSearch, $nextBatchCallback
                 $feedEdge = $response->getGraphEdge();
                 //syslog(LOG_DEBUG, print_r($feedEdge, TRUE));
                 foreach ($feedEdge as $graphNode) {
-                    syslog(LOG_DEBUG, print_r($graphNode, TRUE));
+                    //syslog(LOG_DEBUG, print_r($graphNode, TRUE));
                     $filterResultCallback($resultArray, $graphNode);
                 }
             }
@@ -143,11 +142,10 @@ function fbBatchSearch(&$resultArray, &$fb, $remainingSearch, $nextBatchCallback
             $request = $response->getRequestForNextPage();
             syslog(LOG_DEBUG, print_r($request, TRUE));
             if (! is_null($request)) {
-                //array_push($batch, $request);
+                array_push($batch, $request);
             }  
         }
-        //$batch = nextFullBatch($fb, $batch, $remainingSearch);
-        //$batch = call_user_func($nextBatchCallback, 'fb', 'batch', 'remainingSearch');
+        $batch = $nextBatchCallback($fb, $batch, $remainingSearch);
     } // while
 }
 

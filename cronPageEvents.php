@@ -60,7 +60,11 @@ function nextFullBatch(&$fb, &$batch, &$remainingSearch) {
 
 /************************************************************/
 function validatePage(&$pages, $page) {
-    // syslog(LOG_DEBUG, print_r($graphNode, TRUE));
+    if ((stripos($page['name'], 'zouk') !== false) ||
+        (stripos($page['name'], 'lambada') !== false) ||
+        (stripos($page['name'], 'зук') !== false)) {
+        $pages[$page['id']] = true;
+    }
 }
 
 /************************************************************/
@@ -87,12 +91,13 @@ if (fileExists($bucket, $eventsFile)) {
     } 
 }
 
-// XXX
-fbBatchSearch($pages, $fb, $pageSearchStrings, 'nextFullBatch', 'validatePage');
-
 if ($proceed) {
     $pages = array();
     fbBatchSearch($pages, $fb, $pageSearchStrings, 'nextFullBatch', 'validatePage');
+    $pagesContent = json_encode($pages);
+    if (storeGCS($pagesContent, $bucket, $pagesFile) != 0) {
+        syslog(LOG_ERR, "Failed to store " . $pagesFile);
+    }
 }
 
 //    echo "{ \"error\": \"zouk calendar: file not found\" }";

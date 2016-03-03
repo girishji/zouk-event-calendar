@@ -67,7 +67,8 @@ $fileContent = json_encode($tokens);
 //var_dump($fileContent);
 //echo $fileContent;
 
-storeGCS($fileContent, $bucket, $tokenFile);
-
+if (storeGCS($fileContent, $bucket, $tokenFile) !== 0) {
+    syslog(LOG_ERR, "Failed to store " . $tokenFile);
+}
 
 ?>
