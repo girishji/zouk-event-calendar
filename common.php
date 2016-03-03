@@ -145,7 +145,8 @@ function fbBatchSearch(&$resultArray, &$fb, $remainingSearch, $nextBatchCallback
             syslog(LOG_DEBUG, print_r($request, TRUE));
             //if (! is_null($request)) {
             //    array_push($batch, $request);
-            //}  
+            //}
+            break;
         }
         //$batch = $nextBatchCallback($fb, $batch, $remainingSearch);
     } // while
