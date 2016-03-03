@@ -91,14 +91,14 @@ if (fileExists($bucket, $eventsFile)) {
     } 
 }
 
-if ($proceed) {
+//if ($proceed) {
     $pages = array();
     fbBatchSearch($pages, $fb, $pageSearchStrings, 'nextFullBatch', 'validatePage');
-    $pagesContent = json_encode($pages);
-    if (storeGCS($pagesContent, $bucket, $pagesFile) != 0) {
-        syslog(LOG_ERR, "Failed to store " . $pagesFile);
-    }
-}
+//    $pagesContent = json_encode($pages);
+//    if (storeGCS($pagesContent, $bucket, $pagesFile) != 0) {
+//        syslog(LOG_ERR, "Failed to store " . $pagesFile);
+//    }
+//}
 
 //    echo "{ \"error\": \"zouk calendar: file not found\" }";
 
