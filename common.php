@@ -139,13 +139,15 @@ function fbBatchSearch(&$resultArray, &$fb, $remainingSearch, $nextBatchCallback
                 }
             }
             // add next page request to batch
-            $request = $response->getRequestForNextPage();
+            
+            // $request = $response->getRequestForNextPage();
+            $body = $response->getDecodedBody();
             syslog(LOG_DEBUG, print_r($request, TRUE));
-            if (! is_null($request)) {
-                array_push($batch, $request);
-            }  
+            //if (! is_null($request)) {
+            //    array_push($batch, $request);
+            //}  
         }
-        $batch = $nextBatchCallback($fb, $batch, $remainingSearch);
+        //$batch = $nextBatchCallback($fb, $batch, $remainingSearch);
     } // while
 }
 
