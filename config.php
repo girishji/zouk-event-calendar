@@ -1,10 +1,10 @@
 <?php
 
-# $appId = '1261883747160137';
-# $appSecret = '4bba3be85ec4ca2542d9357ead478330';
+$appId = '1261883747160137';
+$appSecret = '4bba3be85ec4ca2542d9357ead478330';
 
-$appId = '955332727853853';
-$appSecret = '701b90c117a26a7aa22d77677f276380';
+# $appId = '955332727853853';
+# $appSecret = '701b90c117a26a7aa22d77677f276380';
 
 // google cloud storage
 $bucket = 'zouk-bucket';
