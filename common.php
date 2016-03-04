@@ -123,6 +123,7 @@ function fbBatchSearch(&$resultArray, &$fb, $remainingSearch, $nextBatchCallback
             exit;
         }
 
+        $batch = array(); // reinit
         foreach ($responses as $key => $response) {
             if ($response->isError()) {
                 $e = $response->getThrownException();
