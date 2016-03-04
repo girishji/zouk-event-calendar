@@ -8,7 +8,7 @@
 window.fbAsyncInit = function() {
     FB.init({
         //appId      : <?php echo getenv('FACEBOOK_APP_ID'); ?>, //set from server side
-        //appId      : 1263842110297634, // from FB app settings page
+        //appId      : 955332727853853, // from FB app settings page
         appId      : 1261883747160137, // from FB app settings page
         cookie     : true,
         xfbml      : true,
@@ -41,7 +41,8 @@ window.fbAsyncInit = function() {
     var js, fjs = d.getElementsByTagName(s)[0];
     if (d.getElementById(id)) return;
     js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=1261883747160137";
+    //js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=1261883747160137";
+    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=955332727853853";
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 
