@@ -91,6 +91,18 @@ if (fileExists($bucket, $eventsFile)) {
     } 
 }
 
+// XXX
+// if ($proceed) {
+//     if (fileExists($bucket, $pagesFile)) {
+//         $mTime = lastModifiedTime($bucket, $pagesFile);
+//         $date = new DateTime();
+//         $curTime = $date->getTimestamp();
+//         if ($curTime - $mTime < $interval) {
+//             $proceed = false;
+//         }
+//     }
+// }
+
 if ($proceed) {
     $pages = array();
     fbBatchSearch($pages, $fb, $pageSearchStrings, 'nextFullBatch', 'validatePage');
