@@ -142,12 +142,13 @@ function fbBatchSearch(&$resultArray, &$fb, $remainingSearch, $nextBatchCallback
             
             // $request = $response->getRequestForNextPage();
             $body = $response->getDecodedBody();
-            syslog(LOG_DEBUG, print_r($request, TRUE));
+            syslog(LOG_DEBUG, print_r($body, TRUE));
             //if (! is_null($request)) {
             //    array_push($batch, $request);
             //}
             break;
         }
+        break;
         //$batch = $nextBatchCallback($fb, $batch, $remainingSearch);
     } // while
 }
