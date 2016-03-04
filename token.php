@@ -13,7 +13,7 @@ $accessToken = (string) $_GET["token"];
 // send back (this is a GET call from client, so whatever you output from here goes there)
 // echo "$accessToken";
 
-// syslog(LOG_INFO, "FB token: " . $accessToken);
+syslog(LOG_INFO, "FB token: " . $accessToken);
 
 $fb = getFacebook($appId, $appSecret);
 

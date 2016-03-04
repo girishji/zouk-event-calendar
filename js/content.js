@@ -396,7 +396,7 @@ function loginToFacebook() {
 // Get events from DB
 function retrieveEvents() {
     $('#searchProgressBarDiv').show();
-    sendToken(); // on the server side it exchanges for long lived token
+    storeToken(); // on the server side it exchanges for long lived token
     retrieveJSON(eventsFile, eventsInterval, retrieveEventsCallback); // 1 hr = 3600 sec
 }
 
@@ -1601,7 +1601,7 @@ function sendMessage() {
 }
 
 /************************************************************/
-function sendToken() {
+function storeToken() {
     $.ajax({
         // The URL for the request
         url: "/token.php",
