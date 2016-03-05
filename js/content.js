@@ -286,13 +286,13 @@ var searchStringsCursor = 0;
 //
 var tokenFile = 'fb_access_tokens.data';
 var eventsFile = "fb_events.data";
-var eventsInterval = 2 * 3600; // seconds
+var eventsInterval = 6 * 3600; // seconds
 var pagesFile = "fb_pages.data";
-var pagesInterval = 23 * 3600;
+var pagesInterval = 48 * 3600;
 var pageEventsFile = "fb_pages_events.data";
 var pageEventsInterval = 12 * 3600;
 var discardedEventsFile = "fb_discarded_events.data";
-var discardedEventsInterval = 2 * 24 * 3600;
+var discardedEventsInterval = 48 * 3600;
 
 
 /************************************************************/

@@ -44,7 +44,8 @@ if (fileExists($bucket, $file)) {
                     }
                     if (! $found) {
                         // add it
-                        array_push($newEvents, $event); 
+                        array_push($newEvents, $event);
+                        sendMail('Adding event ' .  print_r($event, TRUE));
                     }
                 }
             }
