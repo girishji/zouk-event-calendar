@@ -3,6 +3,11 @@ require('./vendor/autoload.php');
 require('./config.php');
 require('./common.php');
 
+// php object vs array
+// $someobject->{'xx'} and $someobject.xx are same
+// for associative array, do $somearray['xx']
+// both objects and arrays can use 'foreach {$xx as $x}' statement
+
 $post = file_get_contents('php://input');
 $data = json_decode($post); // to object
 $file = $data->{'file'};
