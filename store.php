@@ -39,7 +39,7 @@ if (fileExists($bucket, $file)) {
                     }
                 }
             }
-        } else if ($dtype = 'page') {
+        } else if ($dtype == 'page') {
             // how do you know if a page is not removed? it is too expensive to query fb just for this, so don't do anything
             // let's store pages as they are sent here, without merging with old list
         } else {
