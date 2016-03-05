@@ -167,3 +167,9 @@ Removing gs://zouk-bucket/fb_events.data...
 GIRISHs-Air:~/sandbox/zouk-event-calendar$ gsutil ls gs://zouk-bucket/
 gs://zouk-bucket/fb_access_tokens.data
 ====
+
+FB manages quotas by user. I was able to search using fogo account but not with my own account after a cron job mishap (with infinite loop search) which blocked me. This means, searching in background in cron jobs is a bad idea since the quota is getting affected everytime anyone searches.
+- make sure a brand new user can finish all levels of search from scratch, after that adjust min frequency of search
+- only merge events files, never delete events that are current
+
+====

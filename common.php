@@ -111,7 +111,7 @@ function fbBatchSearch(&$resultArray, &$fb, $remainingSearch, $nextBatchCallback
     $batch = $nextBatchCallback($fb, $batch, $remainingSearch);
     while (count($batch) > 0) {
         try {
-            syslog(LOG_DEBUG, 'fbBatchSearch: sending batch request');
+            //syslog(LOG_DEBUG, 'fbBatchSearch: sending batch request');
             $responses = $fb->sendBatchRequest($batch);
         } catch(Facebook\Exceptions\FacebookResponseException $e) {
             // When Graph returns an error

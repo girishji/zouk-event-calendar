@@ -396,7 +396,7 @@ function loginToFacebook() {
 // Get events from DB
 function retrieveEvents() {
     $('#searchProgressBarDiv').show();
-    storeToken(); // on the server side it exchanges for long lived token
+    //storeToken(); // on the server side it exchanges for long lived token
     retrieveJSON(eventsFile, eventsInterval, retrieveEventsCallback); // 1 hr = 3600 sec
 }
 
