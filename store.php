@@ -6,10 +6,56 @@ require('./common.php');
 $post = file_get_contents('php://input');
 $data = json_decode($post); // to object
 $file = $data->{'file'};
-$content = json_encode($data->{'content'});
+$dtype =$data->{'type'};
+$newEvents = $data->{'content'};
 
+/* always merge */
+
+if (fileExists($bucket, $file)) {
+    $content = retrieveGCS($bucket, $file);
+    if ($content) {
+        $date = new DateTime();
+        $curTime = $date->getTimestamp();
+        if ($dtype == 'event') {
+            $oldEvents = json_decode($content); // array of objects (do not specify 'true' as it will force an array)
+            foreach ($oldEvents as $event) {
+                // is current?
+                $startTime = $event->{'start_time'}; // 2013-01-25T00:11:02+0000
+                $d = DateTime::createFromFormat(DateTime::ISO8601, $startTime);
+                $evTime = $d->getTimestamp();
+                $interval = 24 * 3600; // 1 day
+                if ($curTime - $evTime < $interval) {
+                    // see if this event is not already there
+                    $found = false;
+                    foreach ($newEvents as $newEv) {
+                        if ($newEv->{'id'} == $event->{'id'}) {
+                            $found = true;
+                            break;
+                        }
+                    }
+                    if (! $found) {
+                        // add it
+                        array_push($newEvents, $event); 
+                    }
+                }
+            }
+        } else if ($dtype = 'page') {
+            // how do you know if a page is not removed? it is too expensive to query fb just for this, so don't do anything
+            // let's store pages as they are sent here, without merging with old list
+        } else {
+            $msg = 'zouk calendar: content type not found' . $dtype;
+            syslog(LOG_EMERG, $msg);
+            sendMail($msg);
+        }
+    }
+}
+
+$content = json_encode($newEvents);
 if (storeGCS($content, $bucket, $file) != 0) {
     echo "{ \"error\": \"zouk calendar: file store failed\" }";
+    $msg = 'zouk calendar: failed to store file ' . $file;
+    syslog(LOG_EMERG, $msg);
+    sendMail($msg);
 }
 //var_dump($post);
 ?>

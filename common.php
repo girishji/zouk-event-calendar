@@ -150,6 +150,7 @@ function fbBatchSearch(&$resultArray, &$fb, $remainingSearch, $nextBatchCallback
             break;
         }
         break;
+
         //$batch = $nextBatchCallback($fb, $batch, $remainingSearch);
     } // while
 }

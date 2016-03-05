@@ -303,9 +303,10 @@ var discardedEventsInterval = 2 * 24 * 3600;
 // be a string (use JSON.stringify any object or array), and processData
 // should be false. On the server side php you use $_POST for former
 // and file_get_contents() for latter
-function storeJSON(fileName, dataVal) {
+function storeJSON(fileName, dataType, dataVal) {
     var content = {
         file: fileName,
+        type: dataType,
         content: dataVal
     };
     //console.log(content);
@@ -499,7 +500,7 @@ var eventsCallback = function(response) {
     } else {
         // We are done, check pages and their events
         console.log('total events ' + events.length);
-        storeJSON(eventsFile, events);
+        storeJSON(eventsFile, 'event', events);
         retrievePageEvents();
     }
 };
@@ -631,7 +632,7 @@ var pagesCallback = function(response) {
     } else {
         // We are done, do further filtering
         console.log('total pages ' + Object.keys(pages).length);
-        storeJSON(pagesFile, Object.keys(pages));
+        storeJSON(pagesFile, 'page', Object.keys(pages));
         getEventsFromPages();
     }
 };
@@ -708,7 +709,7 @@ var pageEventsCallback = function(response) {
         //$('#searchProgressBar').css('width', '100%').attr('aria-valuenow', 100);
         //$('#filterProgressBarDiv').show();
         //progress = 0; // for next progress bar
-        storeJSON(pageEventsFile, events);
+        storeJSON(pageEventsFile, 'event', events);
         retrieveDiscardedEvents();
     }
 };
@@ -739,7 +740,7 @@ var retrieveDiscardedEventsCallback = function (data) {
         progress = 100;
         $('#searchProgressBar').css('width', progress + '%').attr('aria-valuenow', progress);
         console.log('retrieveDiscardedEventsCallback: total discarded events ' + discarded.length);
-        postProcess();
+        postProcess(false);
     }
 };
 
@@ -941,7 +942,7 @@ var suspectEventAttendeesCallback = function(response) {
 };
     
 /************************************************************/
-function postProcess() {        
+function postProcess(fresh = true) {        
     if (events.length > 0) {
         // post process, filter out more events
         var sortTime = function(at, bt) {
@@ -960,7 +961,9 @@ function postProcess() {
             sessionStorage.setItem('zoukevents', JSON.stringify(events));
             sessionStorage.setItem('discardedevents', JSON.stringify(discarded));
         }
-        storeJSON(discardedEventsFile, discarded);
+        if (fresh) {
+            storeJSON(discardedEventsFile, 'event', discarded);
+        }
     }
 }
 
