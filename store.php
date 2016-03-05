@@ -8,6 +8,10 @@ require('./common.php');
 // for associative array, do $somearray['xx']
 // both objects and arrays can use 'foreach {$xx as $x}' statement
 
+// using json_decode($xxx, true) will force convert and object into an array
+// json_decode without 'true' means in a recursive tree object array, array part
+// remains array and object part remains object
+
 $post = file_get_contents('php://input');
 $data = json_decode($post); // to object
 $file = $data->{'file'};
