@@ -169,7 +169,7 @@ gs://zouk-bucket/fb_access_tokens.data
 ====
 
 FB manages quotas by user. I was able to search using fogo account but not with my own account after a cron job mishap (with infinite loop search) which blocked me. This means, searching in background in cron jobs is a bad idea since the quota is getting affected everytime anyone searches.
-- make sure a brand new user can finish all levels of search from scratch, after that adjust min frequency of search
+- make sure a brand new user can finish all levels of search from scratch (it does!), after that adjust min frequency of search (note: fogo account found 557 events, same as my account)
 - only merge events files, never delete events that are current
 
 ====

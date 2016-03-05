@@ -490,7 +490,7 @@ var eventsCallback = function(response) {
         } 
     }
     // Update progress bar
-    progress = (progress < 30) ? progress + 5 : progress;
+    progress = (progress < 30) ? progress + 2 : progress;
     $('#searchProgressBar').css('width', progress + '%').attr('aria-valuenow', progress);
 
     // Recurse:
@@ -537,7 +537,7 @@ var retrievePagesCallback = function (data) {
         for (var i = 0; i < data.length; i++) {
            pages[data[i]] = true; // data[i] is page id
         }
-        progress = 70;
+        progress = 50;
         $('#searchProgressBar').css('width', progress + '%').attr('aria-valuenow', progress);
         console.log('retrievePagesCallback: total pages ' + Object.keys(pages).length);
         getEventsFromPages();
@@ -622,7 +622,7 @@ var pagesCallback = function(response) {
         } 
     }
     // Update progress bar
-    progress = (progress < 60) ? progress + 5 : progress;
+    progress = (progress < 42) ? progress + 1 : progress;
     $('#searchProgressBar').css('width', progress + '%').attr('aria-valuenow', progress);
 
     // Recurse:
@@ -694,7 +694,7 @@ var pageEventsCallback = function(response) {
     }
     // we process only one page 
     // Update progress bar
-    progress = (progress < 70) ? progress + 1 : progress;
+    progress = (progress < 74) ? progress + 1 : progress;
     $('#searchProgressBar').css('width', progress + '%').attr('aria-valuenow', progress);
     // Recurse
     var batchCmd = getBatchCmdFromPages();
@@ -779,7 +779,7 @@ var legitAttendeesCallback = function(response) {
     // Update progress bar
     // progress = (progress < 10) ? progress + 2 : progress;
     // $('#filterProgressBar').css('width', progress + '%').attr('aria-valuenow', progress);
-    progress = (progress < 80) ? progress + 1 : progress;
+    progress = (progress < 85) ? progress + 1 : progress;
     $('#searchProgressBar').css('width', progress + '%').attr('aria-valuenow', progress);
 
     var batchCmd = [];
@@ -861,7 +861,7 @@ var suspectEventAttendeesCallback = function(response) {
     // Update progress bar
     // progress = (progress < 95) ? progress + 2 : progress;
     // $('#filterProgressBar').css('width', progress + '%').attr('aria-valuenow', progress);
-    progress = (progress < 95) ? progress + 1 : progress;
+    progress = (progress < 96) ? progress + 1 : progress;
     $('#searchProgressBar').css('width', progress + '%').attr('aria-valuenow', progress);
     
     //console.log('response length ' + response.length + ' u-discarded ' + Object.keys(validatableEvents).length);
