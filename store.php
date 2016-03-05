@@ -45,7 +45,7 @@ if (fileExists($bucket, $file)) {
                     if (! $found) {
                         // add it
                         array_push($newEvents, $event);
-                        sendMail('Adding event ' .  print_r($event, TRUE));
+                        sendMail('Adding event ' .  print_r($event, TRUE)); // just for verification, when you get this email, check for duplicates
                     }
                 }
             }
