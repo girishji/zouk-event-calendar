@@ -937,12 +937,12 @@ var suspectEventAttendeesCallback = function(response) {
         // sort and display
         // $('#filterProgressBar').css('width', '100%').attr('aria-valuenow', 100);
         $('#searchProgressBar').css('width', '100%').attr('aria-valuenow', 100);
-        postProcess();
+        postProcess(true);
     }
 };
     
 /************************************************************/
-function postProcess(fresh = true) {        
+function postProcess(fresh) {        
     if (events.length > 0) {
         // post process, filter out more events
         var sortTime = function(at, bt) {
