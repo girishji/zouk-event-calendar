@@ -405,7 +405,7 @@ function retrieveEvents() {
 /************************************************************/
 var retrieveEventsCallback = function (data) {
     if (data.hasOwnProperty('error')) {
-        //searchForEvents();
+        searchForEvents();
     } else {
         for (var i = 0; i < data.length; i++) {
             addEvent(data[i]);
