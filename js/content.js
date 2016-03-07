@@ -287,11 +287,11 @@ var searchStringsCursor = 0;
 //
 var tokenFile = 'fb_access_tokens.data';
 var eventsFile = "fb_events.data";
-var eventsInterval = 4 * 3600; // seconds
+var eventsInterval = 3 * 3600; // seconds
 var pagesFile = "fb_pages.data";
 var pagesInterval = 48 * 3600;
 var pageEventsFile = "fb_pages_events.data";
-var pageEventsInterval = 12 * 3600;
+var pageEventsInterval = 6 * 3600;
 var discardedEventsFile = "fb_discarded_events.data";
 var discardedEventsInterval = 48 * 3600;
 
@@ -405,7 +405,7 @@ function retrieveEvents() {
 /************************************************************/
 var retrieveEventsCallback = function (data) {
     if (data.hasOwnProperty('error')) {
-        searchForEvents();
+        //searchForEvents();
     } else {
         for (var i = 0; i < data.length; i++) {
             addEvent(data[i]);
