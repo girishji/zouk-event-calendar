@@ -184,4 +184,6 @@ Because of godaddy fame, favicon does not work.
 1) use gae appspot url in godaddy, and keep masking and forwarding
 2) use only forwarding and use apps.facebook.com/z...; Here you have to adjust scrolling -- comment out FB.Canvas.setAutoGrow().
 
+If you are using masking then make sure you fill all the SEO boxes in godaddy with description. You'll be stuck in godaddy header and frame. All the SEO info comes from there.
+
 ====
