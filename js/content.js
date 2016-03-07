@@ -726,7 +726,7 @@ var retrieveDiscardedEventsCallback = function (data) {
     } else {
         for (var i = 0; i < data.length; i++) {
             var event = data[i];
-            if (isCurrent(event)) {
+            if (isCurrent(event, true)) {
                 discarded.push(event);
                 // get the event index, remove it from list if exists
                 for (var evIdx = 0; evIdx < events.length; evIdx++) {
@@ -1464,7 +1464,7 @@ function addEvent(event) {
 }
 
 /************************************************************/
-function isCurrent(event, older = true) {
+function isCurrent(event, older) {
     // Parsing does not work in Safari. Recommended that you parse manually (see article below)
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse
     // Add events even if a day old
@@ -1481,7 +1481,7 @@ function isCurrent(event, older = true) {
             
 /************************************************************/
 function preFilter(event) {
-    if (isCurrent(event)) {
+    if (isCurrent(event, true)) {
         // Insert only if unique; Different search strings give same results
         var found = false;
         for (var ev = 0; ev < events.length; ev++) {
