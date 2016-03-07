@@ -17,7 +17,9 @@ window.fbAsyncInit = function() {
 
     // setAutoGrow works but slowly and consumes cycles
     // Without setautogrow you get frame in a frame effect on facebook page
-    FB.Canvas.setAutoGrow();
+    // XXX: remove this for cosmetic reasons
+    //FB.Canvas.setAutoGrow();
+
     // manually set size (also slow)
     // FB.Canvas.setSize({ width: 640, height: 4000 });
 
