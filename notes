@@ -179,6 +179,7 @@ FB manages quotas by user. I was able to search using fogo account but not with 
 
 GoDaddy xframe gotcha:
 godaddy can do forwarding w/ masking. Here it inserts its own html header, creates a 'frameset' (see source) and inserts you webpage into it. This causes facebook to bonk out since fb does not allow itself to be inserted inside a frame (to prevent click hijacking). Also, links to events won't work (unless you open them in a new window/tab). You cannot get apps.facebook.com/zouk-calendar to work, but GAE appspot url works.
+Because of godaddy fame, favicon does not work.
 2 options:
 1) use gae appspot url in godaddy, and keep masking and forwarding
 2) use only forwarding and use apps.facebook.com/z...; Here you have to adjust scrolling -- comment out FB.Canvas.setAutoGrow().
