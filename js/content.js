@@ -1412,7 +1412,7 @@ function isCurrent(event) {
     if (event && event.hasOwnProperty('start_time')) {
         var startTime = parseTime(event.start_time);
         if ((timeNow < startTime) 
-            || ((timeNow.getTime() - startTime.getTime()) < (24 * 3600 * 1000))) {
+            || ((timeNow.getTime() - startTime.getTime()) < (6 * 3600 * 1000))) {
             return true;
         }
     }
