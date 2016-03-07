@@ -944,6 +944,18 @@ var suspectEventAttendeesCallback = function(response) {
 /************************************************************/
 function postProcess(fresh) {        
     if (events.length > 0) {
+        var currentEvents = [];
+        var pastEvents = [];
+        // Filter only current and future events (not older events)
+        for (var i = 0; i < events.length; i++) {
+            var event = events[i];
+            if (isCurrent(event, false)) {
+                currentEvents.push(event)
+            } else {
+                pastEvents.push(event);
+            }
+        }
+
         // post process, filter out more events
         var sortTime = function(at, bt) {
             var a = parseTime(at.start_time);
@@ -952,14 +964,27 @@ function postProcess(fresh) {
         };
         events.sort(sortTime);
         discarded.sort(sortTime);
-        // wait for some millisec so progress bar shows completion
-        setTimeout(function() { display(events, accessToken); }, 700); 
+        if (pastEvents.length > 0) {
+            pastEvents.sort(sortTime);
+        }
+        if (currentEvents.length > 0) {
+            currentEvents.sort(sortTime);
+            // wait for some millisec so progress bar shows completion
+            setTimeout(function() { display(currentEvents, accessToken); }, 700);
+        }
         // cookies have 4k limit - so can't be used to store events. It siliently fails. Use
         // localStorage / sessionStorage. They have 5MB limit
         if (typeof(Storage) !== "undefined") { // This browser supports sessionStorage and localStorage
             // Save data to sessionStorage
-            sessionStorage.setItem('zoukevents', JSON.stringify(events));
-            sessionStorage.setItem('discardedevents', JSON.stringify(discarded));
+            if (currentEvents.length > 0) {
+                sessionStorage.setItem('zoukcurrentevents', JSON.stringify(currentEvents));
+            }
+            if (pastEvents.length > 0) {
+                sessionStorage.setItem('zoukpastevents', JSON.stringify(pastEvents));
+            }
+            if (discarded.length > 0) {
+                sessionStorage.setItem('zoukdiscardedevents', JSON.stringify(discarded));
+            }
         }
         if (fresh) {
             storeJSON(discardedEventsFile, 'event', discarded);
@@ -985,7 +1010,7 @@ function showEventsByTime() {
 /************************************************************/
 function showEventsByTimeInner() {
     if (typeof(Storage) !== "undefined") {
-        var data = sessionStorage.getItem('zoukevents');
+        var data = sessionStorage.getItem('zoukcurrentevents');
         if (data !== undefined && data) {
             var events = JSON.parse(data);
             if (events.length > 0) {
@@ -995,8 +1020,7 @@ function showEventsByTimeInner() {
             }
         }
     } else {
-        // XXX
-        // buildContent();
+        console.log('Session data not found');
     }
 }
 
@@ -1008,7 +1032,7 @@ function showEventsByAttending() {
 /************************************************************/
 function showEventsByAttendingInner() {
     if (typeof(Storage) !== "undefined") {
-        var data = sessionStorage.getItem('zoukevents');
+        var data = sessionStorage.getItem('zoukcurrentevents');
         if (data !== undefined && data) {
             var events = JSON.parse(data);
             events.sort(function(at, bt) {
@@ -1028,9 +1052,44 @@ function showEventsByAttendingInner() {
 }
 
 /************************************************************/
+function showPastEvents() {
+    if (typeof(Storage) !== "undefined") {
+        var data = sessionStorage.getItem('zoukpastevents');
+        if (data !== undefined && data) {
+            var events = JSON.parse(data);
+            if (events.length > 0) {
+                var str = `
+                    <table class="table table-condensed" style="margin-top: 20px;">
+                    <thead>
+                    <th>Date</th>
+                    <th>Event</th>
+                    <th>Attending</th>
+                    <tr>
+                    </tr>
+                    </thead>
+                    `;
+                str += getTableBody(events);
+                str += '</table>';
+                $('#searchProgressBarDiv').hide();
+                $('#filterProgressBarDiv').hide();
+                $('#evTableHeader').hide();
+                $("#dashboard").hide();
+                $('#map').hide();
+                $("#evTableContent").hide().html(str).fadeIn('fast');
+                $('#mainContent').show();
+            } else {
+                console.log('No events to show');
+            }
+        }
+    } else {
+        alert('Your browser does not support this operation');
+    }
+}
+
+/************************************************************/
 function showDiscarded() {
     if (typeof(Storage) !== "undefined") {
-        var data = sessionStorage.getItem('discardedevents');
+        var data = sessionStorage.getItem('zoukdiscardedevents');
         if (data !== undefined && data) {
             var events = JSON.parse(data);
             if (events.length > 0) {
@@ -1074,7 +1133,7 @@ function showLocation(geoResult) {
         alert('Your browser does not support this operation');
         return;
     }
-    var data = sessionStorage.getItem('zoukevents');
+    var data = sessionStorage.getItem('zoukcurrentevents');
     if (data === undefined || (! data)) {
         console.log('No events in showEventsByAttendingInner');
     }
@@ -1138,7 +1197,7 @@ function showMap() {
         alert('Your browser does not support this operation');
         return;
     }
-    var data = sessionStorage.getItem('zoukevents');
+    var data = sessionStorage.getItem('zoukcurrentevents');
     if (data === undefined || (! data)) {
         console.log('No events in showEventsByAttendingInner');
     }
@@ -1194,7 +1253,7 @@ function showDashboard() {
         alert('Your browser does not support this operation');
         return;
     }
-    var data = sessionStorage.getItem('zoukevents');
+    var data = sessionStorage.getItem('zoukcurrentevents');
     if (data === undefined || (! data)) {
         console.log('No events in showDashboard');
     }
@@ -1405,14 +1464,15 @@ function addEvent(event) {
 }
 
 /************************************************************/
-function isCurrent(event) {
+function isCurrent(event, older = true) {
     // Parsing does not work in Safari. Recommended that you parse manually (see article below)
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse
     // Add events even if a day old
+    var interval = older ? 3 * 24 * 3600 * 1000 : 6 * 3600 * 1000;  // 3 days or current (few hrs)
     if (event && event.hasOwnProperty('start_time')) {
         var startTime = parseTime(event.start_time);
         if ((timeNow < startTime) 
-            || ((timeNow.getTime() - startTime.getTime()) < (6 * 3600 * 1000))) {
+            || ((timeNow.getTime() - startTime.getTime()) < interval)) {
             return true;
         }
     }

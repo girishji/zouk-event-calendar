@@ -32,7 +32,7 @@ if (fileExists($bucket, $file)) {
                 $startTime = $event->{'start_time'}; // 2013-01-25T00:11:02+0000
                 $d = DateTime::createFromFormat(DateTime::ISO8601, $startTime);
                 $evTime = $d->getTimestamp();
-                $interval = 6 * 3600; // 1 day
+                $interval = 3 * 24 * 3600; // 3 days
                 if ($curTime - $evTime < $interval) {
                     // see if this event is not already there
                     $found = false;
