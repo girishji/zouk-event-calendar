@@ -286,7 +286,7 @@ var searchStringsCursor = 0;
 //
 var tokenFile = 'fb_access_tokens.data';
 var eventsFile = "fb_events.data";
-var eventsInterval = 6 * 3600; // seconds
+var eventsInterval = 4 * 3600; // seconds
 var pagesFile = "fb_pages.data";
 var pagesInterval = 48 * 3600;
 var pageEventsFile = "fb_pages_events.data";
