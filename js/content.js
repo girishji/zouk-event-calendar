@@ -1355,13 +1355,13 @@ function getTableBody(events) {
             <table>
             <tr>
             <td>
-            <a href="https://www.facebook.com/events/${events[i].id}">
+            <a href="https://www.facebook.com/events/${events[i].id}" target="_blank">
             <div id="img_inner" style='background-image: url("${imageUrl}"); width: ${imgWidth}; height: ${imgHeight}; background-size: ${imgWidth} ${imgHeight};' >
             </div>
             </a>
             </td>
             <td style="padding-left: 20px">
-            <a href="https://www.facebook.com/events/${events[i].id}">
+            <a href="https://www.facebook.com/events/${events[i].id}" target="_blank">
             <h5 title="${events[i].name}" data-toggle="tooltip" data-container="body" style='width: ${textWidth}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 7px; margin-bottom: 6px;'>${events[i].name}</h5>
             </a>
             <h5 class='small' title="${placeStr}" data-toggle="tooltip" data-container="body" style='margin-top: 3px; margin-bottom: 1px; width: ${textWidth}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>${placeStr}<h5>
