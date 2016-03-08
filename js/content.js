@@ -963,10 +963,15 @@ function postProcess(fresh) {
             var b = parseTime(bt.start_time);
             return (a > b) ? 1 : -1;
         };
+        var reverseSortTime = function(at, bt) {
+            var a = parseTime(at.start_time);
+            var b = parseTime(bt.start_time);
+            return (a < b) ? 1 : -1;
+        };
         events.sort(sortTime);
         discarded.sort(sortTime);
         if (pastEvents.length > 0) {
-            pastEvents.sort(sortTime);
+            pastEvents.sort(reverseSortTime);
         }
         if (currentEvents.length > 0) {
             currentEvents.sort(sortTime);
