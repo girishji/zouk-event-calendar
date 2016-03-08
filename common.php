@@ -17,7 +17,8 @@ function getClient() {
     // Authenticate your API Client
     $client = new Google_Client();
     $client->useApplicationDefaultCredentials();  // no need to acquire special credentials
-    $client->addScope(Google_Service_Storage::DEVSTORAGE_FULL_CONTROL);
+    //$client->addScope(Google_Service_Storage::DEVSTORAGE_FULL_CONTROL);
+    $client->addScope(Google_Service_Storage::DEVSTORAGE_READ_WRITE);
     // see ~/sandbox/zouk-event-calendar/vendor/google/apiclient/src/Google/Service/Storage.php
     return $client;
 }
