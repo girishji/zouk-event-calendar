@@ -23,9 +23,9 @@ window.fbAsyncInit = function() {
     // FB.Canvas.setSize({ width: 640, height: 4000 });
 
     // check if you can retrieve cache without logging in
-    cacheValid();
+    // cacheValid();
     // Check if logged in, and obtain events
-    //loginAndDo(retrieveEvents);
+    loginAndDo(retrieveEvents);
 };
 
 // load the facebook SDK async
