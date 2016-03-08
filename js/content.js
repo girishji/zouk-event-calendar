@@ -293,7 +293,7 @@ var eventsInterval = 3 * 3600; // seconds
 var pagesFile = "fb_pages.data";
 var pagesInterval = 48 * 3600;
 var pageEventsFile = "fb_pages_events.data";
-var pageEventsInterval = 6 * 3600;
+var pageEventsInterval = 12 * 3600;
 var discardedEventsFile = "fb_discarded_events.data";
 var discardedEventsInterval = 48 * 3600;
 
