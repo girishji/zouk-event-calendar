@@ -22,8 +22,10 @@ window.fbAsyncInit = function() {
     // manually set size (also slow)
     // FB.Canvas.setSize({ width: 640, height: 4000 });
 
+    // check if you can retrieve cache without logging in
+    cacheValid();
     // Check if logged in, and obtain events
-    loginAndDo(retrieveEvents);
+    //loginAndDo(retrieveEvents);
 };
 
 // load the facebook SDK async
@@ -334,13 +336,18 @@ function storeJSON(fileName, dataType, dataVal) {
 
 /************************************************************/
 function retrieveJSON(fileName, intervalVal, callback) {
+    retrieveJSON_Inner('data', {file: fileName, interval: intervalVal}, callback);
+}
+
+/************************************************************/
+function retrieveJSON_Inner(dataType, dataObj, callback) {
     $.ajax({
         // The URL for the request
         url: "/retrieve.php",
         // The data to send (has to be key value pairs, will be converted to a query string)
         data: {
-            file: fileName,
-            interval: intervalVal // in seconds
+            type: dataType,
+            value: JSON.stringify(dataObj)
         },
         // Whether this is a POST or GET request
         type: 'GET',
@@ -392,6 +399,26 @@ function loginToFacebook() {
             console.log('User cancelled login or did not fully authorize.');
         }
     });
+}
+
+/************************************************************/
+function cacheValid() {
+    var cache = [ { file: eventsFile, interval: eventsInterval },
+                { file: pageEventsFile, interval: pageEventsInterval },
+                { file: discardedEventsFile, interval: discardedEventsInterval } ];
+    retrieveJSON_Inner('cache', cache, cacheValidCallback);
+}
+
+/************************************************************/
+var cacheValidCallback = function (data) {
+    if (data.hasOwnProperty('result')) {
+        if (data.result) { // valid cache, data is bool
+            retrieveEvents();
+            return;
+        }
+    }
+    // Check if logged in, and obtain events
+    //loginAndDo(retrieveEvents);
 }
 
 /************************************************************/
