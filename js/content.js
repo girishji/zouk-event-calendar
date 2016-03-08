@@ -418,7 +418,7 @@ var cacheValidCallback = function (data) {
         }
     }
     // Check if logged in, and obtain events
-    //loginAndDo(retrieveEvents);
+    loginAndDo(retrieveEvents);
 }
 
 /************************************************************/
