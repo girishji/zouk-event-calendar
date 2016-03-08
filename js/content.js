@@ -413,6 +413,7 @@ function cacheValid() {
 var cacheValidCallback = function (data) {
     if (data.hasOwnProperty('result')) {
         if (data.result) { // valid cache, data is bool
+            console.log("cache is valid");
             retrieveEvents();
             return;
         }

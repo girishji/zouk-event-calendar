@@ -187,3 +187,6 @@ Because of godaddy fame, favicon does not work.
 If you are using masking then make sure you fill all the SEO boxes in godaddy with description. You'll be stuck in godaddy header and frame. All the SEO info comes from there.
 
 ====
+If you are not logged in, then even if you retrieve events the thumbnails will not be shown
+If you are logged in but not authorized the app, retrieved (from cache) events show up correctly, but will not be able to search.
+====
