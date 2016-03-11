@@ -1031,6 +1031,7 @@ function isError(body) {
     if (body.hasOwnProperty('error') && body.error) {
         alert('Facebook is temporarily down, try later (error: ' + body.error.code + ')');
         console.log(body.error);
+        console.log(body);
         return true;
     }
     return false;
