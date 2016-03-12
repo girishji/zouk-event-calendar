@@ -1067,7 +1067,7 @@ function logError(error, request) {
     var msg = "error: " + JSON.stringify(error) + ", request: " + JSON.stringify(request);
     // Send only a few mail, otherwise google will charge you and your mailbox will be full
     // After removing throttling of errors from facebook, there could be potentially thousands of errors coming back
-    if (totalErrorsNotified < 5) {
+    if (totalErrorsNotified < 2) {
         sendMessageInner("Facebook api error", msg, "zoucalendar@noemail.com");
         totalErrorsNotified++;
     }
