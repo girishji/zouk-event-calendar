@@ -2,6 +2,15 @@
     header("Content-type: text/css; charset: UTF-8");
 ?>
 
+@font-face {
+    font-family: KlavikaBold;
+    src: url("images/KlavikaBoldBoldOSF.otf") format("opentype");
+}
+
+.text-zouk-title {
+    font-family: KlavikaBold, Helvetica, Verdana, Sans-Serif;
+}
+
 .sort-group-header td {
     padding-bottom: 6px;
 }
