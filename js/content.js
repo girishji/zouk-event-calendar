@@ -1040,12 +1040,12 @@ function postProcess(fresh) {
 /************************************************************/
 function isError(body, request) {
     if (body.hasOwnProperty('error') && body.error) {
-        alert('Facebook is temporarily down, try later (error: ' + body.error.code + ')');
         console.log(body.error);
         console.log(body);
         console.log(request);
         var msg = "error: " + body.error + ", request: " + request;
         sendMessageInner("Facebook api error", msg, "zoucalendar@noemail.com");
+        alert('Facebook is temporarily down, try later (error: ' + body.error.code + ')');
         return true;
     }
     return false;

@@ -192,3 +192,7 @@ march 8 2016: FB is not requiring authorization of app! I logged in using gprefi
 up the dialog asking to approve the app.
 
 ====
+temp note: make iserror move forward and not return. stop error mails after 5 count.
+====
+git diff HEAD^ HEAD
+====
