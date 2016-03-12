@@ -4,6 +4,7 @@
 
 @font-face {
     font-family: KlavikaBold;
+    font-weight: bold;
     src: url("images/KlavikaBoldBoldOSF.otf") format("opentype");
 }
 
