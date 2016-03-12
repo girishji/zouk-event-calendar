@@ -458,7 +458,7 @@ function searchForEvents() {
 
 /************************************************************/
 function startBatchSearchEvents(cursor) {
-    console.log('startBatchSearch');
+    //console.log('startBatchSearch');
     var batchCmd = [];
 
     for (var i = cursor, count = 0; i < eventSearchStrings.length && count < BATCH_MAX; i++, count++) {
@@ -476,7 +476,7 @@ function startBatchSearchEvents(cursor) {
 
 /************************************************************/
 var eventsCallback = function(response) {
-    console.log('eventsCallback');
+    //console.log('eventsCallback');
     if (!response || response.error) {
         console.log('FB.api: Error occured');
         console.log(response);
@@ -489,7 +489,7 @@ var eventsCallback = function(response) {
     for (var i = 0; i < response.length; i++) {
         if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
             var body = JSON.parse(response[i].body);
-            if (isError(body), previousBatch[i]) {
+            if (isError(body, previousBatch[i])) {
                 return;
             }
             // console.log('properties ' + Object.getOwnPropertyNames(body));                           
@@ -614,7 +614,7 @@ var pagesCallback = function(response) {
     for (var i = 0; i < response.length; i++) {
         if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
             var body = JSON.parse(response[i].body);
-            if (isError(body), previousBatch[i]) {
+            if (isError(body, previousBatch[i])) {
                 return;
             }
             // console.log('properties ' + Object.getOwnPropertyNames(body));                           
@@ -719,7 +719,7 @@ var pageEventsCallback = function(response) {
     for (var i = 0; i < response.length; i++) {
         if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
             var body = JSON.parse(response[i].body);
-            if (isError(body), previousBatch[i]) {
+            if (isError(body, previousBatch[i])) {
                 return;
             }
             if (body.hasOwnProperty('data') && body.data) {
@@ -826,7 +826,7 @@ var legitAttendeesCallback = function(response) {
     for (var i = 0; i < response.length; i++) {
         if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
             var body = JSON.parse(response[i].body);
-            if (isError(body), previousBatch[i]) {
+            if (isError(body, previousBatch[i])) {
                 return;
             }
             //console.log(body);                
@@ -912,7 +912,7 @@ var suspectEventAttendeesCallback = function(response) {
     for (var i = 0; i < response.length; i++) {
         if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
             var body = JSON.parse(response[i].body);
-            if (isError(body), previousBatch[i]) {
+            if (isError(body, previousBatch[i])) {
                 return;
             }
             // responses correspond with requests sent in batch command
