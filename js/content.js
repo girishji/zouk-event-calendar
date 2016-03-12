@@ -289,6 +289,8 @@ var searchStringsCursor = 0;
 //
 var previousBatch = [];
 //
+var totalErrorsNotified = 0;
+//
 var tokenFile = 'fb_access_tokens.data';
 var eventsFile = "fb_events.data";
 var eventsInterval = 3 * 3600; // seconds
@@ -493,7 +495,6 @@ var eventsCallback = function(response) {
                     continue;
                 } else {
                     logError(error, previousBatch[i]);
-                    return;
                 }
             }
             // console.log('properties ' + Object.getOwnPropertyNames(body));                           
@@ -623,7 +624,6 @@ var pagesCallback = function(response) {
                     continue;
                 } else {
                     logError(error, previousBatch[i]);
-                    return;
                 }
             }
             // console.log('properties ' + Object.getOwnPropertyNames(body));                           
@@ -733,7 +733,6 @@ var pageEventsCallback = function(response) {
                     continue;
                 } else {
                     logError(error, previousBatch[i]);
-                    return;
                 }
             }
             if (body.hasOwnProperty('data') && body.data) {
@@ -845,7 +844,6 @@ var legitAttendeesCallback = function(response) {
                     continue;
                 } else {
                     logError(error, previousBatch[i]);
-                    return;
                 }
             }
             //console.log(body);                
@@ -936,7 +934,6 @@ var suspectEventAttendeesCallback = function(response) {
                     continue;
                 } else {
                     logError(error, previousBatch[i]);
-                    return;
                 }
             }
             // responses correspond with requests sent in batch command
@@ -1068,8 +1065,14 @@ function logError(error, request) {
     console.log(error);
     console.log(request);
     var msg = "error: " + error + ", request: " + request;
-    sendMessageInner("Facebook api error", msg, "zoucalendar@noemail.com");
-    alert('Facebook returned error (code: ' + error.code + ')' + ', try again later');    
+    // Send only a few mail, otherwise google will charge you and your mailbox will be full
+    // After removing throttling of errors from facebook, there could be potentially thousands of errors coming back
+    if (totalErrorsNotified < 5) {
+        sendMessageInner("Facebook api error", msg, "zoucalendar@noemail.com");
+        totalErrorsNotified++;
+    }
+    // XXX not going to stop the app and annoy user
+    //alert('Facebook returned error (code: ' + error.code + ')' + ', try again later');    
 }
 
 /************************************************************/
