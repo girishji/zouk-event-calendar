@@ -287,6 +287,8 @@ var pages = {};
 // cursor for search strings to indicate how far we have searched
 var searchStringsCursor = 0;
 //
+var previousBatch = [];
+//
 var tokenFile = 'fb_access_tokens.data';
 var eventsFile = "fb_events.data";
 var eventsInterval = 3 * 3600; // seconds
@@ -465,7 +467,7 @@ function startBatchSearchEvents(cursor) {
                      );
     }
     searchStringsCursor += count;
-
+    previousBatch = batchCmd.slice(); // copy array by value
     FB.api('/', 'POST', { batch: batchCmd }, eventsCallback);
     // Response of FB.api is asynchronous, make it resursive from callback
 }
@@ -485,7 +487,7 @@ var eventsCallback = function(response) {
     for (var i = 0; i < response.length; i++) {
         if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
             var body = JSON.parse(response[i].body);
-            if (isError(body)) {
+            if (isError(body), previousBatch[i]) {
                 return;
             }
             // console.log('properties ' + Object.getOwnPropertyNames(body));                           
@@ -525,6 +527,7 @@ var eventsCallback = function(response) {
 
     // Recurse:
     if (batchCmd.length > 0) {
+        previousBatch = batchCmd.slice(); // copy array by value
         FB.api('/', 'POST', { batch: batchCmd }, eventsCallback);
     } else {
         // We are done, check pages and their events
@@ -592,6 +595,7 @@ function firstBatchPageSearch(cursor) {
                      );
     }
     searchStringsCursor += count;
+    previousBatch = batchCmd.slice(); // copy array by value
     FB.api('/', 'POST', { batch: batchCmd }, pagesCallback);
 }
 
@@ -608,7 +612,7 @@ var pagesCallback = function(response) {
     for (var i = 0; i < response.length; i++) {
         if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
             var body = JSON.parse(response[i].body);
-            if (isError(body)) {
+            if (isError(body), previousBatch[i]) {
                 return;
             }
             // console.log('properties ' + Object.getOwnPropertyNames(body));                           
@@ -657,6 +661,7 @@ var pagesCallback = function(response) {
 
     // Recurse:
     if (batchCmd.length > 0) {
+        previousBatch = batchCmd.slice(); // copy array by value
         FB.api('/', 'POST', { batch: batchCmd }, pagesCallback);
     } else {
         // We are done, do further filtering
@@ -696,6 +701,7 @@ function getEventsFromPages() {
     var batchCmd = getBatchCmdFromPages();
     // Only get first page of events, usually latest events show up first
     if (batchCmd.length > 0) {
+        previousBatch = batchCmd.slice(); // copy array by value
         FB.api('/', 'POST', { batch: batchCmd }, pageEventsCallback);
     }
 }
@@ -711,7 +717,7 @@ var pageEventsCallback = function(response) {
     for (var i = 0; i < response.length; i++) {
         if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
             var body = JSON.parse(response[i].body);
-            if (isError(body)) {
+            if (isError(body), previousBatch[i]) {
                 return;
             }
             if (body.hasOwnProperty('data') && body.data) {
@@ -730,6 +736,7 @@ var pageEventsCallback = function(response) {
     var batchCmd = getBatchCmdFromPages();
     // Only get first page of events, usually latest events show up first
     if (batchCmd.length > 0) {
+        previousBatch = batchCmd.slice(); // copy array by value
         FB.api('/', 'POST', { batch: batchCmd }, pageEventsCallback);
     } else {
         // We are done, do further filtering
@@ -792,6 +799,7 @@ function getMajorLegitEventAttendees() {
     }
     if (batchCmd.length > 0) {
         // get a set of legit attendees
+        previousBatch = batchCmd.slice(); // copy array by value
         FB.api('/', 'POST', { batch: batchCmd }, legitAttendeesCallback);
     }
 }
@@ -816,7 +824,7 @@ var legitAttendeesCallback = function(response) {
     for (var i = 0; i < response.length; i++) {
         if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
             var body = JSON.parse(response[i].body);
-            if (isError(body)) {
+            if (isError(body), previousBatch[i]) {
                 return;
             }
             //console.log(body);                
@@ -843,6 +851,7 @@ var legitAttendeesCallback = function(response) {
     }
     // Recurse:
     if (batchCmd.length > 0) {
+        previousBatch = batchCmd.slice(); // copy array by value
         FB.api('/', 'POST', { batch: batchCmd }, legitAttendeesCallback);
     } else {
         // We are done. Store, and get suspect events
@@ -874,6 +883,7 @@ function getSuspectEventAttendees() {
                          relative_url:  validatableEvents[i].id + '/attending?' + 'access_token=' + accessToken } );
         validatableEvents[i].batched = true;
     }
+    previousBatch = batchCmd.slice(); // copy array by value
     FB.api('/', 'POST', { batch: batchCmd }, suspectEventAttendeesCallback);
 }
 
@@ -900,7 +910,7 @@ var suspectEventAttendeesCallback = function(response) {
     for (var i = 0; i < response.length; i++) {
         if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
             var body = JSON.parse(response[i].body);
-            if (isError(body)) {
+            if (isError(body), previousBatch[i]) {
                 return;
             }
             // responses correspond with requests sent in batch command
@@ -957,6 +967,7 @@ var suspectEventAttendeesCallback = function(response) {
     // Recurse:
     if (batchCmd.length > 0) {
         //console.log('request length of batch ' + batchCmd.length);
+        previousBatch = batchCmd.slice(); // copy array by value
         FB.api('/', 'POST', { batch: batchCmd }, suspectEventAttendeesCallback);
     } else {
         // we are done, filter finished events
@@ -1027,11 +1038,14 @@ function postProcess(fresh) {
 }
 
 /************************************************************/
-function isError(body) {
+function isError(body, request) {
     if (body.hasOwnProperty('error') && body.error) {
         alert('Facebook is temporarily down, try later (error: ' + body.error.code + ')');
         console.log(body.error);
         console.log(body);
+        console.log(request);
+        var msg = "error: " + body.error + ", request: " + request;
+        sendMessageInner("Facebook api error", msg, "zoucalendar@noemail.com");
         return true;
     }
     return false;
@@ -1658,21 +1672,7 @@ function addContinent(event) {
 }
 
 /************************************************************/
-function sendMessage() {
-    $('#contactModal').modal('hide');
-    var sub = $('#message-subject').val();
-    if (!sub || (sub == '')) {
-        sub = 'no subject';
-    }
-    var msg = $('#message-text').val();
-    if (!msg || (msg == '')) {
-        msg = 'no message';
-    }
-    var email = $('#message-email').val();
-    if (!email || (email == '')) {
-        email = 'no email';
-    }
-
+function sendMessageInner(sub, msg, email) {
     $.ajax({
         // The URL for the request
         url: "/mail.php",
@@ -1696,6 +1696,24 @@ function sendMessage() {
             console.dir( xhr );
         }
     });
+}
+
+/************************************************************/
+function sendMessage() {
+    $('#contactModal').modal('hide');
+    var sub = $('#message-subject').val();
+    if (!sub || (sub == '')) {
+        sub = 'no subject';
+    }
+    var msg = $('#message-text').val();
+    if (!msg || (msg == '')) {
+        msg = 'no message';
+    }
+    var email = $('#message-email').val();
+    if (!email || (email == '')) {
+        email = 'no email';
+    }
+    sendMessageInner(sub, msg, email);
 }
 
 /************************************************************/

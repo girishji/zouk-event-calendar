@@ -2,3 +2,4 @@
 appengine-generated/
 # Composer installs in vendor, ignore
 vendor/
+tmp/
