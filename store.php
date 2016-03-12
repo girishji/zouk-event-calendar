@@ -56,6 +56,8 @@ if (fileExists($bucket, $file)) {
                             }
                         } catch (Exception $e) {
                             // do nothing
+                            // you get Facebook\Exceptions\FacebookAuthenticationException with 'unsupported get request'
+                            // message if event is invalid
                         }
                     }
                 }
