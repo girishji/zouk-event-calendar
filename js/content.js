@@ -460,7 +460,6 @@ function searchForEvents() {
 function startBatchSearchEvents(cursor) {
     //console.log('startBatchSearch');
     var batchCmd = [];
-
     for (var i = cursor, count = 0; i < eventSearchStrings.length && count < BATCH_MAX; i++, count++) {
         batchCmd.push( { method: 'GET', 
                          relative_url: 'search?q=' + eventSearchStrings[i] 
@@ -490,7 +489,12 @@ var eventsCallback = function(response) {
         if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
             var body = JSON.parse(response[i].body);
             if (isError(body, previousBatch[i])) {
-                return;
+                if (bogusItem(body.error)) {
+                    continue;
+                } else {
+                    logError(error, previousBatch[i]);
+                    return;
+                }
             }
             // console.log('properties ' + Object.getOwnPropertyNames(body));                           
             if (body.hasOwnProperty('data') && body.data) {
@@ -1040,14 +1044,30 @@ function postProcess(fresh) {
 }
 
 /************************************************************/
+function logError(error, request) {
+    console.log(error);
+    console.log(request);
+    var msg = "error: " + error + ", request: " + request;
+    sendMessageInner("Facebook api error", msg, "zoucalendar@noemail.com");
+    alert('Facebook returned error (code: ' + error.code + ')' + ', try again later');    
+}
+
+/************************************************************/
+function bogusItem(error) {
+    if (error.hasOwnProperty('code') && error.code) {
+        if (error.code == 100) {
+            // this is 'unsupported get request' error;
+            // sometimes event id returned by searching a page is not valid,
+            // when you look for event through its id, event is not there
+            return true;
+        }
+    }
+    return false;
+}
+
+/************************************************************/
 function isError(body, request) {
     if (body.hasOwnProperty('error') && body.error) {
-        console.log(body.error);
-        console.log(body);
-        console.log(request);
-        var msg = "error: " + body.error + ", request: " + request;
-        sendMessageInner("Facebook api error", msg, "zoucalendar@noemail.com");
-        alert('Facebook is temporarily down, try later (error: ' + body.error.code + ')');
         return true;
     }
     return false;
