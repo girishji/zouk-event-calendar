@@ -435,6 +435,7 @@ function retrieveEvents() {
 
 /************************************************************/
 var retrieveEventsCallback = function (data) {
+    console.log("retrieveEventsCallback");
     if (data.hasOwnProperty('error')) {
         searchForEvents();
     } else {
