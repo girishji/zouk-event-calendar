@@ -54,7 +54,7 @@ if (fileExists($bucket, $file)) {
                                 //sendMail('Adding event ' .  print_r($event, TRUE)); // just for verification
                                 //when you get this email, check for duplicates
                             }
-                        } (catch Exception $e) {
+                        } catch (Exception $e) {
                             // do nothing
                         }
                     }
