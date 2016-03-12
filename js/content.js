@@ -429,6 +429,7 @@ var cacheValidCallback = function (data) {
 function retrieveEvents() {
     $('#searchProgressBarDiv').show();
     //storeToken(); // on the server side it exchanges for long lived token
+    console.log("retrieveEvents");
     retrieveJSON(eventsFile, eventsInterval, retrieveEventsCallback); // 1 hr = 3600 sec
 }
 
