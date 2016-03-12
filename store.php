@@ -46,13 +46,16 @@ if (fileExists($bucket, $file)) {
                     }
                     if (! $found) {
                         // verify if this event is not obsolete
-                        $response = $fb->get('/me', $fbAccessToken);
-                        if (! $response->isError()) {
-                            if (isEventValid($fb, $event->{'id'})) {
+                        try {
+                            $response = $fb->get('/' . $event->{'id'}, $fbAccessToken);
+                            if (! $response->isError()) {
                                 // add it
                                 array_push($newEvents, $event);
-                                //sendMail('Adding event ' .  print_r($event, TRUE)); // just for verification, when you get this email, check for duplicates
+                                //sendMail('Adding event ' .  print_r($event, TRUE)); // just for verification
+                                //when you get this email, check for duplicates
                             }
+                        } (catch Exception $e) {
+                            // do nothing
                         }
                     }
                 }
