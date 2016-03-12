@@ -1444,7 +1444,7 @@ function display(events) {
     $('#contentNav').show();
     $('#evTableHeader').show();
     $("#evTableContent").hide().html(str).fadeIn('fast');
-    msg = '<span class="badge">' + events.length + '</span>' + ' events' + msg;
+    msg = '<div style="margin-top:10px"><span class="badge">' + events.length + '</span>' + ' events</div>' + msg;
     $("#totalEvents").hide().html(msg).fadeIn('fast');
     $('#mainContent').show();
     //document.getElementById("z_content").innerHTML = str;
