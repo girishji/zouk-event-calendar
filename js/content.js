@@ -429,13 +429,13 @@ var cacheValidCallback = function (data) {
 function retrieveEvents() {
     $('#searchProgressBarDiv').show();
     //storeToken(); // on the server side it exchanges for long lived token
-    console.log("retrieveEvents");
+    //console.log("retrieveEvents");
     retrieveJSON(eventsFile, eventsInterval, retrieveEventsCallback); // 1 hr = 3600 sec
 }
 
 /************************************************************/
 var retrieveEventsCallback = function (data) {
-    console.log("retrieveEventsCallback");
+    //console.log("retrieveEventsCallback");
     if (data.hasOwnProperty('error')) {
         searchForEvents();
     } else {
@@ -458,7 +458,7 @@ function searchForEvents() {
 
 /************************************************************/
 function startBatchSearchEvents(cursor) {
-    //console.log('startBatchSearch');
+    console.log('startBatchSearch');
     var batchCmd = [];
 
     for (var i = cursor, count = 0; i < eventSearchStrings.length && count < BATCH_MAX; i++, count++) {
