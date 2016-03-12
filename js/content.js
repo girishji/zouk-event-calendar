@@ -476,7 +476,7 @@ function startBatchSearchEvents(cursor) {
 
 /************************************************************/
 var eventsCallback = function(response) {
-    //console.log('eventsCallback');
+    console.log('eventsCallback');
     if (!response || response.error) {
         console.log('FB.api: Error occured');
         console.log(response);
