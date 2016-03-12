@@ -1064,7 +1064,7 @@ function postProcess(fresh) {
 function logError(error, request) {
     console.log(error);
     console.log(request);
-    var msg = "error: " + error + ", request: " + request;
+    var msg = "error: " + JSON.stringify(error) + ", request: " + JSON.stringify(request);
     // Send only a few mail, otherwise google will charge you and your mailbox will be full
     // After removing throttling of errors from facebook, there could be potentially thousands of errors coming back
     if (totalErrorsNotified < 5) {
