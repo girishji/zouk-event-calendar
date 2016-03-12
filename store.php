@@ -46,16 +46,14 @@ if (fileExists($bucket, $file)) {
                     }
                     if (! $found) {
                         // verify if this event is not obsolete
-                        try {
-                            $response = $fb->get('/' . $event->{'id'}, $fbAccessToken);
-                            if (! $response->isError()) {
-                                // add it
-                                array_push($newEvents, $event);
-                                //sendMail('Adding event ' .  print_r($event, TRUE)); // just for verification
-                                //when you get this email, check for duplicates
-                            }
-                        } catch (Exception $e) {
-                            // do nothing
+                        // Don't try-catch any exception for fb->get. If there is exception ajax call fails with
+                        // error code 500, and gae log will have exception printed
+                        $response = $fb->get('/' . $event->{'id'}, $fbAccessToken);
+                        if (! $response->isError()) {
+                            // add it
+                            array_push($newEvents, $event);
+                            //sendMail('Adding event ' .  print_r($event, TRUE)); // just for verification
+                            //when you get this email, check for duplicates
                         }
                     }
                 }
