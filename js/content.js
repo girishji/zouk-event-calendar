@@ -619,7 +619,12 @@ var pagesCallback = function(response) {
         if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
             var body = JSON.parse(response[i].body);
             if (isError(body, previousBatch[i])) {
-                return;
+                if (bogusItem(body.error)) {
+                    continue;
+                } else {
+                    logError(error, previousBatch[i]);
+                    return;
+                }
             }
             // console.log('properties ' + Object.getOwnPropertyNames(body));                           
             if (body.hasOwnProperty('data') && body.data) {
@@ -724,7 +729,12 @@ var pageEventsCallback = function(response) {
         if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
             var body = JSON.parse(response[i].body);
             if (isError(body, previousBatch[i])) {
-                return;
+                if (bogusItem(body.error)) {
+                    continue;
+                } else {
+                    logError(error, previousBatch[i]);
+                    return;
+                }
             }
             if (body.hasOwnProperty('data') && body.data) {
                 var data = body.data;
@@ -831,7 +841,12 @@ var legitAttendeesCallback = function(response) {
         if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
             var body = JSON.parse(response[i].body);
             if (isError(body, previousBatch[i])) {
-                return;
+                if (bogusItem(body.error)) {
+                    continue;
+                } else {
+                    logError(error, previousBatch[i]);
+                    return;
+                }
             }
             //console.log(body);                
             if (body.hasOwnProperty('data') && body.data) {
@@ -917,7 +932,12 @@ var suspectEventAttendeesCallback = function(response) {
         if (response[i] && response[i].hasOwnProperty('body') && response[i].body) {
             var body = JSON.parse(response[i].body);
             if (isError(body, previousBatch[i])) {
-                return;
+                if (bogusItem(body.error)) {
+                    continue;
+                } else {
+                    logError(error, previousBatch[i]);
+                    return;
+                }
             }
             // responses correspond with requests sent in batch command
             if (body.hasOwnProperty('paging') && body.paging) {
