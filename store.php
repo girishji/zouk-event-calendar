@@ -15,7 +15,8 @@ require('./common.php');
 $post = file_get_contents('php://input');
 $data = json_decode($post); // to object
 $file = $data->{'file'};
-$dtype =$data->{'type'};
+$dtype = $data->{'type'};
+$fbAccessToken = $data->{'token'};
 $newEvents = $data->{'content'};
 
 /* always merge */
@@ -26,6 +27,7 @@ if (fileExists($bucket, $file)) {
         $date = new DateTime();
         $curTime = $date->getTimestamp();
         if ($dtype == 'event') {
+            $fb = getFacebook($appId, $appSecret);
             $oldEvents = json_decode($content); // array of objects (do not specify 'true' as it will force an array)
             foreach ($oldEvents as $event) {
                 // is current?
@@ -43,9 +45,15 @@ if (fileExists($bucket, $file)) {
                         }
                     }
                     if (! $found) {
-                        // add it
-                        array_push($newEvents, $event);
-                        //sendMail('Adding event ' .  print_r($event, TRUE)); // just for verification, when you get this email, check for duplicates
+                        // verify if this event is not obsolete
+                        $response = $fb->get('/me', $fbAccessToken);
+                        if (! $response->isError()) {
+
+                        if (isEventValid($fb, $event->{'id'})) {
+                            // add it
+                            array_push($newEvents, $event);
+                            //sendMail('Adding event ' .  print_r($event, TRUE)); // just for verification, when you get this email, check for duplicates
+                        }
                     }
                 }
             }

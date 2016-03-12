@@ -314,6 +314,7 @@ function storeJSON(fileName, dataType, dataVal) {
     var content = {
         file: fileName,
         type: dataType,
+        token: accessToken,
         content: dataVal
     };
     //console.log(content);
