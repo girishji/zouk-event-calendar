@@ -60,8 +60,8 @@ $(document).ready(function() {
     });
 
     // get location and sort
-    $("#locationBtn").click(function() {
-        console.log('in locationBtn');
+    $("#filterEventsBtn").click(function() {
+        //console.log('in locationBtn');
         var geocoder =  new google.maps.Geocoder();
         var loc = $('#locationInput').val();
         geocoder.geocode( { 'address': loc }, function(results, status) {
