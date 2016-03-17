@@ -76,10 +76,16 @@ $(document).ready(function() {
             });
         } else { // attendees filter
             var minStr = $('#filterValueInput').val();
-            var min;
-            if (min === parseInt(minStr, 10)) {  // not NaN
-                showByAttendeeCount(min);
-            } else {
+            var valid = false;
+            if (! isNaN(minStr)) {
+                var min;
+                min = parseInt(minStr, 10);
+                if (min > 0) {
+                    valid = true;
+                    showByAttendeeCount(min);
+                }
+            }
+            if (! valid) {
                 alert("Enter a valid number.");
             }
         }
@@ -1277,7 +1283,7 @@ function showLocation(geoResult) {
         // </table>
 
         var str = `
-            <button type="button" class="btn btn-default btn-sm" onclick="showEventsByTimeInner();">
+            <button type="button" style="margin-top:10px" class="btn btn-default btn-sm" onclick="showEventsByTimeInner();">
             <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back
             </button>
             <h5 style="margin: 20px 0px 10px 5px;">Address: ${geoResult.formatted_address}</h5>
@@ -1336,7 +1342,7 @@ function showByAttendeeCount(minCount) {
         // </table>
 
         var str = `
-            <button type="button" class="btn btn-default btn-sm" onclick="showEventsByTimeInner();">
+            <button type="button" style="margin-top:10px" class="btn btn-default btn-sm" onclick="showEventsByTimeInner();">
             <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back
             </button>
             <h5 style="margin: 20px 0px 10px 5px;">Address: ${geoResult.formatted_address}</h5>
