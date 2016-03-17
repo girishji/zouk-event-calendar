@@ -1329,8 +1329,8 @@ function showByAttendeeCount(minCount) {
     }
     if (selected.length > 0) { // sort
         selected.sort(function(at, bt) {
-            var a = parseInt(at.attending_count);
-            var b = parseInt(bt.attending_count);
+            var a = parseTime(at.start_time);
+            var b = parseTime(bt.start_time);
             return (a > b) ? 1 : -1; 
         });
         // <table style="margin-top: 10px;"><tr><td>
