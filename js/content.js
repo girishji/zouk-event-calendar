@@ -76,8 +76,9 @@ $(document).ready(function() {
             });
         } else { // attendees filter
             var minStr = $('#filterValueInput').val();
+            var min;
             if (min === parseInt(minStr, 10)) {  // not NaN
-                
+                showByAttendeeCount(min);
             } else {
                 alert("Enter a valid number.");
             }
