@@ -183,9 +183,16 @@
 
       <!-- Nav  -->
       <ul class="nav nav-tabs" id="contentNav" style="display: none;">
-        <li role="presentation" class="active"><a href="#" onclick="showEventsByTime();">Events</a></li>
-        <li role="presentation"><a href="#" onclick="showPastEvents();">Previous</a></li>
-        <li role="presentation"><a href="#" onclick="showDiscarded();">Discarded</a></li>
+        <li role="presentation" class="active dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+            Events <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="#" onclick="showEventsByTime();">Current</a></li>
+            <li><a href="#" onclick="showPastEvents();">Previous</a></li>
+            <li><a href="#" onclick="showDiscarded();">Rejected</a></li>
+          </ul>
+        </li>
         <li role="presentation"><a href="#" onclick="showMap();">Map</a></li>
         <li role="presentation"><a href="#" onclick="showDashboard();">Dashboard</a></li>
       </ul>
