@@ -1952,12 +1952,12 @@ function distVincenty(lat1, lon1, lat2, lon2) {
 function filterButtonAction() {
     if (locationFilter) {
         locationFilter = false;
-        $("#filterToggleBtn").text("Attendees <span class=\"caret\"></span>");
+        $("#filterToggleBtn").html("Attendees <span class=\"caret\"></span>");
         $("#filterMenuItem").replaceWith("<a href=\"#\" id=\"filterMenuItem\" onclick=\"filterButtonAction();\">By Location</a>");
         $("#filterValueInput").attr("placeholder", "Enter a number (min # of Attendees)...");
     } else { // attendee filter
         locationFilter = true;
-        $("#filterToggleBtn").text("Location <span class=\"caret\"></span>");
+        $("#filterToggleBtn").html("Location <span class=\"caret\"></span>");
         $("#filterMenuItem").replaceWith("<a href=\"#\" id=\"filterMenuItem\" onclick=\"filterButtonAction();\">By # of Attendees</a>");
         $("#filterValueInput").attr("placeholder", "Enter your address...");
     }
