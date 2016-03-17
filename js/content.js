@@ -1345,7 +1345,9 @@ function showByAttendeeCount(minCount) {
             <button type="button" style="margin-top:10px" class="btn btn-default btn-sm" onclick="showEventsByTimeInner();">
             <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back
             </button>
-            <h5 style="margin: 20px 0px 10px 5px;">Address: ${geoResult.formatted_address}</h5>
+            <h5 style="margin: 20px 0px 10px 5px;">Minimum Number of Attendees: `;
+        str += minCount;
+        str += `</h5>
             <table class="table table-condensed">
             <thead>
             <th>Date</th>
