@@ -300,7 +300,8 @@ var pageEventsFile = "fb_pages_events.data";
 var pageEventsInterval = 12 * 3600; // the most search intensive, and the weak spot for facebook
 var discardedEventsFile = "fb_discarded_events.data";
 var discardedEventsInterval = 48 * 3600;
-
+//
+var locationFilter = true;
 
 /************************************************************/
 // Note: there are 2 ways to send data in POST: as a query string
@@ -1868,3 +1869,18 @@ function distVincenty(lat1, lon1, lat2, lon2) {
     s = b * A * (sigma - deltaSigma);
     return s.toFixed(3); // round to 1mm precision
 };
+
+/************************************************************/
+function filterButtonAction() {
+    if (locationFilter) {
+        locationFilter = false;
+        $("#filterToggleBtn").val("Attendees <span class=\"caret\"></span>");
+        $("#filterMenuItem").replaceWith("By Location");
+        $("#locationInput").attr("placeholder", "Enter a number (min # of Attendees)...");
+    } else { // attendee filter
+        locationFilter = true;
+        $("#filterToggleBtn").val("Location <span class=\"caret\"></span>");
+        $("#filterMenuItem").replaceWith("By # of Attendees");
+        $("#locationInput").attr("placeholder", "Enter your address...");
+    }
+}
