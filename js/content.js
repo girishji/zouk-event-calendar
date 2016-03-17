@@ -61,18 +61,27 @@ $(document).ready(function() {
 
     // get location and sort
     $("#filterEventsBtn").click(function() {
-        //console.log('in locationBtn');
-        var geocoder =  new google.maps.Geocoder();
-        var loc = $('#locationInput').val();
-        geocoder.geocode( { 'address': loc }, function(results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-                showLocation(results[0]);
+        //console.log('in filterBtn');
+        if (locationFilter) {
+            var geocoder =  new google.maps.Geocoder();
+            var loc = $('#filterValueInput').val();
+            geocoder.geocode( { 'address': loc }, function(results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    showLocation(results[0]);
+                } else {
+                    str = 'Enter a valid address...';
+                    $('#filterValueInput').val(str);
+                    //alert('not found');
+                }
+            });
+        } else { // attendees filter
+            var minStr = $('#filterValueInput').val();
+            if (min === parseInt(minStr, 10)) {  // not NaN
+                
             } else {
-                str = 'Enter a valid address...';
-                $('#locationInput').val(str);
-                //alert('not found');
+                alert("Enter a valid number.");
             }
-        });
+        }
     });
 });
 
@@ -1288,6 +1297,65 @@ function showLocation(geoResult) {
 }
 
 /************************************************************/
+function showByAttendeeCount(minCount) {
+    if (typeof(Storage) === "undefined") {
+        alert('Your browser does not support this operation');
+        return;
+    }
+    var data = sessionStorage.getItem('zoukcurrentevents');
+    if (data === undefined || (! data)) {
+        console.log('No events in showByAttendeeCount');
+    }
+    events = JSON.parse(data);
+    var selected = [];
+
+    for (var i = 0; i < events.length; i++) {
+        if (events[i].hasOwnProperty('attending_count') && events[i].attending_count) {
+            var attending = events[i].attending_count;
+            if (attending > minCount) {
+                selected.push(events[i]);
+            }
+        }
+    }
+    if (selected.length > 0) { // sort
+        selected.sort(function(at, bt) {
+            var a = parseInt(at.attending_count);
+            var b = parseInt(bt.attending_count);
+            return (a > b) ? 1 : -1; 
+        });
+        // <table style="margin-top: 10px;"><tr><td>
+        // <button type="button" class="btn btn-default btn-sm" onclick="showEventsByTimeInner();">
+        // <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back
+        // </button>
+        // </td>
+        // <td><h5 style="padding-left:20px;">Address: ${geoResult.formatted_address}</h5></td></tr>
+        // </table>
+
+        var str = `
+            <button type="button" class="btn btn-default btn-sm" onclick="showEventsByTimeInner();">
+            <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back
+            </button>
+            <h5 style="margin: 20px 0px 10px 5px;">Address: ${geoResult.formatted_address}</h5>
+            <table class="table table-condensed">
+            <thead>
+            <th>Date</th>
+            <th>Event</th>
+            <th>Attending</th>
+            <tr>
+            </tr>
+            </thead>
+            `;
+        str += getTableBody(selected);
+        str += '</table>';
+        $('#map').hide();
+        $('#evTableHeader').hide();
+        $("#dashboard").hide();
+        $("#evTableContent").hide().html(str).fadeIn('fast');
+        $('#mainContent').show();
+    }
+}
+
+/************************************************************/
 function showMap() {
     if (typeof(Storage) === "undefined") {
         alert('Your browser does not support this operation');
@@ -1876,11 +1944,11 @@ function filterButtonAction() {
         locationFilter = false;
         $("#filterToggleBtn").val("Attendees <span class=\"caret\"></span>");
         $("#filterMenuItem").replaceWith("<a href=\"#\" id=\"filterMenuItem\" onclick=\"filterButtonAction();\">By Location</a>");
-        $("#locationInput").attr("placeholder", "Enter a number (min # of Attendees)...");
+        $("#filterValueInput").attr("placeholder", "Enter a number (min # of Attendees)...");
     } else { // attendee filter
         locationFilter = true;
         $("#filterToggleBtn").val("Location <span class=\"caret\"></span>");
         $("#filterMenuItem").replaceWith("<a href=\"#\" id=\"filterMenuItem\" onclick=\"filterButtonAction();\">By # of Attendees</a>");
-        $("#locationInput").attr("placeholder", "Enter your address...");
+        $("#filterValueInput").attr("placeholder", "Enter your address...");
     }
 }
