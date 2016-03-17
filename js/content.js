@@ -1957,10 +1957,12 @@ function filterButtonAction() {
         $("#filterToggleBtn").html("Attendees <span class=\"caret\"></span>");
         $("#filterMenuItem").replaceWith("<a href=\"#\" id=\"filterMenuItem\" onclick=\"filterButtonAction();\">By Location</a>");
         $("#filterValueInput").attr("placeholder", "Enter a number (min # of Attendees)...");
+                $("#filterValueInput").value("");
     } else { // attendee filter
         locationFilter = true;
         $("#filterToggleBtn").html("Location <span class=\"caret\"></span>");
         $("#filterMenuItem").replaceWith("<a href=\"#\" id=\"filterMenuItem\" onclick=\"filterButtonAction();\">By Number of Attendees</a>");
         $("#filterValueInput").attr("placeholder", "Enter your address...");
+        $("#filterValueInput").value("");
     }
 }
