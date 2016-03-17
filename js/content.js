@@ -1276,6 +1276,9 @@ function showLocation(geoResult) {
         // </table>
 
         var str = `
+            <button type="button" class="btn btn-default btn-sm" onclick="showEventsByTimeInner();">
+            <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back
+            </button>
             <h5 style="margin: 20px 0px 10px 5px;">Address: ${geoResult.formatted_address}</h5>
             <table class="table table-condensed">
             <thead>
