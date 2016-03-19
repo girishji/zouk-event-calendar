@@ -1956,7 +1956,7 @@ function filterButtonAction() {
         locationFilter = false;
         $("#filterToggleBtn").html("By Attendance <span class=\"caret\"></span>");
         $("#filterMenuItem").replaceWith("<a href=\"#\" id=\"filterMenuItem\" onclick=\"filterButtonAction();\">By Location</a>");
-        $("#filterValueInput").attr("placeholder", "Enter a number (minimum)...");
+        $("#filterValueInput").attr("placeholder", "Enter a number ( > 0 )...");
         $("#filterValueInput").val("");
     } else { // attendee filter
         locationFilter = true;
