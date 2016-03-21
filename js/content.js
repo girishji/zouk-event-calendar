@@ -459,7 +459,6 @@ function retrieveEvents() {
 var retrieveEventsCallback = function (data) {
     //console.log("retrieveEventsCallback");
     if (data.hasOwnProperty('error')) {
-        return;
         searchForEvents();
     } else {
         for (var i = 0; i < data.length; i++) {
@@ -561,7 +560,7 @@ var eventsCallback = function(response) {
         // We are done, check pages and their events
         console.log('total events ' + events.length);
         storeJSON(eventsFile, 'event', events);
-        retrievePageEvents();
+        //retrievePageEvents();
     }
 };
 
