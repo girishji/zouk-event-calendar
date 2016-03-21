@@ -86,7 +86,9 @@ $(document).ready(function() {
                 }
             }
             if (! valid) {
-                alert("Enter a valid number.");
+                str = 'Enter a valid number...';
+                $('#filterValueInput').val(str);
+                //alert("Enter a valid number.");
             }
         }
     });
