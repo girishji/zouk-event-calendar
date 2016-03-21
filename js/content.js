@@ -554,10 +554,6 @@ var eventsCallback = function(response) {
 
     // Recurse:
     if (batchCmd.length > 0) {
-        
-        storeJSON(eventsFile, 'event', events);
-        return;
-        
         previousBatch = batchCmd.slice(); // copy array by value
         FB.api('/', 'POST', { batch: batchCmd }, eventsCallback);
     } else {

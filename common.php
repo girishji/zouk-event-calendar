@@ -26,7 +26,6 @@ function getClient() {
     if (!$token) {
         syslog(LOG_DEBUG, "girish: access token not present");
         $token = $client->fetchAccessTokenWithAssertion();
-        $client->setAccessToken($token);
     }
     if ($client->isAccessTokenExpired()) {
         syslog(LOG_DEBUG, "girish: access token expired");
