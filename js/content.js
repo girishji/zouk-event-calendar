@@ -554,13 +554,17 @@ var eventsCallback = function(response) {
 
     // Recurse:
     if (batchCmd.length > 0) {
+        
+        storeJSON(eventsFile, 'event', events);
+        return;
+        
         previousBatch = batchCmd.slice(); // copy array by value
         FB.api('/', 'POST', { batch: batchCmd }, eventsCallback);
     } else {
         // We are done, check pages and their events
         console.log('total events ' + events.length);
         storeJSON(eventsFile, 'event', events);
-        //retrievePageEvents();
+        retrievePageEvents();
     }
 };
 
