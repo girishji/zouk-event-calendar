@@ -28,14 +28,14 @@ function getClient() {
         $token = $client->fetchAccessTokenWithAssertion();
         $client->setAccessToken($token);
     }
-    if ($client->isAccessTokenExpired()) {
-        syslog(LOG_DEBUG, "girish: access token expired");
-        $client->fetchAccessTokenWithAssertion();
-        if ($client->isAccessTokenExpired()) {
-            syslog(LOG_DEBUG, "girish: access token still expired");
-            $client->fetchAccessTokenWithRefreshToken();
-        }
-    }
+    //if ($client->isAccessTokenExpired()) {
+    //    syslog(LOG_DEBUG, "girish: access token expired");
+    //    $client->fetchAccessTokenWithAssertion();
+    //    if ($client->isAccessTokenExpired()) {
+    //        syslog(LOG_DEBUG, "girish: access token still expired");
+    //        $client->fetchAccessTokenWithRefreshToken();
+    //    }
+    //}
     return $client;
 }
 
