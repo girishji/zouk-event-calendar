@@ -31,10 +31,10 @@ function getClient() {
         //syslog(LOG_DEBUG, $token['access_token']);
     }
     // token acquried above is always expired. and even if you run fetchAccess...Refreshtoken() it still stays expired
-    //if ($client->isAccessTokenExpired()) {
-    //    syslog(LOG_DEBUG, "girish: access token expired");
-    //    $client->fetchAccessTokenWithRefreshToken($token);
-    //}
+    if ($client->isAccessTokenExpired()) {
+        //syslog(LOG_DEBUG, "girish: access token expired");
+        $client->fetchAccessTokenWithRefreshToken($token);
+    }
     //if ($client->isAccessTokenExpired()) {
     //    syslog(LOG_DEBUG, "girish: access token still expired!"); // no idea how this works
     //}
