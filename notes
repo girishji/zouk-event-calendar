@@ -194,7 +194,7 @@ up the dialog asking to approve the app.
 ====
 oauth exception from google cloud storage: if browser window is open for more than 1 hr, token expires. so storing files will fail.
 I set google api client
-to 'offline' in common.php. See if that helps. Just closing the window and reopening should fix the problem.
+to 'offline' in common.php. See if that helps. (tested: 'offline' does not help). Just closing the window and reopening should fix the problem.
 ====
 git diff HEAD^ HEAD
 ====

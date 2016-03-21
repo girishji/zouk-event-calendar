@@ -61,6 +61,7 @@ function storeGCS(&$content, $bucket, $file) {
         $result = $storage->objects->insert($bucket, $gsso, $body);
         //print_r($result);  // prints on browser console (or javascript, ajax)
     } catch (Exception $e) {
+        syslog(LOG_EMERG, $e->getMessage());
         print $e->getMessage();
         sendMail('Cannot store data in GCS: ' . $e->getMessage());
         return 1;    
