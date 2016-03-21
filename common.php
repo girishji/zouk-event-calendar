@@ -30,8 +30,7 @@ function getClient() {
     }
     if ($client->isAccessTokenExpired()) {
         syslog(LOG_DEBUG, "girish: access token expired");
-            $client->fetchAccessTokenWithRefreshToken($token);
-        }
+        $client->fetchAccessTokenWithRefreshToken($token);
     }
     return $client;
 }
