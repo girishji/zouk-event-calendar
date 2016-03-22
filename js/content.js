@@ -1646,7 +1646,7 @@ function isCurrent(event, older) {
     // Parsing does not work in Safari. Recommended that you parse manually (see article below)
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse
     // Add events even if a day old
-    var interval = older ? 3 * 24 * 3600 * 1000 : 6 * 3600 * 1000;  // 3 days or current (few hrs)
+    var interval = older ? 7 * 24 * 3600 * 1000 : 6 * 3600 * 1000;  // 7 days or current (few hrs)
     if (event && event.hasOwnProperty('start_time')) {
         var startTime = parseTime(event.start_time);
         if ((timeNow < startTime) 
