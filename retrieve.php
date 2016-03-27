@@ -40,7 +40,7 @@ if ($type == 'data') {
 
     // file expired, create a token, see if search can be done
     $token = $file . ".token";
-    $expiryInterval = 2 * 60; // someone tried to search 15 min ago
+    $expiryInterval = 60 * 60; // someone tried to search 1 hr ago, 1 hr is where fb updates quotas
     if (fileValid($bucket, $token, $expiryInterval)) {
         // someone else is searching
         retrieveFile($bucket, $file); // if this fails, do nothing
