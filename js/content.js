@@ -382,7 +382,7 @@ function retrieveJSON_Inner(dataType, dataObj, callback) {
             callback(data);
         },
         error: function( xhr, status, errorThrown ) {
-            // alert( "Sorry, there was a problem!" );
+            alert( "Sorry, there was a problem! Try loading this website in a new window." );
             console.log( "Error: " + errorThrown );
             console.log( "Status: " + status );
             console.dir( xhr );
