@@ -40,7 +40,7 @@ if ($type == 'data') {
 
     // file expired, create a token, see if search can be done
     $token = $file . ".token";
-    $expiryInterval = 30 * 60; // someone tried to search 30 min ago
+    $expiryInterval = 2 * 60; // someone tried to search 15 min ago
     if (fileValid($bucket, $token, $expiryInterval)) {
         // someone else is searching
         retrieveFile($bucket, $file); // if this fails, do nothing
