@@ -1735,9 +1735,9 @@ function getEventFromName(name, events) {
 /************************************************************/
 function filterValidatableEvent(id, attending) {
     // We asked fb to give all attendees of events where more
-    // than 100 are going. But we many not get all the attendee id's
+    // than 200 are going. But we many not get all the attendee id's
     // Discard events with less attendees
-    if (attending && Object.keys(attending).length < 90) {
+    if (attending && Object.keys(attending).length < 200) {
         return;
     }
     // get the event
