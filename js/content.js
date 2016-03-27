@@ -713,7 +713,7 @@ function getBatchCmdFromPages() {
     for (var i = 0; i < limit; i++) {
         var pid = ids[i]; // page id
         var url = pid + '/events?fields=id,name,start_time,place,'
-            + 'attending_count,cover,description&access_token='
+            + 'attending_count,cover,description&limit=5&access_token='
             + accessToken;
         batchCmd.push( { method: 'GET',
                          relative_url: url }
