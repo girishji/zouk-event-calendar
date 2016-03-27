@@ -15,6 +15,15 @@ function fileValid($bucket, $file, $interval) {
     return false;
 }
 
+function retrieveFile($bucket, $file) {
+    $content = retrieveGCS($bucket, $file);
+    if ($content) {
+        echo $content;
+        return true;
+    }
+    return false;
+}
+
 $type = (string) $_GET['type'];
 if ($type == 'data') {
     $valStr = (string) $_GET['value'];
@@ -24,14 +33,30 @@ if ($type == 'data') {
     $interval = intval($intervalStr);
 
     if (fileValid($bucket, $file, $interval)) {
-        $content = retrieveGCS($bucket, $file);
-        if ($content) {
-            echo $content;
+        if (retrieveFile($bucket, $file)) {
             return;
         }
     }
-    // file not valid, send json object as error
-    echo "{ \"error\": \"zouk calendar: file not found\" }";
+
+    // file expired, create a token, see if search can be done
+    $token = $file . ".token";
+    $expiryInterval = 30 * 60; // someone tried to search 30 min ago
+    if (fileValid($bucket, $token, $expiryInterval)) {
+        // someone else is searching
+        retrieveFile($bucket, $file); // if this fails, do nothing
+    } else {
+        // either token is not there, or its old and carried over from previous search
+        // or someone created token, tried to search but aborted search
+        // renew token
+        $content = "foo";
+        if (storeGCS($content, $bucket, $token) != 0) {
+            $msg = 'zouk calendar: failed to store token ' . $file;
+            syslog(LOG_EMERG, $msg);
+            sendMail($msg);
+        }
+        // file not valid, send json object as error
+        echo "{ \"error\": \"zouk calendar: file not found\" }";
+    }
 
 } else if ($type == 'cache') { // check if cache is expired
     $valStr = (string) $_GET['value'];
