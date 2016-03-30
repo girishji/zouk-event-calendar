@@ -279,7 +279,10 @@ var knownSuspectPlaces = [ { latitude: '48.812053039547',  longitude: '2.4038419
                          ];
 
 var timeNow = new Date();
-// All events
+// All found events
+var allFoundEvents = [];
+var storeAllFoundEvents = true;
+// All current events
 var events = [];    
 // Suspect events
 var discarded = [];
@@ -318,6 +321,7 @@ var pageEventsFile = "fb_pages_events.data";
 var pageEventsInterval = 12 * 3600; // the most search intensive, and the weak spot for facebook
 var discardedEventsFile = "fb_discarded_events.data";
 var discardedEventsInterval = 4 * 24 * 3600;
+var allFoundEventsFile = "fb_all_found_events.data";
 //
 var locationFilter = true;
 
@@ -782,6 +786,9 @@ var pageEventsCallback = function(response) {
         //progress = 0; // for next progress bar
         storeJSON(pageEventsFile, 'event', events);
         retrieveDiscardedEvents();
+        if (storeAllFoundEvents) {
+            storeJSON(allFoundEventsFile, 'event', allFoundEvents);
+        }
     }
 };
     
@@ -1638,6 +1645,9 @@ function addEvent(event) {
             addContinent(event);
             events.push(event);
         }
+    }
+    if (storeAllFoundEvents) {
+        allFoundEvents.push(event);
     }
 }
 
