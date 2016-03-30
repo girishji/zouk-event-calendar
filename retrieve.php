@@ -4,7 +4,7 @@ require('./config.php');
 require('./common.php');
 
 function fileValid($bucket, $file, $interval) {
-    syslog(LOG_DEBUG, "fileValid: retrieving file " . $file);
+    syslog(LOG_DEBUG, "fileValid: file " . $file);
     try {
         if (fileExists($bucket, $file)) {
             $mTime = lastModifiedTime($bucket, $file);

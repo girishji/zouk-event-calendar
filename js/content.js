@@ -431,6 +431,7 @@ function loginToFacebook() {
 
 /************************************************************/
 function cacheValid() {
+    console.log("cacheValid()");
     var cache = [ { file: eventsFile, interval: eventsInterval },
                 { file: pageEventsFile, interval: pageEventsInterval },
                 { file: discardedEventsFile, interval: discardedEventsInterval } ];
