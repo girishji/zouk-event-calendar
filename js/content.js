@@ -518,7 +518,7 @@ var eventsCallback = function(response) {
                 if (bogusItem(body.error)) {
                     continue;
                 } else {
-                    logError(error, previousBatch[i]);
+                    logError(body.error, previousBatch[i]);
                 }
             }
             // console.log('properties ' + Object.getOwnPropertyNames(body));                           
@@ -647,7 +647,7 @@ var pagesCallback = function(response) {
                 if (bogusItem(body.error)) {
                     continue;
                 } else {
-                    logError(error, previousBatch[i]);
+                    logError(body.error, previousBatch[i]);
                 }
             }
             // console.log('properties ' + Object.getOwnPropertyNames(body));                           
@@ -756,7 +756,7 @@ var pageEventsCallback = function(response) {
                 if (bogusItem(body.error)) {
                     continue;
                 } else {
-                    logError(error, previousBatch[i]);
+                    logError(body.error, previousBatch[i]);
                 }
             }
             if (body.hasOwnProperty('data') && body.data) {
@@ -870,7 +870,7 @@ var legitAttendeesCallback = function(response) {
                 if (bogusItem(body.error)) {
                     continue;
                 } else {
-                    logError(error, previousBatch[i]);
+                    logError(body.error, previousBatch[i]);
                 }
             }
             //console.log(body);                
@@ -960,7 +960,7 @@ var suspectEventAttendeesCallback = function(response) {
                 if (bogusItem(body.error)) {
                     continue;
                 } else {
-                    logError(error, previousBatch[i]);
+                    logError(body.error, previousBatch[i]);
                 }
             }
             // responses correspond with requests sent in batch command
