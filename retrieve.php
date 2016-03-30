@@ -4,15 +4,20 @@ require('./config.php');
 require('./common.php');
 
 function fileValid($bucket, $file, $interval) {
-    if (fileExists($bucket, $file)) {
-        $mTime = lastModifiedTime($bucket, $file);
-        $date = new DateTime();
-        $curTime = $date->getTimestamp();
-        if ($curTime - $mTime < $interval) {
-            return true;
+    try {
+        if (fileExists($bucket, $file)) {
+            $mTime = lastModifiedTime($bucket, $file);
+            $date = new DateTime();
+            $curTime = $date->getTimestamp();
+            if ($curTime - $mTime < $interval) {
+                return true;
+            }
         }
+        return false;
+    } catch (Exception $e) {
+        syslog(LOG_ERR, $e->getMessage());
+        return false;
     }
-    return false;
 }
 
 function retrieveFile($bucket, $file) {
