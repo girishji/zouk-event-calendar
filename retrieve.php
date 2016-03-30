@@ -49,7 +49,11 @@ if ($type == 'data') {
     $token = $file . ".token";
     $expiryInterval = 60 * 60; // someone tried to search 1 hr ago, 1 hr is where fb updates quotas
     if (fileValid($bucket, $token, $expiryInterval)) {
-        // someone else is searching
+        // someone else is searching, so retrieve existing file
+        // XXX: IF I forcefully remove this events file, and if token says someone else is searching, then
+        // console will have an error saying 404 (file not found). This will go to client and client says
+        // (I print in jsonStore function) that client has a problem try later. This should be ok. Just
+        // forcefully remove token file to start search.
         retrieveFile($bucket, $file); // if this fails, do nothing
     } else {
         // either token is not there, or its old and carried over from previous search
