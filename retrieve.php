@@ -4,7 +4,7 @@ require('./config.php');
 require('./common.php');
 
 function fileValid($bucket, $file, $interval) {
-    syslog("retrieving file " . $file);
+    syslog(LOG_DEBUG, "fileValid: retrieving file " . $file);
     try {
         if (fileExists($bucket, $file)) {
             $mTime = lastModifiedTime($bucket, $file);
@@ -22,6 +22,7 @@ function fileValid($bucket, $file, $interval) {
 }
 
 function retrieveFile($bucket, $file) {
+    syslog(LOG_DEBUG, "retrieveFile: file " . $file);
     $content = retrieveGCS($bucket, $file);
     if ($content) {
         echo $content;
