@@ -281,7 +281,7 @@ var knownSuspectPlaces = [ { latitude: '48.812053039547',  longitude: '2.4038419
 var timeNow = new Date();
 // All found events
 var allFoundEvents = [];
-var storeAllFoundEvents = true;
+var storeAllFoundEvents = false; // set this to true to store all events
 // All current events
 var events = [];    
 // Suspect events
