@@ -770,7 +770,7 @@ var pageEventsCallback = function(response) {
     }
     // we process only one page 
     // Update progress bar
-    progress = (progress < 74) ? progress + 1 : progress;
+    progress = (progress < 80) ? progress + 0.5 : progress;
     $('#searchProgressBar').css('width', progress + '%').attr('aria-valuenow', progress);
     // Recurse
     var batchCmd = getBatchCmdFromPages();
@@ -1721,6 +1721,15 @@ function preFilter(event) {
                         return false;
                     }
                 }
+            }
+        }
+    }
+    // If this is a bachata event w/ over 500 people, normalize attending count
+    if (event.attending_count > 500) { // found or >500
+        if (event.hasOwnProperty('name') && event.name) {
+            if (event.name.search(/bachata/i) !== -1) { // bachata event
+                normalized = Math.round(event.attending_count / 3);
+                event.attending_count = normalized + '*';
             }
         }
     }
