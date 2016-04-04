@@ -1728,7 +1728,7 @@ function preFilter(event) {
     if (event.attending_count > 500) { // found or >500
         if (event.hasOwnProperty('name') && event.name) {
             if (event.name.search(/bachata/i) !== -1) { // bachata event
-                normalized = Math.round(event.attending_count / 3);
+                normalized = Math.round(event.attending_count / 4);
                 event.attending_count = normalized + '*';
             }
         }
