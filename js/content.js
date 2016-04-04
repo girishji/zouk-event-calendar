@@ -1670,56 +1670,59 @@ function isCurrent(event, older) {
             
 /************************************************************/
 function preFilter(event) {
-    if (isCurrent(event, true)) {
-        // Insert only if unique; Different search strings give same results
-        var found = false;
-        for (var ev = 0; ev < events.length; ev++) {
-            if (event.id == events[ev].id) { // use == not === so str get casted to number
-                found = true;
-            }
-        }
-        if (! found) { // not a duplicate
-            // If event location has zouk but name and description don't have it then discard.
-            // Also, if there is just a url with name zouk in description, discard
-            if (event.hasOwnProperty('place') && event.place) {
-                placeStr = JSON.stringify(event.place);
-                if (placeStr.search(/zouk/i) !== -1) { // found
-                    if (event.hasOwnProperty('name') && event.name) {
-                        if (event.name.search(/zouk/i) === -1) { // not found
-                            if (event.hasOwnProperty('description') && event.description) {
-                                var description = event.description;
-                                // remove http:... or https...
-                                var desc = description.replace(/(?:https?|ftp):\/\/[\n\S]+/g, '');
-                                if (desc.search(/zouk/i) === -1) { // not found
-                                    // remove description as this will eat up sessionStorage
-                                    event.description = null;
-                                    discarded.push(event);
-                                    return false;
-                                }
-                            }
-                        }
-                    }
-                }
-                // if event is happening in a suspect location, discard
-                if (event.place.hasOwnProperty('location') && event.place.location) {
-                    var location = event.place.location;
-                    if (location.hasOwnProperty('latitude') && location.hasOwnProperty('longitude')) {
-                        for (var k = 0; k < knownSuspectPlaces.length; k++) {
-                            if ((location.latitude == knownSuspectPlaces[k].latitude) 
-                                && (location.longitude == knownSuspectPlaces[k].longitude)) {
-                                // remove description as this will eat up sessionStorage
-                                event.description = null;
-                                discarded.push(event);
-                                return false;
-                            }
-                        }
-                    }
-                }
-            } // place
-            return true;
+    if (! isCurrent(event, true)) {
+        return false;
+    }    
+    // Insert only if unique; Different search strings give same results
+    for (var ev = 0; ev < events.length; ev++) {
+        if (event.id == events[ev].id) { // use == not === so str get casted to number
+            return false; // found
         }
     }
-    return false;
+    // If event location has zouk but name and description don't have it then discard.
+    // Also, if there is just a url with name zouk in description, discard
+    // If event has over 500 people and no Zouk in name or description then discard (some
+    // bachaturo salsa event shows up as zouk)
+    var zoukPlace = false;
+    if (event.hasOwnProperty('place') && event.place) {
+        placeStr = JSON.stringify(event.place);
+        if (placeStr.search(/zouk/i) !== -1) {
+            zoukPlace = true;
+        }
+    }
+    if (zoukPlace || (event.attending_count > 500)) { // found or >500
+        if (event.hasOwnProperty('name') && event.name) {
+            if (event.name.search(/zouk/i) === -1) { // not found
+                if (event.hasOwnProperty('description') && event.description) {
+                    var description = event.description;
+                    // remove http:... or https...
+                    var desc = description.replace(/(?:https?|ftp):\/\/[\n\S]+/g, '');
+                    if (desc.search(/zouk/i) === -1) { // not found
+                        // remove description as this will eat up sessionStorage
+                        event.description = null;
+                        discarded.push(event);
+                        return false;
+                    }
+                }
+            }
+        }
+    }
+    // if event is happening in a suspect location, discard
+    if (event.place.hasOwnProperty('location') && event.place.location) {
+        var location = event.place.location;
+        if (location.hasOwnProperty('latitude') && location.hasOwnProperty('longitude')) {
+            for (var k = 0; k < knownSuspectPlaces.length; k++) {
+                if ((location.latitude == knownSuspectPlaces[k].latitude) 
+                    && (location.longitude == knownSuspectPlaces[k].longitude)) {
+                    // remove description as this will eat up sessionStorage
+                    event.description = null;
+                    discarded.push(event);
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
 }
 
 /************************************************************/
