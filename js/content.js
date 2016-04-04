@@ -1708,16 +1708,18 @@ function preFilter(event) {
         }
     }
     // if event is happening in a suspect location, discard
-    if (event.place.hasOwnProperty('location') && event.place.location) {
-        var location = event.place.location;
-        if (location.hasOwnProperty('latitude') && location.hasOwnProperty('longitude')) {
-            for (var k = 0; k < knownSuspectPlaces.length; k++) {
-                if ((location.latitude == knownSuspectPlaces[k].latitude) 
-                    && (location.longitude == knownSuspectPlaces[k].longitude)) {
-                    // remove description as this will eat up sessionStorage
-                    event.description = null;
-                    discarded.push(event);
-                    return false;
+    if (event.hasOwnProperty('place') && event.place) {
+        if (event.place.hasOwnProperty('location') && event.place.location) {
+            var location = event.place.location;
+            if (location.hasOwnProperty('latitude') && location.hasOwnProperty('longitude')) {
+                for (var k = 0; k < knownSuspectPlaces.length; k++) {
+                    if ((location.latitude == knownSuspectPlaces[k].latitude) 
+                        && (location.longitude == knownSuspectPlaces[k].longitude)) {
+                        // remove description as this will eat up sessionStorage
+                        event.description = null;
+                        discarded.push(event);
+                        return false;
+                    }
                 }
             }
         }
