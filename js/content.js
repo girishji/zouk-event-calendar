@@ -1192,7 +1192,7 @@ function showPastEvents() {
                     `;
                 str += getTableBody(events);
                 str += '</table>';
-                str += '* Predominantly Bachata events have their attendee count reduced by 75% for fair reflection of Zouk attendees';
+                str += '* Predominantly Bachata events have their attendee count reduced by 75% for fair reflection of Zouk participation';
                 $('#searchProgressBarDiv').hide();
                 $('#filterProgressBarDiv').hide();
                 $('#evTableHeader').hide();
