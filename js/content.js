@@ -1181,7 +1181,7 @@ function showPastEvents() {
             var events = JSON.parse(data);
             if (events.length > 0) {
                 var str = `
-                    <table class="table table-condensed" style="margin-top: 20px;">
+                    <table class="table table-condensed" style="margin-top: 20px; margin-bottom: 10px;">
                     <thead>
                     <th>Date</th>
                     <th>Event</th>
@@ -1192,6 +1192,7 @@ function showPastEvents() {
                     `;
                 str += getTableBody(events);
                 str += '</table>';
+                str += '* Predominantly Bachata events have their attendee count reduced by 75% for fair reflection of Zouk attendees';
                 $('#searchProgressBarDiv').hide();
                 $('#filterProgressBarDiv').hide();
                 $('#evTableHeader').hide();
