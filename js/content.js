@@ -1158,8 +1158,8 @@ function showEventsByAttendingInner() {
         if (data !== undefined && data) {
             var events = JSON.parse(data);
             events.sort(function(at, bt) {
-                var a = at.attending_count.replace('*', '');
-                var b = bt.attending_count.replace('*', '');
+                var a = at.attending_count;
+                var b = bt.attending_count;
                 return (a < b) ? 1 : -1; // descending
             });
             if (events.length > 0) {
@@ -1596,6 +1596,10 @@ function getTableBody(events) {
         var imgWidth = '75px';
         var imgHeight = '42px';
         var textWidth = '400px';
+        var attendees = events[i].attending_count;
+        if (events[i].hasOwnProperty('normalized')) {
+            attendees = attendees + '*';
+        }
         str += `<tr><td><h5>${month} ${dateS[2]}</h5></td>
             <td> 
             <table>
@@ -1615,7 +1619,7 @@ function getTableBody(events) {
             </tr>
             </table>
             </td>
-            <td>${events[i].attending_count}</a></td>
+            <td>${attendees}</a></td>
             </tr>`;
     }
 
@@ -1730,7 +1734,8 @@ function preFilter(event) {
         if (event.hasOwnProperty('name') && event.name) {
             if (event.name.search(/bachata/i) !== -1) { // bachata event
                 normalized = Math.round(event.attending_count / 4);
-                event.attending_count = normalized + '*';
+                event.attending_count = normalized;
+                event.normalized = 1;
             }
         }
     }
