@@ -1158,8 +1158,8 @@ function showEventsByAttendingInner() {
         if (data !== undefined && data) {
             var events = JSON.parse(data);
             events.sort(function(at, bt) {
-                var a = at.attending_count;
-                var b = bt.attending_count;
+                var a = at.attending_count.replace('*', '');
+                var b = bt.attending_count.replace('*', '');
                 return (a < b) ? 1 : -1; // descending
             });
             if (events.length > 0) {
@@ -1192,7 +1192,7 @@ function showPastEvents() {
                     `;
                 str += getTableBody(events);
                 str += '</table>';
-                str += '* Predominantly Bachata events have their attendee count reduced by 75% for fair reflection of Zouk participation';
+                str += '<p>* Bachata dominant congresses have their attendee count reduced by 75% to better reflect Zouk participation</p>';
                 $('#searchProgressBarDiv').hide();
                 $('#filterProgressBarDiv').hide();
                 $('#evTableHeader').hide();
