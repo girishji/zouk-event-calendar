@@ -1192,7 +1192,6 @@ function showPastEvents() {
                     `;
                 str += getTableBody(events);
                 str += '</table>';
-                str += '<p>* Bachata dominant congresses have their attendee count reduced by 75% to better reflect Zouk participation</p>';
                 $('#searchProgressBarDiv').hide();
                 $('#filterProgressBarDiv').hide();
                 $('#evTableHeader').hide();
@@ -1529,6 +1528,7 @@ function display(events) {
         `;
     str += getTableBody(events);
     str += '</table>';
+    str += '<p>* Bachata dominant congresses have their attendee count reduced by 75% to better reflect Zouk participation</p>';
     $('#searchProgressBarDiv').hide();
     $('#filterProgressBarDiv').hide();
     $("#dashboard").hide();
