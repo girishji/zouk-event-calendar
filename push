@@ -1,3 +1,7 @@
+
+# composer self-update
+# composer update
+
 git add .
 git commit -m "message"
 
