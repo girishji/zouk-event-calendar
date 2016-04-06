@@ -486,12 +486,13 @@ function searchForEvents() {
 /************************************************************/
 function startBatchSearchEvents(cursor) {
     //console.log('startBatchSearch');
+    // interested_count and maybe_count are the same (fb returns same value)
     var batchCmd = [];
     for (var i = cursor, count = 0; i < eventSearchStrings.length && count < BATCH_MAX; i++, count++) {
         batchCmd.push( { method: 'GET', 
                          relative_url: 'search?q=' + eventSearchStrings[i] 
                          + '&type=event&fields=id,name,start_time,place,attending_count,interested_count,'
-                         + 'maybe_count,cover,description&access_token='
+                         + 'cover,description&access_token='
                          + accessToken }
                      );
     }
@@ -547,7 +548,7 @@ var eventsCallback = function(response) {
                     batchCmd.push( { method: 'GET', 
                                      relative_url: 'search?q=' + eventSearchStrings[searchStringsCursor] 
                                      + '&type=event&fields=id,name,start_time,place,attending_count,interested_count,'
-                                     + 'maybe_count,cover,description&access_token='
+                                     + 'cover,description&access_token='
                                      + accessToken }
                                  );
                     searchStringsCursor += 1;
@@ -720,7 +721,7 @@ function getBatchCmdFromPages() {
     for (var i = 0; i < limit; i++) {
         var pid = ids[i]; // page id
         var url = pid + '/events?fields=id,name,start_time,place,'
-            + 'attending_count,interested_count,maybe_count,cover,description&limit=5&access_token='
+            + 'attending_count,interested_count,cover,description&limit=5&access_token='
             + accessToken;
         batchCmd.push( { method: 'GET',
                          relative_url: url }
@@ -1681,7 +1682,7 @@ function preFilter(event) {
     if (! isCurrent(event, true)) {
         return false;
     }
-    console.log("interested, maybe: " + event.interested_count + ', ' + event.maybe_count);
+    // console.log("interested, maybe: " + event.interested_count;
     // Insert only if unique; Different search strings give same results
     for (var ev = 0; ev < events.length; ev++) {
         if (event.id == events[ev].id) { // use == not === so str get casted to number
@@ -1743,10 +1744,6 @@ function preFilter(event) {
                 if (event.hasOwnProperty('interested_count') && event.interested_count) {
                     normalized = Math.round(event.interested_count / 4);
                     event.interested_count = normalized;
-                }
-                if (event.hasOwnProperty('maybe_count') && event.maybe_count) {
-                    normalized = Math.round(event.maybe_count / 4);
-                    event.maybe_count = normalized;
                 }
             }
         }
