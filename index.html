@@ -251,22 +251,16 @@
                 <table><tr><td>Attending</td><td><span class="caret"></span></td></tr></table>
               </a> -->
               <!-- Split button -->
-              <div class="btn-group">
-                <table>
-                  <td>
-                    <button type="button" class="btn btn-default btn-sm" id="rightColumnBtn">Attending</button>
-                  </td>
-                  <td>
-                    <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <span class="caret"></span>
-                      <span class="sr-only">Toggle Dropdown</span>
-                    </button>
-                    <ul class="dropdown-menu">
-                      <li><a href="#" id="rightColumnMenuItem1" onclick="showEventsWithInterested();">Interested</a></li>
-                      <li><a href="#" id="rightColumnMenuItem2" onclick="showEventsWithAttendeeAndInterested();">Attnd+Intrst</a></li>
-                    </ul>
-                  </td>
-                </table>
+              <div class="btn-group" style="float: left;">
+                <button type="button" class="btn btn-default btn-sm" id="rightColumnBtn">Attending</button>
+                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <span class="caret"></span>
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a href="#" id="rightColumnMenuItem1" onclick="showEventsWithInterested();">Interested</a></li>
+                  <li><a href="#" id="rightColumnMenuItem2" onclick="showEventsWithAttendeeAndInterested();">Attnd+Intrst</a></li>
+                </ul>
               </div>
             </td>
           </tr>
