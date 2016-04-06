@@ -92,6 +92,23 @@ $(document).ready(function() {
             }
         }
     });
+
+    // Third column sort
+    $("#rightColumnBtn").click(function() {
+        events = getStoredEvents();
+        if (events !== null) {
+            events.sort(function(at, bt) {
+                var a = at.column_value;
+                var b = bt.column_value;
+                return (a < b) ? 1 : -1; // descending
+            });
+            if (events.length > 0) {
+                display(events);
+            } else {
+                console.log('No events present');
+            }
+        }
+    });
 });
 
 
@@ -1069,7 +1086,7 @@ function postProcess(fresh) {
         if (currentEvents.length > 0) {
             currentEvents.sort(sortTime);
             // wait for some millisec so progress bar shows completion
-            setTimeout(function() { display(currentEvents, accessToken); }, 700);
+            setTimeout(function() { display(currentEvents); }, 700);
         }
         // cookies have 4k limit - so can't be used to store events. It siliently fails. Use
         // localStorage / sessionStorage. They have 5MB limit
@@ -1134,18 +1151,13 @@ function showEventsByTime() {
 
 /************************************************************/
 function showEventsByTimeInner() {
-    if (typeof(Storage) !== "undefined") {
-        var data = sessionStorage.getItem('zoukcurrentevents');
-        if (data !== undefined && data) {
-            var events = JSON.parse(data);
-            if (events.length > 0) {
-                display(events, accessToken);
-            } else {
-                console.log('No events in showEventsByTimeInner');
-            }
+    events = getStoredEvents();
+    if (events !== null) {
+        if (events.length > 0) {
+            display(events);
+        } else {
+            console.log('No events in showEventsByTimeInner');
         }
-    } else {
-        console.log('Session data not found');
     }
 }
 
@@ -1156,23 +1168,83 @@ function showEventsByAttending() {
 
 /************************************************************/
 function showEventsByAttendingInner() {
-    if (typeof(Storage) !== "undefined") {
-        var data = sessionStorage.getItem('zoukcurrentevents');
-        if (data !== undefined && data) {
-            var events = JSON.parse(data);
-            events.sort(function(at, bt) {
-                var a = at.attending_count;
-                var b = bt.attending_count;
-                return (a < b) ? 1 : -1; // descending
+    events = getStoredEvents();
+    if (events !== null) {
+        for (var i = 0; i < events.length; i++) {
+            events[i].column_value = events[i].attending_count;
+        }
+        events.sort(function(at, bt) {
+            var a = at.column_value;
+            var b = bt.column_value;
+            return (a < b) ? 1 : -1; // descending
             });
-            if (events.length > 0) {
-                display(events);
-            } else {
-                console.log('No events in showEventsByAttendingInner');
+        if (events.length > 0) {
+            sessionStorage.setItem('zoukcurrentevents', JSON.stringify(currentEvents));
+            display(events);
+        } else {
+            console.log('No events in showEventsByAttendingInner');
+        }
+    }
+}
+
+/************************************************************/
+function showEventsWithAttending() {
+    $("#rightColumnBtn").html("Attending");
+    $("#rightColumnMenuItem1").replaceWith("<a href=\"#\" id=\"rightColumnMenuItem1\" onclick=\"showEventsWithInterested();\">Interested</a>");
+    $("#rightColumnMenuItem2").replaceWith("<a href=\"#\" id=\"rightColumnMenuItem2\" onclick=\"showEventsWithAttendeeAndInterested();\">Attnd+Intrst</a>");
+    events = getStoredEvents();
+    if (events !== null) {
+        for (var i = 0; i < events.length; i++) {
+            events[i].column_value = events[i].attending_count;
+        }
+        if (events.length > 0) {
+            sessionStorage.setItem('zoukcurrentevents', JSON.stringify(currentEvents));
+            display(events);
+        } else {
+            console.log('No events in showEventsWithAttending');
+        }
+    }
+}
+
+/************************************************************/
+function showEventsWithInterested() {
+    $("#rightColumnBtn").html("Interested");
+    $("#rightColumnMenuItem1").replaceWith("<a href=\"#\" id=\"rightColumnMenuItem1\" onclick=\"showEventsWithAttending();\">Attending</a>");
+    $("#rightColumnMenuItem2").replaceWith("<a href=\"#\" id=\"rightColumnMenuItem2\" onclick=\"showEventsWithAttendeeAndInterested();\">Attnd+Intrst</a>");
+    events = getStoredEvents();
+    if (events !== null) {
+        for (var i = 0; i < events.length; i++) {
+            if (events[i].hasOwnProperty('interested_count') && events[i].interested_count) {
+                events[i].column_value = events[i].interested_count;
             }
         }
-    } else {
-        alert('Your browser does not support this operation');
+        if (events.length > 0) {
+            sessionStorage.setItem('zoukcurrentevents', JSON.stringify(currentEvents));
+            display(events);
+        } else {
+            console.log('No events in showByInterested');
+        }
+    }
+}
+
+/************************************************************/
+function showEventsWithAttendeeAndInterested() {
+    $("#rightColumnBtn").html("Attnd+Intrst");
+    $("#rightColumnMenuItem1").replaceWith("<a href=\"#\" id=\"rightColumnMenuItem1\" onclick=\"showEventsWithAttending();\">Attending</a>");
+    $("#rightColumnMenuItem2").replaceWith("<a href=\"#\" id=\"rightColumnMenuItem2\" onclick=\"showEventsWithInterested();\">Interested</a>");
+    events = getStoredEvents();
+    if (events !== null) {
+        for (var i = 0; i < events.length; i++) {
+            if (events[i].hasOwnProperty('interested_count') && events[i].interested_count) {
+                events[i].column_value = events[i].interested_count + events[i].attending_count;
+            }
+        }
+        if (events.length > 0) {
+            sessionStorage.setItem('zoukcurrentevents', JSON.stringify(currentEvents));
+            display(events);
+        } else {
+            console.log('No events in showByAttendeeAndInterested');
+        }
     }
 }
 
@@ -1254,17 +1326,12 @@ function showDiscarded() {
 function showLocation(geoResult) {
     var lat = geoResult.geometry.location.lat();
     var lng = geoResult.geometry.location.lng();
-    if (typeof(Storage) === "undefined") {
-        alert('Your browser does not support this operation');
+
+    events = getStoredEvents();
+    if (events === null) {
         return;
     }
-    var data = sessionStorage.getItem('zoukcurrentevents');
-    if (data === undefined || (! data)) {
-        console.log('No events in showEventsByAttendingInner');
-    }
-    events = JSON.parse(data);
     var selected = [];
-
     for (var i = 0; i < events.length; i++) {
         if (events[i].hasOwnProperty('place') && events[i].place) {
             var place = events[i].place;
@@ -1321,17 +1388,11 @@ function showLocation(geoResult) {
 
 /************************************************************/
 function showByAttendeeCount(minCount) {
-    if (typeof(Storage) === "undefined") {
-        alert('Your browser does not support this operation');
+    events = getStoredEvents();
+    if (events === null) {
         return;
     }
-    var data = sessionStorage.getItem('zoukcurrentevents');
-    if (data === undefined || (! data)) {
-        console.log('No events in showByAttendeeCount');
-    }
-    events = JSON.parse(data);
     var selected = [];
-
     for (var i = 0; i < events.length; i++) {
         if (events[i].hasOwnProperty('attending_count') && events[i].attending_count) {
             var attending = events[i].attending_count;
@@ -1382,17 +1443,11 @@ function showByAttendeeCount(minCount) {
 
 /************************************************************/
 function showMap() {
-    if (typeof(Storage) === "undefined") {
-        alert('Your browser does not support this operation');
+    events = getStoredEvents();
+    if (events === null) {
         return;
     }
-    var data = sessionStorage.getItem('zoukcurrentevents');
-    if (data === undefined || (! data)) {
-        console.log('No events in showEventsByAttendingInner');
-    }
-    events = JSON.parse(data);
     var selected = [];
-
     for (var i = 0; i < events.length; i++) {
         if (events[i].hasOwnProperty('place') && events[i].place) {
             var place = events[i].place;
@@ -1438,15 +1493,10 @@ function showMap() {
 
 /************************************************************/
 function showDashboard() {
-    if (typeof(Storage) === "undefined") {
-        alert('Your browser does not support this operation');
+    events = getStoredEvents();
+    if (events === null) {
         return;
     }
-    var data = sessionStorage.getItem('zoukcurrentevents');
-    if (data === undefined || (! data)) {
-        console.log('No events in showDashboard');
-    }
-    events = JSON.parse(data);
     var selected = [];
     var distribution = {
         'North America': 0,
@@ -2007,4 +2057,19 @@ function filterButtonAction() {
         $("#filterValueInput").attr("placeholder", "Enter your address...");
         $("#filterValueInput").val("");
     }
+}
+
+/************************************************************/
+function getStoredEvents() {
+    if (typeof(Storage) === "undefined") {
+        alert('Your browser does not support this operation');
+        return null;
+    }
+    var data = sessionStorage.getItem('zoukcurrentevents');
+    if (data === undefined || (! data)) {
+        console.log('No events in showDashboard');
+        return null;
+    }
+    events = JSON.parse(data);
+    return events;
 }

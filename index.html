@@ -232,7 +232,8 @@
             <td style="padding: 8px 40px 8px 40px;">
               <div class="input-group sort-group-header">
                 <div class="input-group-btn">
-                  <button type="button" id="filterToggleBtn" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">By Location <span class="caret"></span></button>
+                  <button type="button" id="filterToggleBtn" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    By Location <span class="caret"></span></button>
                   <ul class="dropdown-menu">
                     <li><a href="#" id="filterMenuItem" onclick="filterButtonAction();">By Attendance</a></li>
                   </ul>
@@ -246,9 +247,21 @@
               </div><!-- /input-group -->
             </td>
             <td style="padding: 8px;">
-              <a href="#" onclick="showEventsByAttending();" title="Sort by number of people attending" data-toggle="tooltip">
+              <!-- <a href="#" onclick="showEventsByAttending();" title="Sort by number of people attending" data-toggle="tooltip">
                 <table><tr><td>Attending</td><td><span class="caret"></span></td></tr></table>
-              </a>
+              </a> -->
+              <!-- Split button -->
+              <div class="btn-group">
+                <button type="button" class="btn btn-danger" id="rightColumnBtn">Attending</button>
+                <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <span class="caret"></span>
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a href="#" id="rightColumnMenuItem1" onclick="showEventsWithInterested();">Interested</a></li>
+                  <li><a href="#" id="rightColumnMenuItem2" onclick="showEventsWithAttendeeAndInterested();">Attnd+Intrst</a></li>
+                </ul>
+              </div>
             </td>
           </tr>
         </table>
