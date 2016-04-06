@@ -1194,7 +1194,7 @@ function showEventsByAttendingInner() {
 
 /************************************************************/
 function showEventsWithAttending() {
-    $("#rightColumnBtn").html("Attending");
+    $("#rightColumnBtn").html("<strong>Attending</strong>");
     $("#rightColumnMenuItem1").replaceWith("<a href=\"#\" id=\"rightColumnMenuItem1\" onclick=\"showEventsWithInterested();\">Interested</a>");
     $("#rightColumnMenuItem2").replaceWith("<a href=\"#\" id=\"rightColumnMenuItem2\" onclick=\"showEventsWithAttendeeAndInterested();\">Attnd+Intrst</a>");
     events = getStoredEvents();
@@ -1213,7 +1213,7 @@ function showEventsWithAttending() {
 
 /************************************************************/
 function showEventsWithInterested() {
-    $("#rightColumnBtn").html("Interested");
+    $("#rightColumnBtn").html("<strong>Interested</strong>");
     $("#rightColumnMenuItem1").replaceWith("<a href=\"#\" id=\"rightColumnMenuItem1\" onclick=\"showEventsWithAttending();\">Attending</a>");
     $("#rightColumnMenuItem2").replaceWith("<a href=\"#\" id=\"rightColumnMenuItem2\" onclick=\"showEventsWithAttendeeAndInterested();\">Attnd+Intrst</a>");
     events = getStoredEvents();
@@ -1234,7 +1234,7 @@ function showEventsWithInterested() {
 
 /************************************************************/
 function showEventsWithAttendeeAndInterested() {
-    $("#rightColumnBtn").html("Attnd+Intrst");
+    $("#rightColumnBtn").html("<strong>Attnd+Intrst</strong>");
     $("#rightColumnMenuItem1").replaceWith("<a href=\"#\" id=\"rightColumnMenuItem1\" onclick=\"showEventsWithAttending();\">Attending</a>");
     $("#rightColumnMenuItem2").replaceWith("<a href=\"#\" id=\"rightColumnMenuItem2\" onclick=\"showEventsWithInterested();\">Interested</a>");
     events = getStoredEvents();
