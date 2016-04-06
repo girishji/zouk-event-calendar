@@ -1198,7 +1198,7 @@ function showEventsWithAttending() {
             events[i].column_value = events[i].attending_count;
         }
         if (events.length > 0) {
-            sessionStorage.setItem('zoukcurrentevents', JSON.stringify(currentEvents));
+            sessionStorage.setItem('zoukcurrentevents', JSON.stringify(events));
             display(events);
         } else {
             console.log('No events in showEventsWithAttending');
@@ -1219,7 +1219,7 @@ function showEventsWithInterested() {
             }
         }
         if (events.length > 0) {
-            sessionStorage.setItem('zoukcurrentevents', JSON.stringify(currentEvents));
+            sessionStorage.setItem('zoukcurrentevents', JSON.stringify(events));
             display(events);
         } else {
             console.log('No events in showByInterested');
@@ -1240,7 +1240,7 @@ function showEventsWithAttendeeAndInterested() {
             }
         }
         if (events.length > 0) {
-            sessionStorage.setItem('zoukcurrentevents', JSON.stringify(currentEvents));
+            sessionStorage.setItem('zoukcurrentevents', JSON.stringify(events));
             display(events);
         } else {
             console.log('No events in showByAttendeeAndInterested');
