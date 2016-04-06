@@ -109,6 +109,11 @@ $(document).ready(function() {
             }
         }
     });
+
+    // sort by time
+    $("#dateBtn").click(function() {
+        showEventsByTime();
+    });
 });
 
 
