@@ -490,7 +490,8 @@ function startBatchSearchEvents(cursor) {
     for (var i = cursor, count = 0; i < eventSearchStrings.length && count < BATCH_MAX; i++, count++) {
         batchCmd.push( { method: 'GET', 
                          relative_url: 'search?q=' + eventSearchStrings[i] 
-                         + '&type=event&fields=id,name,start_time,place,attending_count,cover,description&access_token='
+                         + '&type=event&fields=id,name,start_time,place,attending_count,interested_count,'
+                         + 'maybe_count,cover,description&access_token='
                          + accessToken }
                      );
     }
@@ -545,7 +546,8 @@ var eventsCallback = function(response) {
                 if (searchStringsCursor < eventSearchStrings.length) {
                     batchCmd.push( { method: 'GET', 
                                      relative_url: 'search?q=' + eventSearchStrings[searchStringsCursor] 
-                                     + '&type=event&fields=id,name,start_time,place,attending_count,cover,description&access_token='
+                                     + '&type=event&fields=id,name,start_time,place,attending_count,interested_count,'
+                                     + 'maybe_count,cover,description&access_token='
                                      + accessToken }
                                  );
                     searchStringsCursor += 1;
@@ -718,7 +720,7 @@ function getBatchCmdFromPages() {
     for (var i = 0; i < limit; i++) {
         var pid = ids[i]; // page id
         var url = pid + '/events?fields=id,name,start_time,place,'
-            + 'attending_count,cover,description&limit=5&access_token='
+            + 'attending_count,interested_count,maybe_count,cover,description&limit=5&access_token='
             + accessToken;
         batchCmd.push( { method: 'GET',
                          relative_url: url }
@@ -1272,7 +1274,7 @@ function showLocation(geoResult) {
                     //var dist = distHaversine(lat, lng, location.latitude, location.longitude); 
                     var dist = distVincenty(lat, lng, location.latitude, location.longitude)
                         * 0.000621371; // miles
-                    events[i].attending_count = Math.round(dist); // kludge alert: replace attening_count with dist
+                    events[i].column_value = Math.round(dist);
                     selected.push(events[i]);
                 }
             }
@@ -1280,8 +1282,8 @@ function showLocation(geoResult) {
     }
     if (selected.length > 0) { // sort
         selected.sort(function(at, bt) {
-            var a = parseInt(at.attending_count);
-            var b = parseInt(bt.attending_count);
+            var a = parseInt(at.column_value);
+            var b = parseInt(bt.column_value);
             return (a > b) ? 1 : -1; 
         });
         // <table style="margin-top: 10px;"><tr><td>
@@ -1596,9 +1598,9 @@ function getTableBody(events) {
         var imgWidth = '75px';
         var imgHeight = '42px';
         var textWidth = '400px';
-        var attendees = events[i].attending_count;
+        var column_value = events[i].column_value;
         if (events[i].hasOwnProperty('normalized')) {
-            attendees = attendees + '*';
+            column_value = column_value + '*';
         }
         str += `<tr><td><h5>${month} ${dateS[2]}</h5></td>
             <td> 
@@ -1619,7 +1621,7 @@ function getTableBody(events) {
             </tr>
             </table>
             </td>
-            <td>${attendees}</a></td>
+            <td>${column_value}</a></td>
             </tr>`;
     }
 
@@ -1649,6 +1651,7 @@ function addEvent(event) {
                 event.description = null;
             }
             addContinent(event);
+            event.column_value = event.attending_count;
             events.push(event);
         }
     }
@@ -1677,7 +1680,8 @@ function isCurrent(event, older) {
 function preFilter(event) {
     if (! isCurrent(event, true)) {
         return false;
-    }    
+    }
+    console.log("interested, maybe: " + event.interested_count + ', ' + event.maybe_count);
     // Insert only if unique; Different search strings give same results
     for (var ev = 0; ev < events.length; ev++) {
         if (event.id == events[ev].id) { // use == not === so str get casted to number
@@ -1736,6 +1740,14 @@ function preFilter(event) {
                 normalized = Math.round(event.attending_count / 4);
                 event.attending_count = normalized;
                 event.normalized = 1;
+                if (event.hasOwnProperty('interested_count') && event.interested_count) {
+                    normalized = Math.round(event.interested_count / 4);
+                    event.interested_count = normalized;
+                }
+                if (event.hasOwnProperty('maybe_count') && event.maybe_count) {
+                    normalized = Math.round(event.maybe_count / 4);
+                    event.maybe_count = normalized;
+                }
             }
         }
     }
