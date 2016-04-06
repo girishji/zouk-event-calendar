@@ -1741,7 +1741,7 @@ function preFilter(event) {
     }
     // If event location has zouk but name and description don't have it then discard.
     // Also, if there is just a url with name zouk in description, discard
-    // If event has over 500 people and no Zouk in name or description then discard (some
+    // If event has over 200 people and no Zouk in name or description then discard (some
     // bachaturo salsa event shows up as zouk)
     var zoukPlace = false;
     if (event.hasOwnProperty('place') && event.place) {
@@ -1750,7 +1750,7 @@ function preFilter(event) {
             zoukPlace = true;
         }
     }
-    if (zoukPlace || (event.attending_count > 500)) { // found or >500
+    if (zoukPlace || (event.attending_count > 200)) { 
         if (event.hasOwnProperty('name') && event.name) {
             if (event.name.search(/zouk/i) === -1) { // not found
                 if (event.hasOwnProperty('description') && event.description) {
@@ -1784,8 +1784,8 @@ function preFilter(event) {
             }
         }
     }
-    // If this is a bachata event w/ over 500 people, normalize attending count
-    if (event.attending_count > 500) { // found or >500
+    // If this is a bachata event w/ over 400 people, normalize attending count
+    if (event.attending_count > 400) {
         if (event.hasOwnProperty('name') && event.name) {
             if (event.name.search(/bachata/i) !== -1) { // bachata event
                 normalized = Math.round(event.attending_count / 4);
