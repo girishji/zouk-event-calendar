@@ -1622,7 +1622,7 @@ function getTableBody(events) {
         var timeMoment = moment(events[i].start_time);
         var month = timeMoment.format("MMM"); // http://momentjs.com/docs/#/displaying/
         var dayOfMonth = timeMoment.format("DD"); // 01,02...
-        var dayOfWeek = timeMoment.format("ddd"); // Su,Mo...
+        var dayOfWeek = timeMoment.format("ddd"); // Sun,Mon...
         
         // var timeS = splitS[1].split(':');
         // Use template strings
@@ -1669,7 +1669,7 @@ function getTableBody(events) {
         if (events[i].hasOwnProperty('normalized')) {
             column_value = column_value + '*';
         }
-        str += `<tr><td><h5>${dayOfWeek} ${month} ${dayOfMonth}</h5></td>
+        str += `<tr><td><h5>${dayOfWeek}, ${month} ${dayOfMonth}</h5></td>
             <td> 
             <table>
             <tr>
