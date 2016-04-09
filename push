@@ -2,6 +2,7 @@
 # composer self-update
 # composer update
 
+git diff .
 git add .
 git commit -m "message"
 
