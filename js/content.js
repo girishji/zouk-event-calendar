@@ -1712,7 +1712,7 @@ function getTimeNow() {
                 var timeSrv = moment(data);
                 if (timeSrv.isValid()) {
                     timeNow = timeSrv.toDate();
-                    console.log( "got time: " + data);
+                    //console.log( "got time: " + data);
                 } else {
                     console.log( "Error, invalide time: " + data);
                 }
