@@ -22,6 +22,10 @@ window.fbAsyncInit = function() {
     // manually set size (also slow)
     // FB.Canvas.setSize({ width: 640, height: 4000 });
 
+    // Update the timeNow timestamp from server; Some people with wrong date set on their computer
+    // will mess up search results
+    getTimeNow();
+    
     // check if you can retrieve cache without logging in
     // cacheValid();
     // Check if logged in, and obtain events
@@ -1688,14 +1692,53 @@ function getTableBody(events) {
 }
 
 /************************************************************/
+// get milliseconds since 1970 00:00:00 from server
+// Do this asynchronously
+function getTimeNow() { 
+    $.ajax({
+        // The URL for the request
+        url: "/time.php",
+        // The data to send (has to be key value pairs, will be converted to a query string)
+        data: {
+            type: 'now'
+        },
+        // Whether this is a POST or GET request
+        type: 'GET',
+        // The type of data we expect back
+        dataType : 'text',
+        success: function( data ) {
+            //console.log(data);
+            if (data != -1) {
+                var timeSrv = moment(data);
+                if (timeSrv.isValid()) {
+                    timeNow = timeSrv.toDate();
+                } else {
+                    console.log( "Error, invalide time: " + data);
+                }
+            }
+        },
+        error: function( xhr, status, errorThrown ) {
+            console.log( "Error: " + errorThrown );
+            console.log( "Status: " + status );
+            console.dir( xhr );
+        }
+    });
+}
+
+/************************************************************/
 function parseTime(str) { // milliseconds since 1970 00:00:00
     // http://stackoverflow.com/questions/6427204/date-parsing-in-javascript-is-different-between-safari-and-chrome
     // If actual time zone is used then after sorting, newer events
-    // will appear older after adjusting for timezones. So ignore
-    // timezones by removing timezone field.
+    // will appear older after adjusting for timezones. Viewed from Japan, US events may seem older but not really;
     // 2016-04-07T19:00:00-0300 or 2016-04-07T19:00:00+0300
-    var a = str.split(/[^0-9]/);
-    return new Date(a[0], a[1] - 1, a[2], a[3], a[4], a[5]);
+    // var a = str.split(/[^0-9]/);
+    // Date object is based on UTC, so adjust for timezone
+    // return new Date(a[0], a[1] - 1, a[2], a[3], a[4], a[5]);
+    // from server (php) you get back 2016-04-09T15:36:48+00:00, the timezone is different from ISO8601/facebook above
+
+    // Use moment.js to account for timezone
+    var time = moment(str);
+    return time.toDate(); // return Date object
 }
 
 /************************************************************/
