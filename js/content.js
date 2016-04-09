@@ -1606,17 +1606,24 @@ function display(events) {
 
 /************************************************************/
 function getTableBody(events) {
-    var monthNames = [
-        "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
-        "Aug", "Sep", "Oct", "Nov", "Dec"
-    ];
+    // var monthNames = [
+    //     "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
+    //     "Aug", "Sep", "Oct", "Nov", "Dec"
+    // ];
     var str = `
         <tbody>
         `;
     for (var i = 0; i < events.length; i++) {
-        var splitS = events[i].start_time.split('T'); // 2016-04-07T19:00:00-0300
-        var dateS = splitS[0].split('-');
-        var month = monthNames[parseInt(dateS[1]) - 1];
+        //var splitS = events[i].start_time.split('T'); // 2016-04-07T19:00:00-0300
+        //var dateS = splitS[0].split('-');
+        //var month = monthNames[parseInt(dateS[1]) - 1];
+        //var month = moment(events[i].start_time).format("MMM"); // works
+        //var dayOfMonth = $dateS[2];
+        var timeMoment = moment(events[i].start_time);
+        var month = timeMoment.format("MMM"); // http://momentjs.com/docs/#/displaying/
+        var dayOfMonth = timeMoment.format("DD"); // 01,02...
+        var dayOfWeek = timeMoment.format("dd"); // Su,Mo...
+        
         // var timeS = splitS[1].split(':');
         // Use template strings
         // also http://stackoverflow.com/questions/6629188/facebook-graph-api-how-do-you-retrieve-the-different-size-photos-from-an-album
@@ -1662,7 +1669,7 @@ function getTableBody(events) {
         if (events[i].hasOwnProperty('normalized')) {
             column_value = column_value + '*';
         }
-        str += `<tr><td><h5>${month} ${dateS[2]}</h5></td>
+        str += `<tr><td><h5>${dayOfWeek} ${month} ${dayOfMonth}</h5></td>
             <td> 
             <table>
             <tr>
