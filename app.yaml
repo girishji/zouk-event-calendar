@@ -32,6 +32,8 @@ handlers:
   script: store.php
 - url: /retrieve.php
   script: retrieve.php
+- url: /time.php
+  script: time.php
 # like above
 - url: /mail.php
   script: mail.php
