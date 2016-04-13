@@ -835,6 +835,7 @@ var retrieveDiscardedEventsCallback = function (data) {
         for (var i = 0; i < data.length; i++) {
             var event = data[i];
             if (isCurrent(event, true)) {
+                event.column_value = event.attending_count;
                 discarded.push(event);
                 // get the event index, remove it from list if exists
                 for (var evIdx = 0; evIdx < events.length; evIdx++) {
@@ -1816,6 +1817,7 @@ function preFilter(event) {
                     if (desc.search(/zouk/i) === -1) { // not found
                         // remove description as this will eat up sessionStorage
                         event.description = null;
+                        event.column_value = event.attending_count;
                         discarded.push(event);
                         return false;
                     }
@@ -1833,6 +1835,7 @@ function preFilter(event) {
                         && (location.longitude == knownSuspectPlaces[k].longitude)) {
                         // remove description as this will eat up sessionStorage
                         event.description = null;
+                        event.column_value = event.attending_count;
                         discarded.push(event);
                         return false;
                     }
