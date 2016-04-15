@@ -1799,7 +1799,7 @@ function preFilter(event) {
     }
     // If event location has zouk but name and description don't have it then discard.
     // Also, if there is just a url with name zouk in description, discard
-    // If event has over 200 people and no Zouk in name or description then discard (some
+    // If event has over 10 people and no Zouk in name or description then discard (some
     // bachaturo salsa event shows up as zouk)
     var zoukPlace = false;
     if (event.hasOwnProperty('place') && event.place) {
@@ -1808,7 +1808,7 @@ function preFilter(event) {
             zoukPlace = true;
         }
     }
-    if (zoukPlace || (event.attending_count > 200)) { 
+    if (zoukPlace || (event.attending_count > 10)) { 
         if (event.hasOwnProperty('name') && event.name) {
             if (event.name.search(/zouk/i) === -1) { // not found
                 if (event.hasOwnProperty('description') && event.description) {
