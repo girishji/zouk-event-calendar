@@ -43,83 +43,6 @@ window.fbAsyncInit = function() {
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 
-// for fb like button (appId is embedded)
-(function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=1261883747160137";
-    //js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=955332727853853";
-    fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));
-
-// all javascript code should go (including jquery) in
-// a $(document).ready(function() {}); block.
-$(document).ready(function() {
-    // bootstrap:
-    // For performance reasons, the Tooltip and Popover data-apis are opt-in, meaning you must initialize them yourself.
-    // One way to initialize all tooltips on a page would be to select them by their data-toggle attribute:
-    $(function() {
-        $('[data-toggle="tooltip"]').tooltip();
-    });
-
-    // get location and sort
-    $("#filterEventsBtn").click(function() {
-        //console.log('in filterBtn');
-        if (locationFilter) {
-            var geocoder =  new google.maps.Geocoder();
-            var loc = $('#filterValueInput').val();
-            geocoder.geocode( { 'address': loc }, function(results, status) {
-                if (status == google.maps.GeocoderStatus.OK) {
-                    showLocation(results[0]);
-                } else {
-                    str = 'Enter a valid address...';
-                    $('#filterValueInput').val(str);
-                    //alert('not found');
-                }
-            });
-        } else { // attendees filter
-            var minStr = $('#filterValueInput').val();
-            var valid = false;
-            if (! isNaN(minStr)) {
-                var min;
-                min = parseInt(minStr, 10);
-                if (min > 0) {
-                    valid = true;
-                    showByAttendeeCount(min);
-                }
-            }
-            if (! valid) {
-                str = 'Enter a valid number...';
-                $('#filterValueInput').val(str);
-                //alert("Enter a valid number.");
-            }
-        }
-    });
-
-    // Third column sort
-    $("#rightColumnBtn").click(function() {
-        events = getStoredEvents();
-        if (events !== null) {
-            events.sort(function(at, bt) {
-                var a = at.column_value;
-                var b = bt.column_value;
-                return (a < b) ? 1 : -1; // descending
-            });
-            if (events.length > 0) {
-                display(events);
-            } else {
-                console.log('No events present');
-            }
-        }
-    });
-
-    // sort by time
-    $("#dateBtn").click(function() {
-        showEventsByTime();
-    });
-});
-
 
 // Global
 // Batch request maximum is 50
@@ -1848,7 +1771,7 @@ function preFilter(event) {
     if (event.attending_count > 400) {
         if (event.hasOwnProperty('name') && event.name) {
             if (event.name.search(/bachata/i) !== -1) { // bachata event
-                normalized = Math.round(event.attending_count / 4);
+                normalized = Math.round(event.attending_count / 5);
                 event.attending_count = normalized;
                 event.normalized = 1;
                 if (event.hasOwnProperty('interested_count') && event.interested_count) {
