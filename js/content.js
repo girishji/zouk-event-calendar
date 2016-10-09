@@ -149,7 +149,7 @@ var eventSearchStrings = [
     'zouk+kizomba',
     'zouk+bachata',
     'bonn+zouk',
-
+    'zensation',
     'zouk+danse',
 
     'zouk+karneval',
