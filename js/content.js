@@ -264,7 +264,6 @@ var eventSearchStrings = [
     'zouky',
     'zoukz',
 
-
     'bachaturo',
     'zouk+marathon',
     'fall+zouk',
@@ -273,6 +272,7 @@ var eventSearchStrings = [
     'zoukdevils',
     'f.i.e.l+official',
     'lambazouk',
+    'valentine+dance',
     'zouk+lambada', 
     'brasileiro+zouk',
     'oman+zouk',
