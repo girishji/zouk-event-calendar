@@ -125,6 +125,9 @@ $(document).ready(function() {
 // Batch request maximum is 50
 var eventSearchStrings = [
     'zouk',
+    'zoukmas',
+    'zoukmas2',
+    'zoukverse',
     'zouk+carnival',
     'zouk+time',
     'zouk+night',
